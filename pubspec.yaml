@@ -4,10 +4,10 @@ description: >
   An awesome tool for awesome developers. Enables collaboration between teams,
   easily viewable code versions, and instant pair programming
 authors:
-  - Josua Neil-Gonzales
-  - Sambhav Srirama
-  - Christopher Stapler
-  - Tyler Stapler
+  - Josua Neil-Gonzales <jng@iastate.edu>
+  - Sambhav Srirama <ssrirama@iastate.edu>
+  - Christopher Stapler <cstapler@iastate.edu>
+  - Tyler Stapler <tstapler@iastate.edu>
 environment:
   sdk: '>=1.13.0 <2.0.0'
 dependencies:
