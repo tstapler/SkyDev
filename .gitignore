@@ -1,8 +1,10 @@
 # Files and directories created by pub
 .packages
 .pub/
+.buildlog #added by Chris unsure if needed
 build/
-packages
+**/packages/
+
 pubspec.lock # (Remove this pattern if you wish to check in your lock file)
 
 # Files created by dart2js
