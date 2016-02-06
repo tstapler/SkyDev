@@ -1,10 +1,23 @@
-// Copyright (c) 2016, <your name>. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
+// Copyright (c) 2012, the Dart project authors.
+// Please see the AUTHORS file for details. 
+// All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
-import 'package:angular2/bootstrap.dart';
+import 'dart:html';
 
-import 'package:SkyDev/app_component.dart';
+InputElement toDoInput;
+UListElement toDoList;
 
-main() {
-  bootstrap(AppComponent);
+void main() {
+  toDoInput = querySelector('#to-do-input');
+  toDoList = querySelector('#to-do-list');
+  toDoInput.onChange.listen(addToDoItem);
+}
+
+void addToDoItem(Event e) {
+  var newToDo = new LIElement();
+  newToDo.text = toDoInput.value;
+  toDoInput.value = '';
+  toDoList.children.add(newToDo);
 }
