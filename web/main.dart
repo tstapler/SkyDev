@@ -8,11 +8,15 @@ import 'dart:html';
 
 InputElement toDoInput;
 UListElement toDoList;
+ButtonElement deleteAll;
 
 void main() {
   toDoInput = querySelector('#to-do-input');
   toDoList = querySelector('#to-do-list');
   toDoInput.onChange.listen(addToDoItem);
+
+  deleteAll = querySelector("#delete-all");
+  deleteAll.onClick.listen((e) => toDoList.children.clear());
 }
 
 void addToDoItem(Event e) {
