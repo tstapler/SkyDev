@@ -3,7 +3,7 @@
 
 import 'package:angular2/bootstrap.dart';
 
-import 'package:COMS309_Project/app_component.dart';
+import 'package:SkyDev/app_component.dart';
 
 main() {
   bootstrap(AppComponent);
