@@ -16,12 +16,17 @@ void main() {
   toDoInput.onChange.listen(addToDoItem);
 
   deleteAll = querySelector("#delete-all");
-  deleteAll.onClick.listen((e) => toDoList.children.clear());
+  deleteAll.onClick.listen(deleteAllChildren);
+}
+
+void deleteAllChildren(Event e){
+  toDoList.children.clear();
 }
 
 void addToDoItem(Event e) {
   var newToDo = new LIElement();
   newToDo.text = toDoInput.value;
+  newToDo.onClick.listen((e) => newToDo.remove());
   toDoInput.value = '';
   toDoList.children.add(newToDo);
 }
