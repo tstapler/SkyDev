@@ -7,6 +7,7 @@ install-sdk:
 	sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
 	sudo apt-get update
 	sudo apt-get install dart
+	ln -s /usr/lib/dart/bin/* /usr/bin
 
 install-dartium:
 	wget "https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip"
