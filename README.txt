@@ -1,5 +1,5 @@
 === SkyDev ===
- Contributors: Chris Stapler, Sambhav Srirama
+ Contributors: Chris Stapler, Sambhav Srirama, Josua Gonzales-Neal
  
 == Description == 
 
