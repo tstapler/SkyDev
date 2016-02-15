@@ -33,13 +33,30 @@ void addToDoItem(Event e) {
 }
 
 void sortList(Event e){
-  List<LIElement> list = toDoList.children;
-  for(int i = 0; i < list.length; i++){
-    list[i].text = "lol";
-    toDoList.children.add(list[i]);
+  
+
+
+  if(toDoList.children.length > 5){
+  
+
+    List<String> list = new List<String>();
+    var n = new LIElement();
+    n.text = "test1";
+    toDoList.children.add(n);
+    int x = toDoList.children.length;
+    n = new LIElement();
+    n.text = "test2";
+    toDoList.children.add(n);
+    for(int i=0; i<x; i++){
+      n = new LIElement();
+      n.text = "test3";
+      toDoList.children.add(n);      
+    }
+    
+    for(int i=0; i<list.length; i++){
+      var newToDo = new LIElement();
+      newToDo.text = list[i];
+      toDoList.children.add(newToDo);
+    }
   }
-  var newToDo = new LIElement();
-  newToDo.text = "haha";
-  newToDo.onClick.listen((e) => newToDo.remove());
-  toDoList.children.add(newToDo);
 }
