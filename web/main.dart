@@ -13,10 +13,11 @@ ButtonElement deleteAll;
 void main() {
   toDoInput = querySelector('#to-do-input');
   toDoList = querySelector('#to-do-list');
+  deleteAll = querySelector("#delete-all");
+
   toDoInput.onChange.listen(addToDoItem);
   toDoInput.onChange.listen(sortList);
-
-  deleteAll = querySelector("#delete-all");
+  
   deleteAll.onClick.listen(deleteAllChildren);
 }
 
@@ -33,27 +34,27 @@ void addToDoItem(Event e) {
 }
 
 void sortList(Event e){
-  
-
-
   if(toDoList.children.length > 5){
-  
-
     List<String> list = new List<String>();
+    
+    int x = toDoList.children.length; 
     var n = new LIElement();
-    n.text = "test1";
+    n.text = (x as String).toString();
     toDoList.children.add(n);
-    int x = toDoList.children.length;
-    n = new LIElement();
-    n.text = "test2";
-    toDoList.children.add(n);
+    
     for(int i=0; i<x; i++){
       n = new LIElement();
-      n.text = "test3";
-      toDoList.children.add(n);      
+      String a = (x as String);
+      n.text = a;
+      toDoList.children.add(n);
+      list[i] = toDoList.children[i].text;      
     }
     
     for(int i=0; i<list.length; i++){
+    n = new LIElement();
+      n.text = "test4";
+      toDoList.children.add(n);
+
       var newToDo = new LIElement();
       newToDo.text = list[i];
       toDoList.children.add(newToDo);
