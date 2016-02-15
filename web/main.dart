@@ -34,7 +34,10 @@ void reAddAllChildren(Event e){
   for(int i=0; i<list.length; i++){
     var newToDo = new LIElement();
     newToDo.text = list[i].text;
-    newToDo.onClick.listen((e) => newToDo.remove());
+    newToDo.onClick.listen((e){ 
+      list.remove(newToDo);
+      newToDo.remove(); 
+    });
     toDoList.children.add(newToDo);
   }
 }
@@ -42,7 +45,10 @@ void reAddAllChildren(Event e){
 void addToDoItem(Event e) {
   var newToDo = new LIElement();
   newToDo.text = toDoInput.value;
-  newToDo.onClick.listen((e) => newToDo.remove());
+  newToDo.onClick.listen((e){ 
+    list.remove(newToDo);
+    newToDo.remove();
+  });
   toDoInput.value = '';
   toDoList.children.add(newToDo);
   list.add(newToDo);
