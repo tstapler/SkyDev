@@ -9,20 +9,34 @@ import 'dart:html';
 InputElement toDoInput;
 UListElement toDoList;
 ButtonElement deleteAll;
+ButtonElement reAddAll;
+List<LIElement> list;
 
 void main() {
   toDoInput = querySelector('#to-do-input');
   toDoList = querySelector('#to-do-list');
   deleteAll = querySelector("#delete-all");
+  reAddAll = querySelector("#reAdd-all");
+  list = [];
 
   toDoInput.onChange.listen(addToDoItem);
-  toDoInput.onChange.listen(sortList);
+  //toDoInput.onChange.listen(sortList);
   
   deleteAll.onClick.listen(deleteAllChildren);
+  reAddAll.onClick.listen(reAddAllChildren);
 }
 
 void deleteAllChildren(Event e){
   toDoList.children.clear();
+}
+
+void reAddAllChildren(Event e){
+  for(int i=0; i<list.length; i++){
+    var newToDo = new LIElement();
+    newToDo.text = list[i].text;
+    newToDo.onClick.listen((e) => newToDo.remove());
+    toDoList.children.add(newToDo);
+  }
 }
 
 void addToDoItem(Event e) {
@@ -31,33 +45,5 @@ void addToDoItem(Event e) {
   newToDo.onClick.listen((e) => newToDo.remove());
   toDoInput.value = '';
   toDoList.children.add(newToDo);
-}
-
-void sortList(Event e){
-  if(toDoList.children.length > 5){
-    List<String> list = new List<String>();
-    
-    int x = toDoList.children.length; 
-    var n = new LIElement();
-    n.text = (x as String).toString();
-    toDoList.children.add(n);
-    
-    for(int i=0; i<x; i++){
-      n = new LIElement();
-      String a = (x as String);
-      n.text = a;
-      toDoList.children.add(n);
-      list[i] = toDoList.children[i].text;      
-    }
-    
-    for(int i=0; i<list.length; i++){
-    n = new LIElement();
-      n.text = "test4";
-      toDoList.children.add(n);
-
-      var newToDo = new LIElement();
-      newToDo.text = list[i];
-      toDoList.children.add(newToDo);
-    }
-  }
+  list.add(newToDo);
 }
