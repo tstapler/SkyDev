@@ -45,7 +45,7 @@ void reAddAllChildren(Event e){
 void addToDoItem(Event e) {
   var newToDo = new LIElement();
   newToDo.text = toDoInput.value;
-  newToDo.onClick.listen((e){ 
+  newToDo.onClick.listen((e){
     list.remove(newToDo);
     newToDo.remove();
   });
