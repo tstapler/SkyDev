@@ -6,7 +6,6 @@ import 'dart:html';
 UListElement emailList;
 InputElement textBox;
 void main() {
-  querySelector('#heading1').text = 'Group Page!!!';
   textBox = querySelector('#input_field');
   emailList = querySelector('#email_list');
   textBox.onChange.listen(addEmail);
