@@ -28,13 +28,16 @@ void main() {
 }
 
 void sortAllChildren(Event e){
-  addE("hi");
   List<LIElement> s = [];
   for(int i = 0; i < toDoList.children.length; i++){
     s.add(toDoList.children[i]);
   }
-  
-  addE("bye");
+  s.sort((x, y) => x.text.length.compareTo(y.text.length));
+
+  deleteAllChildren(e);
+  for(int i = 0; i < s.length; i++){
+    toDoList.children.add(s[i]);  
+  }
 }
 
 void addE(String s){
