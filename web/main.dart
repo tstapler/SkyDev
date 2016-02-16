@@ -10,6 +10,7 @@ InputElement toDoInput;
 UListElement toDoList;
 ButtonElement deleteAll;
 ButtonElement reAddAll;
+ButtonElement sortAll;
 List<LIElement> list;
 
 void main() {
@@ -17,13 +18,33 @@ void main() {
   toDoList = querySelector('#to-do-list');
   deleteAll = querySelector("#delete-all");
   reAddAll = querySelector("#reAdd-all");
+  sortAll = querySelector("#sort-all");
   list = [];
 
   toDoInput.onChange.listen(addToDoItem);
-  //toDoInput.onChange.listen(sortList);
-  
   deleteAll.onClick.listen(deleteAllChildren);
   reAddAll.onClick.listen(reAddAllChildren);
+  sortAll.onClick.listen(sortAllChildren);
+}
+
+void sortAllChildren(Event e){
+  addE("hi");
+  List<LIElement> s = [];
+  for(int i = 0; i < toDoList.children.length; i++){
+    s.add(toDoList.children[i]);
+  }
+  
+  addE("bye");
+}
+
+void addE(String s){
+  var newToDo = new LIElement();
+  newToDo.text = s;
+  newToDo.onClick.listen((e){
+    newToDo.remove();
+  });
+  toDoInput.value = '';
+  toDoList.children.add(newToDo);
 }
 
 void deleteAllChildren(Event e){
@@ -36,7 +57,7 @@ void reAddAllChildren(Event e){
     newToDo.text = list[i].text;
     newToDo.onClick.listen((e){ 
       list.remove(newToDo);
-      newToDo.remove(); 
+      newToDo.remove();
     });
     toDoList.children.add(newToDo);
   }
