@@ -5,6 +5,7 @@
 // found in the LICENSE file.
 
 import 'dart:html';
+import 'dart:async';
 
 InputElement toDoInput;
 UListElement toDoList;
