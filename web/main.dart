@@ -10,7 +10,7 @@ InputElement toDoInput;
 UListElement toDoList;
 ButtonElement deleteAll;
 ButtonElement reAddAll;
-ButtonElement sortAll;
+ButtonElement sortByLengthAll;
 List<LIElement> list;
 
 void main() {
@@ -18,16 +18,16 @@ void main() {
   toDoList = querySelector('#to-do-list');
   deleteAll = querySelector("#delete-all");
   reAddAll = querySelector("#reAdd-all");
-  sortAll = querySelector("#sort-all");
+  sortByLengthAll = querySelector("#sortByLength-all");
   list = [];
 
   toDoInput.onChange.listen(addToDoItem);
   deleteAll.onClick.listen(deleteAllChildren);
   reAddAll.onClick.listen(reAddAllChildren);
-  sortAll.onClick.listen(sortAllChildren);
+  sortByLengthAll.onClick.listen(sortByLengthAllChildren);
 }
 
-void sortAllChildren(Event e){
+void sortByLengthAllChildren(Event e){
   List<LIElement> s = [];
   for(int i = 0; i < toDoList.children.length; i++){
     s.add(toDoList.children[i]);
