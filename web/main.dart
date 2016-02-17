@@ -15,6 +15,7 @@ ButtonElement sortByLengthAll;
 List<LIElement> list;
 
 void main() {
+  //  hook into html elements
   toDoInput = querySelector('#to-do-input');
   toDoList = querySelector('#to-do-list');
   deleteAll = querySelector("#delete-all");
@@ -22,6 +23,7 @@ void main() {
   sortByLengthAll = querySelector("#sortByLength-all");
   list = [];
 
+  //  set listeners for each button in the html
   toDoInput.onChange.listen(addToDoItem);
   deleteAll.onClick.listen(deleteAllChildren);
   reAddAll.onClick.listen(reAddAllChildren);
@@ -29,12 +31,16 @@ void main() {
 }
 
 void sortByLengthAllChildren(Event e){
+  //  since dart does copy by reference and not copy by shallow clone, copy the list of elements currently in the to-do list 
   List<LIElement> s = [];
   for(int i = 0; i < toDoList.children.length; i++){
     s.add(toDoList.children[i]);
   }
+
   s.sort((x, y) => x.text.length.compareTo(y.text.length));
 
+  //  clear the list currently shown to user
+  //  then load the sorted list
   deleteAllChildren(e);
   for(int i = 0; i < s.length; i++){
     toDoList.children.add(s[i]);  
