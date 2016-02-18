@@ -29,6 +29,10 @@ void main() {
   deleteAll.onClick.listen(deleteAllChildren);
   reAddAll.onClick.listen(reAddAllChildren);
   sortByLengthAll.onClick.listen(sortByLengthAllChildren);
+
+  reactClient.setClientConfiguration();
+  var component = div({}, "To-Do List");
+  render(component, querySelector('#content'));
 }
 
 void sortByLengthAllChildren(Event e){
@@ -44,7 +48,7 @@ void sortByLengthAllChildren(Event e){
   //  then load the sorted list
   deleteAllChildren(e);
   for(int i = 0; i < s.length; i++){
-    addE(s[i].text);  
+    addE(s[i].text);
   }
 }
 
@@ -65,8 +69,13 @@ void deleteAllChildren(Event e){
 }
 
 void reAddAllChildren(Event e){
+  List<LIElement> copy = [];
   for(int i=0; i<list.length; i++){
-    addE(list[i].text);
+    copy.add(list[i]);
+  }
+
+  for(int i=0; i<copy.length; i++){
+    addE(copy[i].text);
   }
 }
 
