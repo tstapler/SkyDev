@@ -25,3 +25,34 @@ void addEmail(Event e){
   textBox.value = '';
   emailList.children.add(nextEmail);
 }
+
+class bc {
+  double first = 0.00;
+  double second = 0.00;
+  double result = 0.00;
+  bc(double first, double second){
+    this.first = first;
+    this.second = second;
+  }
+  double get get_result {
+    return result;
+  }
+  double get get_first {
+    return first;
+  }
+  double get get_second {
+    return second;
+  }
+  double addition(){
+      result = first + second;
+  }
+  double multiplication(){
+    result = first * second;
+  }
+  double subtraction(){
+      result = first - second;
+  }
+  double division(){
+      result = first / second;
+  }
+}
