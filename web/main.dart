@@ -7,6 +7,7 @@
 import 'dart:html';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
+import 'dart:async';
 
 InputElement toDoInput;
 UListElement toDoList;
@@ -14,6 +15,7 @@ ButtonElement deleteAll;
 ButtonElement reAddAll;
 ButtonElement sortByLengthAll;
 List<LIElement> list;
+WebSocket ws;
 
 void main() {
   //  hook into html elements
@@ -33,6 +35,39 @@ void main() {
   reactClient.setClientConfiguration();
   var component = div({}, "To-Do List");
   render(component, querySelector('#content'));
+
+  initWebSocket();
+}
+
+void initWebSocket([int retrySeconds = 2]) {
+  var reconnectScheduled = false;
+
+  ws = new WebSocket('ws://echo.websocket.org');
+
+  void scheduleReconnect() {
+    if (!reconnectScheduled) {
+      new Timer(new Duration(milliseconds: 1000 * retrySeconds), () => initWebSocket(retrySeconds * 2));
+    }
+    reconnectScheduled = true;
+  }
+
+  ws.onOpen.listen((e) {
+    ws.send('Hello from Dart!');
+  });
+
+  ws.onClose.listen((e) {
+    addE('Websocket closed, retrying in $retrySeconds seconds');
+    scheduleReconnect();
+  });
+
+  ws.onError.listen((e) {
+    addE("Error connecting to ws");
+    scheduleReconnect();
+  });
+
+  ws.onMessage.listen((MessageEvent e) {
+    addE('${e.data}');
+  });
 }
 
 void sortByLengthAllChildren(Event e){
