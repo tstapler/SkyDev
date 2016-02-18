@@ -1,5 +1,5 @@
 it:
-	pub get && pub serve
+	pub get && pub build && pub serve
 
 install-sdk:
 	sudo apt-get install curl
