@@ -57,14 +57,14 @@ void addE(String s){
   newToDo.text = s;
   newToDo.onClick.listen((e){
     newToDo.remove();
-    list.remove(newToDo);
   });
+  list.add(newToDo);
   toDoInput.value = '';
   toDoList.children.add(newToDo);
-  list.add(newToDo);
 }
 
 void deleteAllChildren(Event e){
+  list = [];
   toDoList.children.clear();
 }
 
