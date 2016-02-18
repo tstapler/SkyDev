@@ -5,7 +5,8 @@
 // found in the LICENSE file.
 
 import 'dart:html';
-import 'dart:async';
+import 'package:react/react_client.dart' as reactClient;
+import 'package:react/react.dart';
 
 InputElement toDoInput;
 UListElement toDoList;
@@ -43,7 +44,7 @@ void sortByLengthAllChildren(Event e){
   //  then load the sorted list
   deleteAllChildren(e);
   for(int i = 0; i < s.length; i++){
-    toDoList.children.add(s[i]);  
+    addE(s[i].text);  
   }
 }
 
@@ -52,9 +53,11 @@ void addE(String s){
   newToDo.text = s;
   newToDo.onClick.listen((e){
     newToDo.remove();
+    list.remove(newToDo);
   });
   toDoInput.value = '';
   toDoList.children.add(newToDo);
+  list.add(newToDo);
 }
 
 void deleteAllChildren(Event e){
@@ -63,24 +66,10 @@ void deleteAllChildren(Event e){
 
 void reAddAllChildren(Event e){
   for(int i=0; i<list.length; i++){
-    var newToDo = new LIElement();
-    newToDo.text = list[i].text;
-    newToDo.onClick.listen((e){ 
-      list.remove(newToDo);
-      newToDo.remove();
-    });
-    toDoList.children.add(newToDo);
+    addE(list[i].text);
   }
 }
 
 void addToDoItem(Event e) {
-  var newToDo = new LIElement();
-  newToDo.text = toDoInput.value;
-  newToDo.onClick.listen((e){
-    list.remove(newToDo);
-    newToDo.remove();
-  });
-  toDoInput.value = '';
-  toDoList.children.add(newToDo);
-  list.add(newToDo);
+  addE(toDoInput.value);
 }
