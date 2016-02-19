@@ -1,4 +1,8 @@
 it:
+	pub get && pub build
+	dart server.dart
+
+vm:
 	pub get && pub build && pub serve
 
 install-sdk:

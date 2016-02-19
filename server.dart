@@ -8,7 +8,6 @@ main() async {
 	await for (HttpRequest request in requestServer) {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
-
 	    if (request.uri.path == '/') {
 		    request.response.redirect(Uri.parse('index.html'));
 		} else {
