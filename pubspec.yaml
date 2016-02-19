@@ -1,6 +1,11 @@
-name: todo
-description: A sample application
+name: SkyDev
+description: 
 dependencies:
-  browser: ^0.10.0
+  browser: "^0.10.0"
   react:
   http_server:
+  bootstrap: "^3.3.4"
+transformers:
+- bootstrap:
+    url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
+    version: 3.3.4
