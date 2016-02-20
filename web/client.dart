@@ -9,8 +9,11 @@ import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'dart:async';
 
-void main() async {
-	WebSocket ws = new WebSocket('ws://localhost:8081/ws');
+ButtonElement b;
+WebSocket ws;
+
+void main() {
+	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
 		outputMsg('Socket connection opened');
@@ -25,9 +28,16 @@ void main() async {
 		}
 	});
 
+	b = querySelector('#button');
+	b.onClick.listen(handle);
+
 	reactClient.setClientConfiguration();
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
+}
+
+void handle(Event e){
+	ws.send("Hello from client button press");
 }
 
 outputMsg(String msg) {
