@@ -10,10 +10,13 @@ main() async {
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
 	    if (request.uri.path == '/') {
 		    request.response.redirect(Uri.parse('index.html'));
-		} else {
-		    var fileUri = new Uri.file(_buildPath)
-		        .resolve(request.uri.path.substring(1));
-		    _clientDir.serveFile(new File(fileUri.toFilePath()), request);
+		} else if (request.uri.path == '/ws') {
+	    	// Upgrade an HttpRequest to a WebSocket connection.
+	    	var socket = await WebSocketTransformer.upgrade(request);
+	    	socket.listen(handleMsg);
+	  	} else {
+	    	var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
+	    	_clientDir.serveFile(new File(fileUri.toFilePath()), request);
 		}
 	}
 }
