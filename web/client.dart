@@ -14,6 +14,7 @@ void main() async {
 
 	ws.onOpen.listen((event){
 		outputMsg('Socket connection opened');
+		ws.send('Hello from client');
 	});
 
 	ws.onMessage.listen((event){

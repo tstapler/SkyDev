@@ -12,8 +12,8 @@ main() async {
 		} else if (request.uri.path == '/ws') {
 	    	// Upgrade an HttpRequest to a WebSocket connection.
 	    	WebSocket socket = await WebSocketTransformer.upgrade(request);
+	    	print('Server has gotten a websocket request');
 	    	socket.listen(handleMsg);
-	    	// socket.add('Connected to server');
 	  	} else {
 	    	var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 	    	_clientDir.serveFile(new File(fileUri.toFilePath()), request);
@@ -21,6 +21,6 @@ main() async {
 	}
 }
 
-handleMsg(msg) {
-	print('Message received: $msg');
+void handleMsg(String m) {
+	print('Message received: $m');
 }
