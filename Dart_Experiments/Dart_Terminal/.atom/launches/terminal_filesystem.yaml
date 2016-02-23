@@ -1,0 +1,9 @@
+# Cli launch configuration for terminal_filesystem.dart.
+type: cli
+path: terminal_filesystem.dart
+
+cli:
+  args: 
+  cwd: 
+  checked: true
+  debug: true
