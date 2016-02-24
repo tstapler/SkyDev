@@ -7,6 +7,7 @@ UListElement emailList;
 InputElement textBox;
 InputElement groupTBox;
 ButtonElement groupButton;
+ButtonElement deleteAll;
 ButtonElement b1;
 ButtonElement b2;
 ButtonElement b3;
@@ -31,6 +32,8 @@ void main() {
     ..classes.add('important')
     ..onClick.listen((e) => window.alert('Confirmed! Waiting approval'));
   textBox.onChange.listen(addEmail);
+  deleteAll = querySelector('#delete-all');
+  deleteAll.onClick.listen((e) => emailList.children.clear());
   b1= querySelector('#one');
   b2= querySelector('#two');
   b3= querySelector('#three');
@@ -81,6 +84,7 @@ void main() {
 void addEmail(Event e){
   var nextEmail = new LIElement();
   nextEmail.text = textBox.value;
+  nextEmail.onClick.listen((e) => nextEmail.remove());
   textBox.value = '';
   emailList.children.add(nextEmail);
 }

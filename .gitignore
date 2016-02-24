@@ -12,6 +12,9 @@ pubspec.lock # (Remove this pattern if you wish to check in your lock file)
 *.js.map
 *.info.json
 
+#Atom installer
+.atom
+
 # Directory created by dartdoc
 doc/api/
 
