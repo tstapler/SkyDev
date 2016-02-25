@@ -11,6 +11,19 @@ body {
   font-weight: normal;
   padding: 5px 0px 5px 5px;
   width: 80%;
+  height: 60%;
   border: 1px solid Silver;
   background-color: White;
+}
+
+html, body, .container {
+  height: 100%;
+}
+textarea.form-control {
+  height: 100%;
+}
+
+.editor {
+min-height: 60%;
+width:70%;
 }
