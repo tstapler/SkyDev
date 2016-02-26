@@ -18,6 +18,11 @@
     <script type="application/dart" src="client.dart"></script>
     <script src="packages/browser/dart.js"></script>
 
+    <!-- Include bootstrap css and javascript --!>
+    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap-theme.css">
+    <script src="packages/bootstrap/js/bootstrap.js"></script>
+
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
@@ -25,8 +30,7 @@
     <h2>
       <div id="content"></div>
     </h2>
-    
-    <div>
+    <div class="container-fluid">
         <form>
             <br>
               <input type="text" name="filename" id="file">
