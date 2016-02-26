@@ -9,42 +9,59 @@ import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'dart:async';
 
-ButtonElement b;
+ButtonElement b1;
+ButtonElement b2;
 WebSocket ws;
 
 void main() {
 	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
-		outputMsg('Socket connection opened');
-		ws.send('Hello from client');
 	});
 
 	ws.onMessage.listen((event){
-		if(event.data == 'Connected to server'){
-			outputMsg('Connected to server');
-		} else {
-			outputMsg(event.data);
+		String m = event.data;
+		if(m.startsWith("Contents:")){
+			m = m.replaceFirst("Contents:", "", 0);
+			outputMsg(m, true);
+			b2.hidden = false;
 		}
+
 	});
 
-	b = querySelector('#button');
-	b.onClick.listen(handle);
+	b1 = querySelector('#button1');
+	b1.onClick.listen(open);
+
+	b2 = querySelector('#button2');
+	b2.onClick.listen(open);
+	b2.hidden = true;
 
 	reactClient.setClientConfiguration();
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
 }
 
-void handle(Event e){
-	ws.send("Hello from client button press");
+void open(Event e){
+	var file = querySelector('#file');
+	String s = "${file.value}";
+	ws.send("Open:" + s);
 }
 
-outputMsg(String msg) {
+void create(Event e){
+	var file = querySelector('#file');
+	String s = "${file.value}";
+	ws.send("Create:" + s);
+}
+
+outputMsg(String msg, bool clearConsole) {
 	var output = querySelector('#output');
 	var text = msg;
-	if (!output.text.isEmpty) {
-		text = "${output.text}\n${text}";
+	if(clearConsole){
+		output.text = "";	
+	} else { // save contents of console
+		if (!output.text.isEmpty) {
+			text = "${output.text}\n${text}";
+		}
 	}
 	output.text = text;
 }
