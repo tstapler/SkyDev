@@ -25,4 +25,20 @@ main() async {
 
 void handleMsg(String m) {
 	print('Message received: $m');
+
+	if(m.startsWith("Open:")){
+		m = m.replaceFirst("Open:", "", 0);
+		File f = new File("files/$m");
+		if(!f.existsSync()){
+			socket.add("Error: Could not find file");
+		} else {
+			f.readAsString().then((String contents){
+				socket.add("Contents:" + contents);
+			});
+		}
+	} else if(m.startsWith("Create:")) {
+		m = m.replaceFirst("Create:", "", 0);
+		File f = new File("files/$m");
+		f.create();
+	}
 }
