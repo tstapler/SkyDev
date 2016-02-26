@@ -17,16 +17,13 @@ void main() {
 
 	ws.onOpen.listen((event){
 		outputMsg('Socket connection opened');
-		ws.send('Hello from client');
 	});
 
 	ws.onMessage.listen((event){
 		if(event.data == 'Connected to server'){
 			outputMsg('Connected to server');
-		} else {
-			outputMsg(event.data);
 		}
-	});
+	}
 
 	b = querySelector('#button');
 	b.onClick.listen(handle);
@@ -37,7 +34,7 @@ void main() {
 }
 
 void handle(Event e){
-	ws.send("Hello from client button press");
+	
 }
 
 outputMsg(String msg) {

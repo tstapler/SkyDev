@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:http_server/http_server.dart';
 
+WebSocket socket;
+
 main() async {
 	var requestServer = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 8081);
 	print('listening on localhost, port ${requestServer.port}');
@@ -11,7 +13,7 @@ main() async {
 		    request.response.redirect(Uri.parse('index.html'));
 		} else if (request.uri.path == '/ws') {
 	    	// Upgrade an HttpRequest to a WebSocket connection.
-	    	WebSocket socket = await WebSocketTransformer.upgrade(request);
+	    	socket = await WebSocketTransformer.upgrade(request);
 	    	print('Server has gotten a websocket request');
 	    	socket.listen(handleMsg);
 	  	} else {
