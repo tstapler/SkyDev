@@ -1,0 +1,16 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: WhiteSmoke;
+  margin: 15px;
+  color: black;
+}
+
+#output {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 5px 0px 5px 5px;
+  width: 80%;
+  border: 1px solid Silver;
+  background-color: White;
+}

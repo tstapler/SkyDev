@@ -1,12 +1,34 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>COMS309_Project</title>
 
-    <script defer src="main.dart" type="application/dart"></script>
-    <script defer src="packages/browser/dart.js"></script>
-  </head>
-  <body>
-    <my-app>Loading...</my-app>
-  </body>
+<!--
+  Copyright (c) 2012, the Dart project authors.
+  Please see the AUTHORS file for details.
+  All rights reserved. Use of this source code
+  is governed by a BSD-style license that can be
+  found in the LICENSE file.
+-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <script src="packages/react/react.js"></script>
+    <script type="application/dart" src="client.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <h2>
+      <div id="content"></div>
+    </h2>
+     <button id="button" type="button">Check websocket status</button> 
+    <div>
+        <textarea rows="15" cols="65" id="output"></textarea>
+    </div>
+</body>
+
 </html>

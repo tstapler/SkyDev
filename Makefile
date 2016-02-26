@@ -1,3 +1,10 @@
+it:
+	pub get && pub build
+	dart server.dart
+
+vm:
+	pub get && pub build && pub serve
+
 install-sdk:
 	sudo apt-get install curl
 	sudo apt-get install apt-transport-https
