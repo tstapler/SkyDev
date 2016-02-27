@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:convert';
+import 'dart:async';
 import 'package:http_server/http_server.dart';
 
 WebSocket socket;
@@ -23,7 +25,7 @@ main() async {
 	}
 }
 
-void handleMsg(String m) {
+void handleMsg(String m) async {
 	print('Message received: $m');
 
 	if(m.startsWith("Open:")){
@@ -36,9 +38,15 @@ void handleMsg(String m) {
 				socket.add("Contents:" + contents);
 			});
 		}
-	} else if(m.startsWith("Create:")) {
-		m = m.replaceFirst("Create:", "", 0);
-		File f = new File("files/$m");
-		f.create();
+	} else if(m.startsWith("Save:")) {
+		// print(m);
+		m = m.replaceFirst("Save:", "", 0);
+		String filename = m.substring(0, m.indexOf(":"));
+		// print(filename);
+		m = m.replaceFirst("$filename:", "", 0);
+		// print(m.isEmpty);
+		(new File("files/$filename")).writeAsStringSync(m);
+
+		// print("Contents:\n\t" + (new File("files/$filename")).readAsStringSync());
 	}
 }
