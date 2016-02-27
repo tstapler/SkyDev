@@ -17,8 +17,10 @@
     <script src="packages/react/react.js"></script>
     <script type="application/dart" src="client.dart"></script>
     <script src="packages/browser/dart.js"></script>
+    <script src="packages/codemirror/codemirror.js"></script>
 
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="packages/codemirror/codemirror.css" rel="stylesheet">
 </head>
 
 <body>
@@ -36,7 +38,7 @@
         </form>
     </div>
     <div>
-        <textarea rows="15" cols="65" id="output"></textarea>
+        <div id="textContainer"></div>
     </div>
 </body>
 

@@ -5,9 +5,10 @@
 // found in the LICENSE file.
 
 import 'dart:html';
+import 'dart:async';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
-import 'dart:async';
+import 'package:codemirror/codemirror.dart';
 
 ButtonElement b1;
 ButtonElement b2;
@@ -39,6 +40,24 @@ void main() {
 	reactClient.setClientConfiguration();
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
+
+	setCodeMirror();
+}
+
+void setCodeMirror(){
+	Map options = {
+		'mode':  'javascript',
+		'theme': 'monokai'
+	};
+
+	CodeMirror editor = new CodeMirror.fromElement(
+		querySelector('#textContainer'), 
+		options: options
+	);
+	editor.getDoc().setValue(
+		"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
+	);
+
 }
 
 void open(Event e){
