@@ -6,8 +6,8 @@ import 'package:http_server/http_server.dart';
 WebSocket socket;
 
 main() async {
-	var requestServer = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 8081);
-	print('listening on localhost, port ${requestServer.port}');
+var requestServer = await HttpServer.bind(InternetAddress.ANY_IP_V4, 8081);
+print('listening on http://${requestServer.address.host}:${requestServer.port}');
 	await for (HttpRequest request in requestServer) {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
