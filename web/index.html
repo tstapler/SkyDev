@@ -17,6 +17,7 @@
     <script src="packages/react/react.js"></script>
     <script type="application/dart" src="client.dart"></script>
     <script src="packages/browser/dart.js"></script>
+    <script src="packages/codemirror/codemirror.js"></script>
 
     <!-- Include bootstrap css and javascript --!>
     <link rel="stylesheet" href="packages/bootstrap/css/bootstrap.css">
@@ -24,6 +25,7 @@
     <script src="packages/bootstrap/js/bootstrap.js"></script>
 
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="packages/codemirror/codemirror.css" rel="stylesheet">
 </head>
 
 <body>
@@ -34,13 +36,13 @@
         <form>
             <br>
               <input type="text" name="filename" id="file">
-              <button id="button1" type="button">Open</button>
-              <button id="button2" type="button">Create</button>
+              <button id="button1" type="button"></button>
+              <button id="button2" type="button"></button>
             <br>
         </form>
     </div>
     <div>
-        <textarea rows="15" cols="65" id="output"></textarea>
+        <div id="textContainer"></div>
     </div>
 </body>
 
