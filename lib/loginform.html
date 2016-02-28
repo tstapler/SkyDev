@@ -1,0 +1,53 @@
+<dom-module id="loginform" extends="form">
+  <template>
+    <!-- For info on styling your custom element, see "Styling". -->
+    <!-- https://github.com/dart-lang/polymer-dart/wiki/styling -->
+    <style>
+      #loginform {
+          width: 500px;
+       }
+
+       .entry {
+           float: left;
+           padding: 3px 3px 3px 3px;
+           width: 100%;
+       }
+
+       .entry label {
+           display: inline-block;
+           width: 150px;
+           text-align: right;
+           vertical-align: middle;
+       }
+
+       .submitarea {
+           padding: 10px 10px 10px 10px;
+           margin: 10px 10px 10px 10px;
+           border-style: solid;
+           border-width: 1px;
+           border-color: SlateBlue;
+           clear: left;
+       }
+       }
+     </style>
+
+     <!-- This example implements two-way data binding -->
+     <!-- using the "::change" syntax. See "Data Binding Syntax" -->
+     <!-- https://github.com/dart-lang/polymer-dart/wiki/data-binding-syntax -->
+     <div id="loginform">
+       <div class="entry">
+         <label>Username?</label>
+         <input type="text" value="{{myData.firstName::change}}">
+       </div>
+       <div class="entry">
+         <label>Password?</label>
+         <input type="text" value="{{myData.favoriteQuote::change}}">
+       </div>
+
+        <div class="submitarea">
+          <input type="submit" value="Submit" on-click="submitForm">
+          <input type="reset"  value="Clear"  on-click="resetForm"> <br>
+        </div>
+      </div>
+  </template>
+</dom-module>
