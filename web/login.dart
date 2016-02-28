@@ -1,8 +1,10 @@
 
+import 'package:SkyDev/loginform.dart';
+import 'package:polymer/init.dart';
+import 'package:polymer/polymer.dart';
 
-import 'dart:html';
-
-void main(){
-  //username = querySelector('uName');
-  //password = querySelector('pWord');
+/// Mentioning [LoginFormComponent] in this comment removes the
+/// "unused import" warning for tute_slambookform.dart.
+main() async {
+  await initPolymer();
 }
