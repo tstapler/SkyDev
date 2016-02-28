@@ -15,9 +15,8 @@ dependencies:
   http_server:
   bootstrap: "^3.3.4"
   angular2: 2.0.0-beta.2
+  polymer: 
   browser: ^0.10.0
-  polymer_elements: ^1.0.0-rc.1
-  polymer: ^1.0.0-rc.11
   web_components: ^0.12.0
   reflectable: ^0.3.3
   codemirror:
@@ -39,4 +38,4 @@ transformers:
     - 'package:angular2/common.dart#COMMON_PIPES'
     entry_points: web/main.dart
 - polymer:
-    entry_points: web/index.html
+    entry_points: web/login.html
