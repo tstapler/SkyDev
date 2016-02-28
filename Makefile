@@ -20,3 +20,19 @@ install-dartium:
 	wget "https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip"
 	unzip dartium-linux-x64-release.zip
 	sudo ln -sf /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
+
+install-docker:
+	#Install docker
+	sudo apt-get install aufs-tools
+	#Install docker via automated install script
+	wget -qO- https://get.docker.com/ | sh
+	#Add docker group and add your user (so you dont have to sudo everything)
+	sudo usermod -aG docker $(whoami)
+	#Install pip if it doesnt exist
+	sudo apt-get -y install python-pip
+	sudo pip install docker-compose
+
+install-dependencies:
+	install-sdk
+	install-dartium
+	install-docker
