@@ -11,18 +11,65 @@ main() async {
 	await for (HttpRequest request in requestServer) {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
-	    if (request.uri.path == '/') {
+		switch (request.method) {
+      case 'POST':
+        handlePost(request);
+        break;
+      case 'OPTIONS':
+        handleOptions(request);
+        break;
+      default:
+        defaultHandler(request);
+    }
+	  if (request.uri.path == '/') {
 		    request.response.redirect(Uri.parse('index.html'));
 		} else if (request.uri.path == '/ws') {
 	    	// Upgrade an HttpRequest to a WebSocket connection.
 	    	socket = await WebSocketTransformer.upgrade(request);
 	    	print('Server has gotten a websocket request');
 	    	socket.listen(handleMsg);
-	  	} else {
+	  } else {
 	    	var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 	    	_clientDir.serveFile(new File(fileUri.toFilePath()), request);
 		}
 	}
+}
+/// Handle POST requests
+/// Return the same set of data back to the client.
+void handlePost(HttpRequest req) {
+  HttpResponse res = req.response;
+  print('${req.method}: ${req.uri.path}');
+
+  addCorsHeaders(res);
+
+  req.listen((List<int> buffer) {
+    // return the data back to the client
+    res.write('Thanks for the data. This is what I heard you say: ');
+    res.write(new String.fromCharCodes(buffer));
+    res.close();
+  }, onError: printError);
+}
+
+void addCorsHeaders(HttpResponse res) {
+  res.headers.add('Access-Control-Allow-Origin', '*');
+  res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.headers.add('Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept');
+}
+void handleOptions(HttpRequest req) {
+  HttpResponse res = req.response;
+  addCorsHeaders(res);
+  print('${req.method}: ${req.uri.path}');
+  res.statusCode = HttpStatus.NO_CONTENT;
+  res.close();
+}
+
+void defaultHandler(HttpRequest req) {
+  HttpResponse res = req.response;
+  addCorsHeaders(res);
+  res.statusCode = HttpStatus.NOT_FOUND;
+  res.write('Not found: ${req.method}, ${req.uri.path}');
+  res.close();
 }
 
 void handleMsg(String m) async {
@@ -50,3 +97,5 @@ void handleMsg(String m) async {
 		// print("Contents:\n\t" + (new File("files/$filename")).readAsStringSync());
 	}
 }
+
+void printError(error) => print(error);
