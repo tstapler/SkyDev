@@ -13,12 +13,13 @@ environment:
 dependencies:
   react:
   http_server:
+  dart_to_js_script_rewriter:
   bootstrap: "^3.3.4"
   polymer: ^1.0.0-rc.1
   browser: ^0.10.0
   polymer_elements:
   web_components: any
-  reflectable: ^0.3.3
+  reflectable:
   codemirror:
 
 dev_dependencies:
@@ -28,11 +29,8 @@ dev_dependencies:
   dartdoc: "^0.4.0"
   test: "^0.12.0"
 transformers:
-- bootstrap:
-    url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
-    version: 3.3.4
 - web_components:
     entry_points: web/login.html
 - reflectable:
-    entry_points:
-      - web/login.dart
+    entry_points: web/login.bootstrap.initialize.dart
+- dart_to_js_script_rewriter
