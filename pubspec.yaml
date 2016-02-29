@@ -11,7 +11,7 @@ authors:
 environment:
   sdk: ">=1.8.3 <2.0.0"
 dependencies:
-  react:
+  react: ^0.8.8
   http_server:
   dart_to_js_script_rewriter:
   bootstrap: "^3.3.4"
@@ -21,6 +21,9 @@ dependencies:
   web_components: any
   reflectable:
   codemirror:
+  postgresql: 
+  trestle: 
+  args:
 
 dev_dependencies:
   coverage: ^0.7.2
