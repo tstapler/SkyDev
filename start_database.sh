@@ -41,7 +41,9 @@ done
 if [ ! $(docker start skydev-postgres) ]; then 
 	echo "SkyDev container does not exist, creating and running"
 	docker run -p $PORT:5432 --name skydev-postgres -e POSTGRES_PASSWORD=pass -d postgres
+	exit 0
 else 
 	echo "Database running ..."
+	exit 0
 fi
 
