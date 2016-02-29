@@ -1,4 +1,4 @@
-<dom-module id="loginform" extends="form">
+<dom-module id="login-form" extends="form">
   <template>
     <!-- For info on styling your custom element, see "Styling". -->
     <!-- https://github.com/dart-lang/polymer-dart/wiki/styling -->
@@ -37,11 +37,11 @@
      <div id="loginform">
        <div class="entry">
          <label>Username?</label>
-         <input type="text" value="{{myData.firstName::change}}">
+         <input type="text" value="{{myData.userName::change}}">
        </div>
        <div class="entry">
          <label>Password?</label>
-         <input type="text" value="{{myData.favoriteQuote::change}}">
+         <input type="text" value="{{myData.password::change}}">
        </div>
 
         <div class="submitarea">

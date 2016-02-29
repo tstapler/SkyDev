@@ -1,4 +1,4 @@
-name: SkyDev
+name: skydev
 version: 0.0.1
 description: >
   An awesome tool for awesome developers. Enables collaboration between teams,
@@ -9,15 +9,15 @@ authors:
   - Christopher Stapler <cstapler@iastate.edu>
   - Tyler Stapler <tstapler@iastate.edu>
 environment:
-  sdk: '>=1.13.0 <2.0.0'
+  sdk: ">=1.8.3 <2.0.0"
 dependencies:
   react:
   http_server:
   bootstrap: "^3.3.4"
-  angular2: 2.0.0-beta.2
-  polymer: 
+  polymer: ^1.0.0-rc.1
   browser: ^0.10.0
-  web_components: ^0.12.0
+  polymer_elements:
+  web_components: any
   reflectable: ^0.3.3
   codemirror:
 
@@ -31,11 +31,8 @@ transformers:
 - bootstrap:
     url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
     version: 3.3.4
-- angular2:
-    platform_directives:
-    - 'package:angular2/common.dart#COMMON_DIRECTIVES'
-    platform_pipes:
-    - 'package:angular2/common.dart#COMMON_PIPES'
-    entry_points: web/main.dart
-- polymer:
+- web_components:
     entry_points: web/login.html
+- reflectable:
+    entry_points:
+      - web/login.dart

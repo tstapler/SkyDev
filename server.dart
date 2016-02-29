@@ -11,16 +11,6 @@ main() async {
 	await for (HttpRequest request in requestServer) {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
-		switch (request.method) {
-      case 'POST':
-        handlePost(request);
-        break;
-      case 'OPTIONS':
-        handleOptions(request);
-        break;
-      default:
-        defaultHandler(request);
-    }
 	  if (request.uri.path == '/') {
 		    request.response.redirect(Uri.parse('index.html'));
 		} else if (request.uri.path == '/ws') {
@@ -28,7 +18,18 @@ main() async {
 	    	socket = await WebSocketTransformer.upgrade(request);
 	    	print('Server has gotten a websocket request');
 	    	socket.listen(handleMsg);
-	  } else {
+	  } else if (request.uri.path == '/login'){
+			switch (request.method) {
+	      case 'POST':
+	        handleLogin(request);
+	        break;
+	      case 'OPTIONS':
+	        handleOptions(request);
+	        break;
+	      default:
+					request.response.redirect(Uri.parse('login.html'));
+	    }
+		} else {
 	    	var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 	    	_clientDir.serveFile(new File(fileUri.toFilePath()), request);
 		}
@@ -36,7 +37,7 @@ main() async {
 }
 /// Handle POST requests
 /// Return the same set of data back to the client.
-void handlePost(HttpRequest req) {
+void handleLogin(HttpRequest req) {
   HttpResponse res = req.response;
   print('${req.method}: ${req.uri.path}');
 

@@ -1,12 +1,12 @@
 @HtmlImport('loginform.html')
-library G39_Sky.lib.loginform;
+library G39_SkyDev.lib.loginform;
 
 import 'dart:html';
 import 'dart:convert';
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart' show HtmlImport;
 
-@PolymerRegister('loginform', extendsTag: 'form')
+@PolymerRegister('login-form', extendsTag: 'form')
 class LoginFormComponent extends FormElement with
     PolymerMixin, PolymerBase, JsProxy {
 
@@ -99,7 +99,7 @@ class LoginData extends JsProxy {
   }
 
   void resetData() {
-    userName = '';
-    password = '';
+    userName = ' ';
+    password = ' ';
   }
 }
