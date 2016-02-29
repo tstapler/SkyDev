@@ -1,4 +1,5 @@
 it:
+	./start_database.sh
 	pub get && pub build
 	dart server.dart
 
