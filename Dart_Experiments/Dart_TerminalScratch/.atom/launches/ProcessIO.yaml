@@ -1,0 +1,9 @@
+# Cli launch configuration for bin/ProcessIO.dart.
+type: cli
+path: bin/ProcessIO.dart
+
+cli:
+  args: 
+  cwd: 
+  checked: true
+  debug: true
