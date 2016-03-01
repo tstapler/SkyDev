@@ -127,4 +127,5 @@ skydev=# select * from users;
 Dart makes use of the following
 
 - [trestle](https://github.com/dart-bridge/trestle) for database migrations and ORM
-
+- [ansible](https://github.com/ansible/ansible) for dependency management 
+- [docker](https://github.com/docker/docker) for ease of setup and deployment
