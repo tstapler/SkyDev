@@ -14,11 +14,12 @@ In order to use *SkyDev* follow these steps:
 ```bash
 make install-dependencies
 ```
-2. Run the server
+2. Logout and back in to ensure your new docker group is enabled
+3. Run the server
 ```bash
 make it
 ```
-3. Open <https://localhost:8081>
+4. Open <https://localhost:8081>
 
 ### Database Manager
 ---
