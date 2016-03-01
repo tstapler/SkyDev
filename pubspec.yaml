@@ -21,8 +21,8 @@ dependencies:
   web_components: any
   reflectable:
   codemirror:
-  postgresql: 
-  trestle: 
+  postgresql:
+  trestle:
   args:
 
 dev_dependencies:
@@ -32,9 +32,6 @@ dev_dependencies:
   dartdoc: ^0.4.0
   test: ^0.12.0
 transformers:
-- bootstrap:
-    url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
-    version: 3.3.4
 - web_components:
     entry_points: web/login.html
 - reflectable:
