@@ -71,6 +71,7 @@ void setCodeMirror(){
 	);
 
 	Hints.registerHintsHelper('dart', dartCompletion);
+	Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
 
 	editor.getDoc().setValue(
 		"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
@@ -78,8 +79,59 @@ void setCodeMirror(){
 
 	editor.setLineNumbers(false);
 	editor.setIndentWithTabs(true);
-	editor.refresh();
 
+	// Theme control.
+	SelectElement themeSelect = querySelector('#theme');
+	for (String theme in CodeMirror.THEMES) {
+		themeSelect.children.add(new OptionElement(value: theme)..text = theme);
+		if (theme == editor.getTheme()) {
+			themeSelect.selectedIndex = themeSelect.length - 1;
+		}
+	}
+	themeSelect.onChange.listen((e) {
+		String themeName = themeSelect.options[themeSelect.selectedIndex].value;
+		editor.setTheme(themeName);
+	});
+
+	// Mode control.
+	SelectElement modeSelect = querySelector('#mode');
+	for (String mode in CodeMirror.MODES) {
+		modeSelect.children.add(new OptionElement(value: mode)..text = mode);
+		if (mode == editor.getMode()) {
+			modeSelect.selectedIndex = modeSelect.length - 1;
+		}
+	}
+	modeSelect.onChange.listen((e) {
+		String modeName = modeSelect.options[modeSelect.selectedIndex].value;
+		editor.setMode(modeName);
+	});
+
+	// Show line numbers.
+	InputElement lineNumbers = querySelector('#lineNumbers');
+		lineNumbers.onChange.listen((e) {
+		editor.setLineNumbers(lineNumbers.checked);
+	});
+
+	// Indent with tabs.
+	InputElement tabIndent = querySelector('#tabIndent');
+		tabIndent.onChange.listen((e) {
+		editor.setIndentWithTabs(tabIndent.checked);
+	});
+
+	// Status line.
+	updateFooter(editor);
+	editor.onCursorActivity.listen((_) => updateFooter(editor));
+
+	editor.refresh();
+	editor.focus();
+}
+
+void updateFooter(CodeMirror editor) {
+	Position pos = editor.getCursor();
+	int off = editor.getDoc().indexFromPos(pos);
+	String str = 'line ${pos.line} • column ${pos.ch} • offset ${off}' 
+		+ (editor.getDoc().isClean() ? '' : ' • (modified)');
+	querySelector('#footer').text = str;
 }
 
 HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
@@ -106,6 +158,19 @@ HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
 	results.registerOnClose(() => print('hints close'));
 
 	return results;
+}
+
+Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options]) {
+	Position cur = editor.getCursor();
+	String word = getCurrentWord(editor).toLowerCase();
+	List<String> list = new List.from(numbers.where((s) => s.startsWith(word)));
+
+	return new Future.delayed(new Duration(milliseconds: 200), () {
+	return new HintResults.fromStrings(
+		list,
+		new Position(cur.line, cur.ch - word.length),
+		new Position(cur.line, cur.ch));
+	});
 }
 
 final List numbers = [

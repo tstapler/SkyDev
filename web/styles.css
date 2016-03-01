@@ -1,8 +1,9 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: WhiteSmoke;
+  display: flex;
+  flex-direction: column;
   margin: 15px;
-  color: black;
+  color: #555;
+  font-family: sans-serif;
 }
 
 #output {
@@ -13,4 +14,30 @@ body {
   width: 80%;
   border: 1px solid Silver;
   background-color: White;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+select {
+  width: 100px;
+}
+
+#controls {
+  margin-bottom: 1em;
+}
+
+#textContainer,
+.CodeMirror {
+  border: 0;
+  padding: 0;
+  flex: 20;
+  height: 300px;
+  box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+#footer {
+  text-align: center;
+  font-size: 0.8em;
 }
