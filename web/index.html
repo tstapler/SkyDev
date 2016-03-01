@@ -25,6 +25,7 @@
 
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="packages/codemirror/codemirror.css" rel="stylesheet">
+    <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
 </head>
 
 <body>
@@ -40,6 +41,15 @@
               <button id="button2" type="button"></button>
             <br>
         </form>
+    
+    <div id="controls">
+      <select id="theme"></select>
+      <select id="mode"></select>
+      <input type="checkbox" id="lineNumbers">Line numbers
+      <input type="checkbox" id="tabIndent">Indent with tabs
+      <input type="text" name="filename" id="file">
+      <button id="button1" type="button"></button>
+      <button id="button2" type="button"></button>
     </div>
     <div>
         <div id="textContainer"></div>
