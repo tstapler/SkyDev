@@ -36,7 +36,6 @@ transformers:
     entry_points: web/login.html
 - reflectable:
     entry_points: web/login.bootstrap.initialize.dart
-- dart_to_js_script_rewriter
 - $dart2js:
     verbose: true
 - bootstrap:
