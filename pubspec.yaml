@@ -11,7 +11,7 @@ authors:
 environment:
   sdk: ">=1.8.3 <2.0.0"
 dependencies:
-  react:
+  react: ^0.8.8
   http_server:
   dart_to_js_script_rewriter:
   bootstrap: "^3.3.4"
@@ -21,13 +21,16 @@ dependencies:
   web_components: any
   reflectable:
   codemirror:
+  postgresql: 
+  trestle: 
+  args:
 
 dev_dependencies:
-  coverage: "^0.7.2"
-  dart_dev: "^1.0.0"
-  dart_style: ">=0.1.8 <0.3.0"
-  dartdoc: "^0.4.0"
-  test: "^0.12.0"
+  coverage: ^0.7.2
+  dart_dev: ^1.0.0
+  dart_style: <0.3.0
+  dartdoc: ^0.4.0
+  test: ^0.12.0
 transformers:
 - bootstrap:
     url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
@@ -36,4 +39,9 @@ transformers:
     entry_points: web/login.html
 - reflectable:
     entry_points: web/login.bootstrap.initialize.dart
-- dart_to_js_script_rewriter
+- dart_to_js_script_rewriter:
+- $dart2js:
+    verbose: true
+- bootstrap:
+    url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
+    version: 3.3.4
