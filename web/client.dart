@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:codemirror/codemirror.dart';
+import 'package:codemirror/hints.dart';
 
 ButtonElement b1;
 ButtonElement b2;
@@ -53,14 +54,24 @@ void main() {
 
 void setCodeMirror(){
 	Map options = {
-		'mode':  'javascript',
-		'theme': 'monokai'
+		'theme': 'zenburn',
+		'continueComments': {'continueLineComment': false},
+		'autoCloseTags': true,
+		'mode': 'javascript',
+			'extraKeys': {
+			'Ctrl-Space': 'autocomplete',
+			'Cmd-/': 'toggleComment',
+			'Ctrl-/': 'toggleComment'
+		}
 	};
 
 	editor = new CodeMirror.fromElement(
 		querySelector('#textContainer'), 
 		options: options
 	);
+
+	Hints.registerHintsHelper('dart', dartCompletion);
+
 	editor.getDoc().setValue(
 		"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
 	);
@@ -69,6 +80,55 @@ void setCodeMirror(){
 	editor.setIndentWithTabs(true);
 	editor.refresh();
 
+}
+
+HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
+	Position cur = editor.getCursor();
+	String word = getCurrentWord(editor).toLowerCase();
+	List<HintResult> list = numbers
+		.where((s) => s.startsWith(word))
+		.map((s) => new HintResult(s))
+		.toList();
+
+	HintResults results = new HintResults.fromHints(
+		list,
+		new Position(cur.line, cur.ch - word.length),
+		new Position(cur.line, cur.ch)
+	);
+	results.registerOnShown(() => print('hints shown'));
+	results.registerOnSelect((completion, element) {
+		print(['hints select: ${completion}']);
+	});
+	results.registerOnPick((completion) {
+		print(['hints pick: ${completion}']);
+	});
+	results.registerOnUpdate(() => print('hints update'));
+	results.registerOnClose(() => print('hints close'));
+
+	return results;
+}
+
+final List numbers = [
+	'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
+];
+
+final RegExp ids = new RegExp(r'[a-zA-Z_0-9]');
+
+String getCurrentWord(CodeMirror editor) {
+	Position cur = editor.getCursor();
+	String line = editor.getLine(cur.line);
+	StringBuffer buf = new StringBuffer();
+
+	for (int i = cur.ch - 1; i >= 0; i--) {
+		String c = line[i];
+		if (ids.hasMatch(c)) {
+		  	buf.write(c);
+		} else {
+			break;
+		}
+	}
+
+	return new String.fromCharCodes(buf.toString().codeUnits.reversed);
 }
 
 void open(Event e){
