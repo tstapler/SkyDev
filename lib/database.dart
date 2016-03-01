@@ -1,11 +1,17 @@
+import 'package:trestle/trestle.dart';
 import 'package:trestle/gateway.dart';
+import 'package:dbcrypt/dbcrypt.dart';
 
+class User extends Model {
+  @field int id;
+  @field String username;
+  @field String email;
+  @field String password;
 
-class Users {
-  int id;
-  String username;
-  String email;
-  String password;
+  User();
+  User.create(String this.username, String this.email, String this.password);
+
+  String toString() => username + "(" + email + ")";
 }
 
 class CreateUsersTable extends Migration {
@@ -37,3 +43,27 @@ class CreateUsersTable extends Migration {
 Future delete_db(Gateway gateway) {
     return gateway.drop('users');
 }
+
+hash_password(plain){
+ return new DBCrypt().hashpw(plain, new DBCrypt().gensalt());
+}
+
+check_password(plain, hashed)
+{
+ return new DBCrypt().checkpw(plain, hashed);
+}
+
+//Create set of migrations
+final migrations = [CreateUsersTable].toSet();
+
+//Create Database Connection
+final Driver db_driver = new PostgresqlDriver(username: 'postgres',
+                                        password: 'pass',
+                                        port: 5433, //To Avoid Conflicts
+                                        database: 'skydev');
+
+//Create Gateway (Representation of the database)
+final Gateway db_gateway = new Gateway(db_driver);
+
+//Create ORM mapping for users
+final users = new Repository<User>(db_gateway);

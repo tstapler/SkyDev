@@ -25,11 +25,12 @@ make it
 **Usage:**
 ```
 dart bin/manage.dart
---create      Creates tables in the database
---migrate     Runs the databases migrations
---rollback    Rollsback the databases migrations
---delete      Deletes tables from the database
---help        Displays the help materials
+-c, --create                                              Creates tables in the database
+-m, --migrate                                             Runs the databases migrations
+-r, --rollback                                            Rollsback the databases migrations
+-d, --delete                                              Deletes tables from the database
+-s, --seed=file (relative to your current directory)      Seeds Database from file
+-h, --help                                                Displays the help materials
 ```
 ---
 
@@ -96,6 +97,31 @@ dart bin/manager.dart --rollback
 skydev=# \d
 No relations found.
 ```
+
+#### Seed
+Puts sample data into the database
+
+**Command**:
+```bash
+dart bin/manager.dart --seed seeddata.yaml
+```
+**Output**:
+```bash
+Adding: tstapler
+Adding: cstapler
+Adding: jgn
+Adding: ssrirama
+
+skydev=# select * from users;
+
+ id | username |        email         |                           password                           |         created_at         |         updated_at
+----+----------+----------------------+--------------------------------------------------------------+----------------------------+----------------------------
+  1 | tstapler | tstapler@iastate.edu | $2a$10$/m.e5J.yqi3GLdYu2MCSB..TuBq8pk0gTZf56QR.NGlSWFrK.U2Ba | 2016-03-01 11:19:40.454151 | 2016-03-01 11:19:40.454151
+  2 | cstapler | cstapler@iastate.edu | $2a$10$6g.OQEGuwYvucHd2WKMia.f4oOzgsZcfy5ckOoqZpMAtLrhckbjKK | 2016-03-01 11:19:40.576388 | 2016-03-01 11:19:40.576388
+  3 | jgn      | jgn@iastate.edu      | $2a$10$YA/2mRo6JMnWxFj2GD3qj.dE9PB05FUEpynEPH/RjIXWIVk2L1y/a | 2016-03-01 11:19:40.698401 | 2016-03-01 11:19:40.698401
+  4 | ssrirama | ssrirama@iastate.edu | $2a$10$1hBe8fHKhwjGGTt22Ne2t.7K0a7btxTOfoNHsINDI6wF1goze.rOK | 2016-03-01 11:19:40.82207  | 2016-03-01 11:19:40.822071
+```
+
 
 ## Techs
 Dart makes use of the following
