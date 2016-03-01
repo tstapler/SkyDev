@@ -3,7 +3,7 @@ Contributors: Josua Gonzales-Neal, Sambhav Srirama,
 Chris Stapler, Tyler Stapler
  
 ## Description
-A cloud based IDE 
+A web-based IDE 
 
 ## Use 
 
