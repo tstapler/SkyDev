@@ -70,7 +70,21 @@
 
     - name: "Install Docker Compose"
       pip: name=docker-compose state=present
-        
+
+    - name: "Create docker group"
+      group: name=docker state=present
+
+    - name: "Get username running the script" 
+      local_action: command whoami 
+      become: no
+      register: username_on_host
+
+    - name: "Add {{username_on_host.stdout}} to docker group"
+      user: 
+        name={{username_on_host.stdout}}
+        groups=docker
+        append=yes
+
     #Initialize Database
     - name: "Make sure Database is running"
       script: start_database.sh
@@ -84,3 +98,4 @@
         login_password=pass
         state=present
         port=5433
+
