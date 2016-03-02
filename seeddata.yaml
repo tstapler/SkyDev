@@ -1,0 +1,18 @@
+---
+users:
+  - email: "tstapler@iastate.edu"
+    username: "tstapler"
+    password: "pass"
+
+  - email: "cstapler@iastate.edu"
+    username: "cstapler"
+    password: "pass"
+ 
+  - email: "jgn@iastate.edu"
+    username: "jgn"
+    password: "pass"
+
+  - email: "ssrirama@iastate.edu"
+    username: "ssrirama"
+    password: "pass"
+

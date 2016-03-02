@@ -1,5 +1,7 @@
 name: skydev
+
 version: 0.0.1
+
 description: >
   An awesome tool for awesome developers. Enables collaboration between teams,
   easily viewable code versions, and instant pair programming
@@ -8,22 +10,26 @@ authors:
   - Sambhav Srirama <ssrirama@iastate.edu>
   - Christopher Stapler <cstapler@iastate.edu>
   - Tyler Stapler <tstapler@iastate.edu>
+
 environment:
   sdk: ">=1.8.3 <2.0.0"
+
 dependencies:
   react: ^0.8.8
-  http_server:
-  dart_to_js_script_rewriter:
+  http_server: any
+  dart_to_js_script_rewriter: any
   bootstrap: "^3.3.4"
   polymer: ^1.0.0-rc.1
   browser: ^0.10.0
   polymer_elements:
   web_components: any
-  reflectable:
-  codemirror:
-  postgresql:
-  trestle:
-  args:
+  reflectable: any
+  codemirror: any
+  postgresql: any
+  trestle: any
+  args: any 
+  dbcrypt: any
+  yaml: any
 
 dev_dependencies:
   coverage: ^0.7.2

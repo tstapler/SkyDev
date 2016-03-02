@@ -2,10 +2,14 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http_server/http_server.dart';
+import 'package:skydev/database.dart';
+import 'package:trestle/gateway.dart';
 
 WebSocket socket;
 
+
 main() async {
+await db_gateway.connect();
 var requestServer = await HttpServer.bind(InternetAddress.ANY_IP_V4, 8081);
 print('listening on http://${requestServer.address.host}:${requestServer.port}');
 	await for (HttpRequest request in requestServer) {
@@ -29,11 +33,14 @@ print('listening on http://${requestServer.address.host}:${requestServer.port}')
 	      default:
 					request.response.redirect(Uri.parse('login.html'));
 	    }
-		} else {
+    } else if (request.uri.path == '/viewdb') {
+           handleView(request) ;
+    } else {
 	    	var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 	    	_clientDir.serveFile(new File(fileUri.toFilePath()), request);
 		}
 	}
+await db_gateway.disconnect();
 }
 /// Handle POST requests
 /// Return the same set of data back to the client.
@@ -97,6 +104,13 @@ void handleMsg(String m) async {
 
 		// print("Contents:\n\t" + (new File("files/$filename")).readAsStringSync());
 	}
+}
+
+void handleView(HttpRequest req) async {
+  HttpResponse res = req.response;
+  var user_list = await users.all().toList();
+  res.write(user_list);
+  res.close();
 }
 
 void printError(error) => print(error);
