@@ -6,6 +6,7 @@ build/
 web/packages
 tool/packages
 files/
+installer.retry
 
 **/packages/
 
