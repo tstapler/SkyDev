@@ -18,7 +18,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.3+3"
+    version: "0.13.3+4"
   async:
     description:
       name: async
@@ -32,15 +32,21 @@ packages:
     source: hosted
     version: "0.15.2+7"
   binary_declarations:
-    description: binary_declarations
+    description:
+      name: binary_declarations
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.60"
   binary_interop:
-    description: binary_interop
+    description:
+      name: binary_interop
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.33"
   binary_types:
-    description: binary_types
+    description:
+      name: binary_types
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.55"
   boolean_selector:
@@ -62,11 +68,15 @@ packages:
     source: hosted
     version: "0.10.0+2"
   build_tools:
-    description: build_tools
+    description:
+      name: build_tools
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.15"
   ccompilers:
-    description: ccompilers
+    description:
+      name: ccompilers
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.11"
   charcode:
@@ -104,7 +114,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.2"
+    version: "0.7.3"
   crypto:
     description:
       name: crypto
@@ -142,15 +152,21 @@ packages:
     source: hosted
     version: "0.4.0"
   dbcrypt:
-    description: dbcrypt
+    description:
+      name: dbcrypt
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
   drandom:
-    description: drandom
+    description:
+      name: drandom
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.3"
   file_utils:
-    description: file_utils
+    description:
+      name: file_utils
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.23"
   glob:
@@ -160,7 +176,9 @@ packages:
     source: hosted
     version: "1.1.0"
   globbing:
-    description: globbing
+    description:
+      name: globbing
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.20"
   html:
@@ -205,24 +223,40 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+2"
+  json_rpc_2:
+    description:
+      name: json_rpc_2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   libc:
-    description: libc
+    description:
+      name: libc
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.10"
   libffi6_extension:
-    description: libffi6_extension
+    description:
+      name: libffi6_extension
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.12"
   libffi6_support:
-    description: libffi6_support
+    description:
+      name: libffi6_support
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
   libffi_binaries:
-    description: libffi_binaries
+    description:
+      name: libffi_binaries
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.7"
   lists:
-    description: lists
+    description:
+      name: lists
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.21"
   logging:
@@ -232,7 +266,9 @@ packages:
     source: hosted
     version: "0.11.2"
   macro_processor:
-    description: macro_processor
+    description:
+      name: macro_processor
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.14"
   markdown:
@@ -260,7 +296,9 @@ packages:
     source: hosted
     version: "1.0.10"
   options_file:
-    description: options_file
+    description:
+      name: options_file
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.0"
   package_config:
@@ -270,7 +308,9 @@ packages:
     source: hosted
     version: "0.1.3"
   parser_error:
-    description: parser_error
+    description:
+      name: parser_error
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
   path:
@@ -280,7 +320,9 @@ packages:
     source: hosted
     version: "1.3.9"
   patsubst:
-    description: patsubst
+    description:
+      name: patsubst
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.9"
   plugin:
@@ -314,7 +356,9 @@ packages:
     source: hosted
     version: "1.2.1"
   postgresql:
-    description: postgresql
+    description:
+      name: postgresql
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3"
   pub_cache:
@@ -348,7 +392,9 @@ packages:
     source: hosted
     version: "0.4.0"
   sandbox:
-    description: sandbox
+    description:
+      name: sandbox
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.3"
   shelf:
@@ -388,15 +434,21 @@ packages:
     source: hosted
     version: "1.2.1"
   sqlite3_bindings:
-    description: sqlite3_bindings
+    description:
+      name: sqlite3_bindings
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.9"
   sqlite3_driver:
-    description: sqlite3_driver
+    description:
+      name: sqlite3_driver
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
   sqljocky:
-    description: sqljocky
+    description:
+      name: sqljocky
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.1"
   stack_trace:
@@ -418,7 +470,9 @@ packages:
     source: hosted
     version: "0.1.4+1"
   system_info:
-    description: system_info
+    description:
+      name: system_info
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.16"
   test:
@@ -426,13 +480,17 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.11"
+    version: "0.12.11+1"
   text:
-    description: text
+    description:
+      name: text
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.7"
   trestle:
-    description: trestle
+    description:
+      name: trestle
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
   unittest:
@@ -442,7 +500,9 @@ packages:
     source: hosted
     version: "0.11.6+1"
   unsafe_extension:
-    description: unsafe_extension
+    description:
+      name: unsafe_extension
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.24"
   utf:
@@ -451,6 +511,12 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0+3"
+  vm_service_client:
+    description:
+      name: vm_service_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   watcher:
     description:
       name: watcher
@@ -480,4 +546,5 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
+    version: "2.1.8"
 sdk: ">=1.14.0 <1.16.0"

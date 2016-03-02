@@ -12,42 +12,35 @@ import 'package:codemirror/codemirror.dart';
 import 'package:codemirror/hints.dart';
 
 ButtonElement b1;
-ButtonElement b2;
 WebSocket ws;
 CodeMirror editor;
 var file;
 
 void main() {
+	b1 = querySelector('#button1');
+	b1.onClick.listen(save);
+	b1.hidden = true;
+
 	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
+		ws.send("Synchronize");
 	});
 
 	ws.onMessage.listen((event){
 		String m = event.data;
-		print("$m");
 		if(m.startsWith("Contents:")){
 			m = m.replaceFirst("Contents:", "", 0);
 			outputMsg(m, true);
-			b2.hidden = false;
 		}
-
+		b1.hidden = false;
 	});
-
-	b1 = querySelector('#button1');
-	b1.onClick.listen(open);
-
-	b2 = querySelector('#button2');
-	b2.onClick.listen(save);
-	b2.hidden = true;
 
 	reactClient.setClientConfiguration();
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
-	component = div({}, "Open");
-	render(component, querySelector('#button1'));
 	component = div({}, "Save");
-	render(component, querySelector('#button2'));
+	render(component, querySelector('#button1'));
 
 	setCodeMirror();
 }
@@ -62,6 +55,9 @@ void setCodeMirror(){
 			'Ctrl-Space': 'autocomplete',
 			'Cmd-/': 'toggleComment',
 			'Ctrl-/': 'toggleComment'
+		},
+		'onChange': (editor){
+				ws.send(editor.getDoc.getValue());
 		}
 	};
 
@@ -196,22 +192,11 @@ String getCurrentWord(CodeMirror editor) {
 	return new String.fromCharCodes(buf.toString().codeUnits.reversed);
 }
 
-void open(Event e){
-	file = querySelector('#file');
-	String s = "${file.value}";
-	ws.send("Open:" + s);
-}
-
 void save(Event e){
-	file = querySelector('#file');
-	String s = "${file.value}";
-	if(s.contains(":")){
-		return;
-	}
 	String contents = (querySelector('#textContainer')).text;
 	contents = contents.substring(1, contents.length);
 	outputMsg(contents, false);
-	ws.send("Save:" + s + ":" + contents);
+	ws.send("Save:" + ":" + contents);
 }
 
 outputMsg(String msg, bool clearConsole) {

@@ -6,10 +6,11 @@ import 'package:skydev/database.dart';
 import 'package:trestle/gateway.dart';
 
 WebSocket socket;
-
+List<WebSocket> list;
 
 main() async {
 await db_gateway.connect();
+list = [];
 var requestServer = await HttpServer.bind(InternetAddress.ANY_IP_V4, 8081);
 print('listening on http://${requestServer.address.host}:${requestServer.port}');
 	await for (HttpRequest request in requestServer) {
@@ -21,6 +22,7 @@ print('listening on http://${requestServer.address.host}:${requestServer.port}')
 	    	// Upgrade an HttpRequest to a WebSocket connection.
 	    	socket = await WebSocketTransformer.upgrade(request);
 	    	print('Server has gotten a websocket request');
+	    	list.add(socket);
 	    	socket.listen(handleMsg);
 	  } else if (request.uri.path == '/login'){
 			switch (request.method) {
@@ -82,16 +84,18 @@ void defaultHandler(HttpRequest req) {
 
 void handleMsg(String m) async {
 	print('Message received: $m');
+	print('${list.length}');
+	
+	File f = new File("files/doc");
 
-	if(m.startsWith("Open:")){
-		m = m.replaceFirst("Open:", "", 0);
-		File f = new File("files/$m");
+	if(m.startsWith("Synchronize")){
 		if(!f.existsSync()){
 			socket.add("Error: Could not find file");
 		} else {
-			f.readAsString().then((String contents){
-				socket.add("Contents:" + contents);
-			});
+			for(int i=0; i < list.length; i++){
+				String contents = f.readAsStringSync();
+				list[i].add("Contents:" + contents);
+			}
 		}
 	} else if(m.startsWith("Save:")) {
 		// print(m);
@@ -100,8 +104,11 @@ void handleMsg(String m) async {
 		// print(filename);
 		m = m.replaceFirst("$filename:", "", 0);
 		// print(m.isEmpty);
-		(new File("files/$filename")).writeAsStringSync(m);
-
+		f.writeAsStringSync(m);
+		for(int i=0; i < list.length; i++){
+			String contents = f.readAsStringSync();
+			list[i].add("Contents:" + contents);
+		}
 		// print("Contents:\n\t" + (new File("files/$filename")).readAsStringSync());
 	}
 }
