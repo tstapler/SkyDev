@@ -8,7 +8,8 @@ A web-based IDE
 ## Use 
 
 ### Running the server
-In order to use *SkyDev* follow these steps:
+
+When running *SkyDev* for the first time follow these steps:
 
 1. Install the dependencies 
 ```bash
@@ -123,6 +124,65 @@ skydev=# select * from users;
   4 | ssrirama | ssrirama@iastate.edu | $2a$10$1hBe8fHKhwjGGTt22Ne2t.7K0a7btxTOfoNHsINDI6wF1goze.rOK | 2016-03-01 11:19:40.82207  | 2016-03-01 11:19:40.822071
 ```
 
+### Deployment With Docker 
+
+An example of how to build and deploy the project using docker
+
+#### Build an Image:
+
+Build the SkyDev container from the home directory 
+
+```bash docker build -t tstapler/skydev . ```
+
+#### Push:
+
+Push your newly built image to docker hub 
+
+1. Create a Docker Hub account and login
+```bash 
+docker login 
+Username: tstapler 
+Password: 
+Email: tystapler@gmail.com 
+WARNING: login credentials saved in
+/home/tstapler/.docker/config.json Login Succeeded 
+```
+
+2. Push your newly tagged image to docker hub
+
+```bash
+docker push tstapler/skydev
+
+The push refers to a repository [docker.io/tstapler/skydev] 
+140c56b6c50f: Preparing 
+fcef89949268: Preparing 
+97445628161b: Preparing 
+140c56b6c50f: Layer already exists 
+2a951c507b04: Layer already exists
+a18c01fcb17f: Layer already exists
+3b267d287e15: Layer already exists
+04615e3a9cc9: Layer already exists
+948c7db9b47c: Layer already exists
+bbf51cf12065: Layer already exists
+a9660e7f7c70: Layer already exists
+5f70bf18a086: Layer already exists
+c021cee30347: Layer already exists
+947564b0c8d9: Layer already exists
+latest:digest: sha256:ca944f59c33678ccd37098c7ae5f221dcd597f8c9f13e105ec02c2f801975036size: 12281
+```
+
+### Run SkyDev on host using Docker
+
+Ensure the host you have both **docker** and **docker-compose** installed.
+
+```bash 
+docker-compose up 
+
+Recreating g39skydev_postgres_1 
+Recreating g39skydev_skydev_1
+```
+
+Yay! You have a running server
 
 ## Techs
 Dart makes use of the following
