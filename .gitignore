@@ -2,12 +2,16 @@
 pubspec.lock
 .packages
 .pub/
-.buildlog #added by Chris unsure if needed
+
+#added by Chris unsure if needed
+.buildlog 
 build/
 web/packages
 tool/packages
 files/
-installer.retry
+
+ # Ansible artifacts
+*.retry
 
 **/packages/
 
