@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:trestle/trestle.dart';
 import 'package:trestle/gateway.dart';
 import 'package:dbcrypt/dbcrypt.dart';
@@ -56,10 +57,15 @@ check_password(plain, hashed)
 //Create set of migrations
 final migrations = [CreateUsersTable].toSet();
 
+Map<String, String> envVars = Platform.environment;
+
+final String DB_HOST = envVars["DB_HOST"];
+final String DB_PORT = envVars["DB_PORT"];
 //Create Database Connection
-final Driver db_driver = new PostgresqlDriver(username: 'postgres',
+final Driver db_driver = new PostgresqlDriver(host: DB_HOST,
+                                        username: 'postgres',
                                         password: 'pass',
-                                        port: 5433, //To Avoid Conflicts
+                                        port: DB_PORT, //To Avoid Conflicts
                                         database: 'skydev');
 
 //Create Gateway (Representation of the database)
