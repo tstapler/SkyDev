@@ -27,7 +27,7 @@ dependencies:
   codemirror: any
   postgresql: any
   trestle: any
-  args: any 
+  args: any
   dbcrypt: any
   yaml: any
 

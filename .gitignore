@@ -28,6 +28,9 @@ tool/packages
 *.js.map
 *.info.json
 
+#Atom installer
+.atom
+
 # Directory created by dartdoc
 doc/api/
 
