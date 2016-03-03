@@ -22,4 +22,4 @@ RUN pub get --offline
 
 EXPOSE 8081
 
-CMD ["/app/launchserver.sh"]
+CMD ["/app/scripts/launchserver.sh"]
