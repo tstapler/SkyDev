@@ -1,19 +1,19 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE: start_database.sh
-# 
+#
 #         USAGE: ./start_database.sh
-# 
-#   DESCRIPTION: 
+#
+#   DESCRIPTION:
 #	For running the postgres docker container
-# 
+#
 #       OPTIONS: ---
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Tyler Stapler (tstapler), tystapler@gmail.com
-#  ORGANIZATION: 
+#  ORGANIZATION:
 #       CREATED: 02/28/2016 14:57
 #      REVISION:  ---
 #===============================================================================
@@ -30,12 +30,11 @@ if [ -z "$DB_HOST" ]; then
 fi
 
 # Try to start the docker container, if not create it and run
-if [ ! $(docker start skydev-postgres) ]; then 
+if [ ! $(docker start skydev-postgres) ]; then
 	echo "SkyDev container does not exist, creating and running"
-	docker run -p $DB_PORT:5432 --name skydev-postgres -e POSTGRES_PASSWORD=pass -d postgres 
-else 
+	docker run -p $DB_PORT:5432 --name skydev-postgres -e POSTGRES_PASSWORD=pass -d postgres
+else
 	echo "Database running ..."
 fi
 ansible-playbook $DIR/database_provision.yaml
 exit
-

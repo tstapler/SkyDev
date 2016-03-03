@@ -6,6 +6,6 @@ it:
 vm:
 	pub get && pub build && pub serve
 
-install-dependencies: 
+install-dependencies:
 	sudo pip install ansible
-	ansible-playbook -K -i "localhost," -c local installer.yaml	
+	ansible-playbook -K -i "localhost," -c local installer.yaml

@@ -84,17 +84,3 @@
         name={{username_on_host.stdout}}
         groups=docker
         append=yes
-
-    #Initialize Database
-    - name: "Make sure Database is running"
-      script: start_database.sh
-
-    - name: "Create skydev database"
-      postgresql_db:
-        login_host=127.0.0.1
-        owner=postgres
-        name=skydev
-        login_user=postgres
-        login_password=pass
-        state=present
-        port=5433

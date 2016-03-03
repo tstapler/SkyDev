@@ -15,6 +15,5 @@
         login_password=pass
         state=present
         port="{{lookup('env','DB_PORT')}}"
-      notify: 
+      notify:
         - seed database
-
