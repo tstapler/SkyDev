@@ -1,0 +1,19 @@
+---
+- name: "Provision Database for SkyDev"
+  hosts: localhost
+  become: no
+  handlers:
+    - name: "seed database"
+      script: "{{ playbook_dir }}/seed_db.sh"
+  tasks:
+    - name: "Create skydev database"
+      postgresql_db:
+        login_host="{{lookup('env','DB_HOST')}}"
+        owner=postgres
+        name=skydev
+        login_user=postgres
+        login_password=pass
+        state=present
+        port="{{lookup('env','DB_PORT')}}"
+      notify:
+        - seed database

@@ -1,16 +1,20 @@
 # Files and directories created by pub
+pubspec.lock
 .packages
 .pub/
-.buildlog #added by Chris unsure if needed
+
+#added by Chris unsure if needed
+.buildlog 
 build/
 web/packages
 tool/packages
 files/
-installer.retry
+pubspec.lock
+
+ # Ansible artifacts
+*.retry
 
 **/packages/
-
-pubspec.lock
 web/packages
 tool/packages
 
@@ -23,6 +27,9 @@ tool/packages
 *.js.deps
 *.js.map
 *.info.json
+
+#Atom installer
+.atom
 
 # Directory created by dartdoc
 doc/api/

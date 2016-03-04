@@ -7,18 +7,18 @@
     - name: "Add Docker signing key"
       apt_key:
         keyserver=keyserver.ubuntu.com
-        id=36A1D7869245C8950F966E92D8576A8BA88D21E9
+        id=58118E89F3A912897C070ADBF76221572C52609D
         state=present
 
     - name: "Add Dart signing key"
       apt_key: url=https://dl-ssl.google.com/linux/linux_signing_key.pub state=present
 
     - name: "Add apt repositories"
-      apt_repository: 
+      apt_repository:
         repo={{item}} state=present update_cache=yes
       with_items:
-        - "deb https://get.docker.com/ubuntu docker main"
-        - "deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main" 
+        - "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+        - "deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
 
     - name: "Install apt dependencies"
       apt: name={{item}} state=present
@@ -33,10 +33,10 @@
 
     # Install the Dart SDK
 
-    
+
     - name: "Install Dart SDK"
       apt: name=dart state=present
-          
+
     - name: "Link Dart Utilities to path"
       file: src=/usr/lib/dart/bin/{{item}} dest=/usr/bin/{{item}} state=link
       with_items:
@@ -51,22 +51,22 @@
       file: path=/opt/dartium state=directory mode=0755
 
     - name: "Download and Extract Dartium"
-      unarchive: 
-        src="https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip" 
-        dest=/opt/dartium 
+      unarchive:
+        src="https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip"
+        dest=/opt/dartium
         copy=no
         creates=/opt/dartium/dartium-lucid64-full-stable-1.14.2.0
 
     - name: "Link Dartium's Executable to /usr/bin"
-      file: 
-        src=/opt/dartium/dartium-lucid64-full-stable-1.14.2.0/chrome 
+      file:
+        src=/opt/dartium/dartium-lucid64-full-stable-1.14.2.0/chrome
         dest=/usr/bin/dartium state=link
         mode="u+xr,g+xr,o+xr"
 
     # Install Docker
 
     - name: "Install Docker"
-      apt: name=docker state=present
+      apt: name=docker-engine state=present
 
     - name: "Install Docker Compose"
       pip: name=docker-compose state=present
@@ -74,28 +74,13 @@
     - name: "Create docker group"
       group: name=docker state=present
 
-    - name: "Get username running the script" 
-      local_action: command whoami 
+    - name: "Get username running the script"
+      local_action: command whoami
       become: no
       register: username_on_host
 
     - name: "Add {{username_on_host.stdout}} to docker group"
-      user: 
+      user:
         name={{username_on_host.stdout}}
         groups=docker
         append=yes
-
-    #Initialize Database
-    - name: "Make sure Database is running"
-      script: start_database.sh
-
-    - name: "Create skydev database"
-      postgresql_db:
-        login_host=127.0.0.1
-        owner=postgres
-        name=skydev
-        login_user=postgres
-        login_password=pass
-        state=present
-        port=5433
-
