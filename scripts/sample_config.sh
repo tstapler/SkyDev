@@ -1,18 +1,18 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE: sample_config.sh
-# 
-#         USAGE: source ./sample_config.sh 
-# 
-#   DESCRIPTION: 
-# 
+#
+#         USAGE: source ./sample_config.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS: ---
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Tyler Stapler (tstapler), tystapler@gmail.com
-#  ORGANIZATION: 
+#  ORGANIZATION:
 #       CREATED: 03/04/2016 19:44
 #      REVISION:  ---
 #===============================================================================
@@ -22,7 +22,8 @@ if [ -z ${DB_HOST+x} ]; then
 fi
 
 if [ -z ${DB_USER+x} ]; then
-	echo export DB_USER=postgres export DB_USER=postgres
+	echo export DB_USER=postgres
+	export DB_USER=postgres
 fi
 
 if [ -z ${DB_PASS+x} ]; then
@@ -39,6 +40,3 @@ if [ -z ${DB_NAME+x} ]; then
 	echo export DB_NAME=skydev
 	export DB_NAME=skydev
 fi
-
-
-
