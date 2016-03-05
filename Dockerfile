@@ -4,6 +4,9 @@ WORKDIR /app
 
 ENV DB_HOST=postgres
 ENV DB_PORT=5432
+ENV DB_PASS=pass
+ENV DB_USER=postgres
+ENV DB_NAME=skydev
 
 #Install needed dependencies
 RUN echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list

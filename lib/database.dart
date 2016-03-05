@@ -60,13 +60,16 @@ final migrations = [CreateUsersTable].toSet();
 Map<String, String> envVars = Platform.environment;
 
 final String DB_HOST = envVars["DB_HOST"];
+final String DB_USER = envVars["DB_USER"];
+final String DB_PASS = envVars["DB_PASS"];
 final String DB_PORT = envVars["DB_PORT"];
+final String DB_NAME = envVars["DB_NAME"];
 //Create Database Connection
 final Driver db_driver = new PostgresqlDriver(host: DB_HOST,
-                                        username: 'postgres',
-                                        password: 'pass',
+                                        username: DB_USER,
+                                        password: DB_PASS,
                                         port: DB_PORT, //To Avoid Conflicts
-                                        database: 'skydev');
+                                        database: DB_NAME);
 
 //Create Gateway (Representation of the database)
 final Gateway db_gateway = new Gateway(db_driver);
