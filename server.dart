@@ -25,15 +25,18 @@ main() async {
       print('Server has gotten a websocket request');
       socket.listen(handleMsg);
     } else if (request.uri.path == '/login') {
-      switch (request.method) {
-        case 'POST':
+        if (request.method == 'POST'){
           handleLogin(request);
-          break;
-        case 'OPTIONS':
-          handleOptions(request);
-          break;
-        default:
-          request.response.redirect(Uri.parse('login3.html'));
+        }
+        else{
+        request.response.redirect(Uri.parse('login3.html'));
+      }
+    } else if (request.uri.path == '/register'){
+      if (request.method == 'POST'){
+        handleRegister(request);
+      }
+      else{
+        request.response.redirect(Uri.parse('register.html'));
       }
     } else if (request.uri.path == '/viewdb') {
       handleView(request);
@@ -63,7 +66,15 @@ Future handleLogin(HttpRequest req) async {
 }
 
 Future handleRegister(HttpRequest req) async {
-  
+  HttpResponse res = req.response;
+  print('${req.method}: ${req.uri.path}');
+  addCorsHeaders(res);
+  var queryString = await req.transform(UTF8.decoder).join();
+  Map queryData = QueryString.parse(queryString);
+  await createUser(queryData);
+  res.write('Success');
+  res.close();
+
 }
 
 void addCorsHeaders(HttpResponse res) {
