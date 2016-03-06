@@ -62,6 +62,10 @@ Future handleLogin(HttpRequest req) async {
 	}
 }
 
+Future handleRegister(HttpRequest req) async {
+  
+}
+
 void addCorsHeaders(HttpResponse res) {
   res.headers.add('Access-Control-Allow-Origin', '*');
   res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -113,10 +117,16 @@ void handleMsg(String m) async {
 Future verifyUser(Map formData) async{
 	var uInput;
 	var pInput;
+  var uData;
 	uInput = formData['username'];
 	pInput = formData['password'];
-	var uData = await users.where((user) => user.username == uInput).first();
-	print(uData.password);
+  try{
+	    uData = await users.where((user) => user.username == uInput).first();
+    }
+    catch(e){
+      print("Username not found");
+      return false;
+    }
 	if(check_password(pInput, uData.password)){
 		print("Passwords matched");
 		return true;
@@ -127,10 +137,11 @@ Future verifyUser(Map formData) async{
 	}
 }
 
-void createUser(Map formData){
-	new User.create(formData['username'],
+Future createUser(Map formData) async{
+	var models = [new User.create(formData['username'],
 									formData['email'],
-										hash_password(formData['password']));
+										hash_password(formData['password']))];
+  await users.saveAll(models);
 }
 
 void handleView(HttpRequest req) async {

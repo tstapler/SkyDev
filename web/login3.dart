@@ -39,16 +39,13 @@ Future makeRequest(Event e) async{
     errorHandle(e);
   }
 }
-void processRequest(HttpRequest resp){
+Future processRequest(HttpRequest resp) async{
   if(resp.status == 200){
-    var path = 'http://127.0.0.1:8081/';
-    String string = resp.toString();
+    var path = 'http://127.0.0.1:8081/index.html';
+    String string = resp.responseText;
     print(string);
     if (string.compareTo('Success') == 0){
-      var httpRequest = new HttpRequest();
-      httpRequest
-        ..open('GET', path)
-        ..send('');
+      window.location.replace(path);
     }
     else{
       login.children.add(new HeadingElement.h3()..text = 'Login Attempt failed');
