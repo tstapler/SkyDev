@@ -42,6 +42,13 @@ void main() {
 	render(component, querySelector('#button1'));
 
 	setCodeMirror();
+	editor.onChange.listen((e){
+		print("Log:" + e.toString());
+	});
+	// while(ws.readyState != WebSocket.OPEN){
+	// 	outputMsg("waiting", false);
+	// }
+	// ws.send("Synchronize");
 }
 
 void setCodeMirror(){
@@ -54,9 +61,6 @@ void setCodeMirror(){
 			'Ctrl-Space': 'autocomplete',
 			'Cmd-/': 'toggleComment',
 			'Ctrl-/': 'toggleComment'
-		},
-		'onChange': (editor){
-				ws.send(editor.getDoc.getValue());
 		}
 	};
 
@@ -67,10 +71,6 @@ void setCodeMirror(){
 
 	Hints.registerHintsHelper('dart', dartCompletion);
 	Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
-
-	editor.getDoc().setValue(
-		"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
-	);
 
 	editor.setLineNumbers(false);
 	editor.setIndentWithTabs(true);
@@ -119,6 +119,7 @@ void setCodeMirror(){
 
 	editor.refresh();
 	editor.focus();
+	editor.onChange.listen(save);
 }
 
 void updateFooter(CodeMirror editor) {
@@ -194,7 +195,6 @@ String getCurrentWord(CodeMirror editor) {
 void save(Event e){
 	String contents = (querySelector('#textContainer')).text;
 	contents = contents.substring(1, contents.length);
-	outputMsg(contents, false);
 	ws.send("Save:" + contents);
 }
 

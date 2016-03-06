@@ -105,10 +105,14 @@ void handleMsg(String m) async {
 		for (int i = 0; i < list.length; i++){
 			f.readAsString().then((String contents) {
 				list[i].add("Contents:" + contents);
-			});	
+			});
 		}
+	} else if (m.startsWith("Log:")) { // writing
+		m = m.replaceFirst("Log:", "", 0);
+		print("$m");
 	}
 }
+
 Future verifyUser(Map formData) async{
 	var uInput;
 	var pInput;
