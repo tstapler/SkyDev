@@ -36,7 +36,7 @@ main() async {
         handleRegister(request);
       }
       else{
-        request.response.redirect(Uri.parse('register.html'));
+        request.response.redirect(Uri.parse('registration.html'));
       }
     } else if (request.uri.path == '/viewdb') {
       handleView(request);
