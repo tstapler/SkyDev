@@ -30,6 +30,8 @@ dependencies:
   args: any
   dbcrypt: any
   yaml: any
+  query_string:
+    git: https://github.com/kaisellgren/QueryString.git
 
 dev_dependencies:
   coverage: ^0.7.2

@@ -9,10 +9,10 @@
     - name: "Create skydev database"
       postgresql_db:
         login_host="{{lookup('env','DB_HOST')}}"
-        owner=postgres
-        name=skydev
-        login_user=postgres
-        login_password=pass
+        owner="{{lookup('env','DB_USER')}}"
+        name="{{lookup('env','DB_NAME')}}"
+        login_user="{{lookup('env','DB_USER')}}"
+        login_password="{{lookup('env','DB_PASS')}}"
         state=present
         port="{{lookup('env','DB_PORT')}}"
       notify:

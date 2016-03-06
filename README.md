@@ -11,16 +11,27 @@ A web-based IDE
 
 When running *SkyDev* for the first time follow these steps:
 
-1. Install the dependencies 
+1. Set your desired database configuration
+Sample configuration
+```bash
+source scripts/sample_config.sh
+```
+
+Or, one could set the following 
+
+2. Install the dependencies 
 ```bash
 make install-dependencies
 ```
-2. Logout and back in to ensure your new docker group is enabled
-3. Run the server
+
+3. Logout and back in to ensure your new docker group is enabled
+
+4. Run the server
 ```bash
 make it
 ```
-4. Open <https://localhost:8081>
+
+5. Open <https://localhost:8081>
 
 ### Database Manager
 ---

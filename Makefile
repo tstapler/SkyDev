@@ -1,5 +1,6 @@
 it:
 	./scripts/start_database.sh
+	ansible-playbook -i "localhost," -c local scripts/database_provision.yaml
 	pub get && pub build
 	dart server.dart
 
