@@ -88,26 +88,25 @@ void defaultHandler(HttpRequest req) {
 void handleMsg(String m) async {
 	print('Message received: $m');
 
-	if (m.startsWith("Open:")) {
-		m = m.replaceFirst("Open:", "", 0);
-		File f = new File("files/$m");
+	// Reading
+	if (m.startsWith("Synchronize:")) { // reading
+		File f = new File("files/doc");
 		if (!f.existsSync()) {
 		  socket.add("Error: Could not find file");
 		} else {
-		  f.readAsString().then((String contents) {
-		    socket.add("Contents:" + contents);
-		  });
+			f.readAsString().then((String contents) {
+				socket.add(contents);
+			});
 		}
-	} else if (m.startsWith("Save:")) {
-		// print(m);
+	} else if (m.startsWith("Save:")) { // writing
 		m = m.replaceFirst("Save:", "", 0);
-		String filename = m.substring(0, m.indexOf(":"));
-		// print(filename);
-		m = m.replaceFirst("$filename:", "", 0);
-		// print(m.isEmpty);
-		(new File("files/$filename")).writeAsStringSync(m);
-
-		// print("Contents:\n\t" + (new File("files/$filename")).readAsStringSync());
+		File f = (new File("files/doc"));
+		f.writeAsStringSync(m);
+		for (int i = 0; i < list.length; i++){
+			f.readAsString().then((String contents) {
+				list[i].add("Contents:" + contents);
+			});	
+		}
 	}
 }
 Future verifyUser(Map formData) async{

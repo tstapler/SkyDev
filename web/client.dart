@@ -19,7 +19,7 @@ var file;
 void main() {
 	b1 = querySelector('#button1');
 	b1.onClick.listen(save);
-	b1.hidden = true;
+	b1.hidden = false;
 
 	ws = new WebSocket('ws://localhost:8081/ws');
 
@@ -33,7 +33,6 @@ void main() {
 			m = m.replaceFirst("Contents:", "", 0);
 			outputMsg(m, true);
 		}
-		b1.hidden = false;
 	});
 
 	reactClient.setClientConfiguration();
@@ -196,24 +195,12 @@ void save(Event e){
 	String contents = (querySelector('#textContainer')).text;
 	contents = contents.substring(1, contents.length);
 	outputMsg(contents, false);
-	ws.send("Save:" + ":" + contents);
+	ws.send("Save:" + contents);
 }
 
 outputMsg(String msg, bool clearConsole) {
-
 	if(clearConsole){
 		editor.getDoc().setValue("");
 	}
 	editor.getDoc().setValue("$msg");
-
-	// var output = querySelector('#output');
-	// var text = msg;
-	// if(clearConsole){
-	// 	output.text = "";	
-	// } else { // save contents of console
-	// 	if (!output.text.isEmpty) {
-	// 		text = "${output.text}\n${text}";
-	// 	}
-	// }
-	// output.text = text;
 }
