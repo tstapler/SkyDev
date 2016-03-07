@@ -1,5 +1,8 @@
 import 'dart:html';
 import 'dart:async';
+import 'package:react/react_client.dart' as reactClient;
+import 'package:react/react.dart';
+import 'package:skydev/skydev_navbar.dart';
 
 ButtonElement submitButton;
 InputElement uName;
@@ -10,6 +13,8 @@ OutputElement error;
 Map data;
 String verifyPass;
 void main(){
+	reactClient.setClientConfiguration();
+	render(navbar({}), querySelector('#navbar'));
   uName = querySelector('#username');
   pWord = querySelector('#password');
   vpWord = querySelector('#vPassword');
