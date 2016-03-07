@@ -6,7 +6,7 @@ class SkydevNav extends Component {
 				div({'className': 'navbar-collapse collapse'}, [
 					ul({'className': 'nav navbar-nav'},[
 						li({'className': 'navbar-header'},[
-							div({'id': 'content','className': 'navbar-brand'}, "SkyDev")])]),
+							a({'href': '/','id': 'content','className': 'navbar-brand'}, "SkyDev")])]),
 					ul({'className': 'nav navbar-nav navbar-right'},[
 						li({},[
 							a({'href': '/login'}, "Login")])])
