@@ -7,34 +7,34 @@ import 'package:trestle/gateway.dart';
 import 'package:query_string/query_string.dart';
 
 WebSocket socket;
-List<WebSocket> list;
+List<WebSocket> list = [];
 
 main() async {
-await db_gateway.connect();
-list = [];
-var requestServer = await HttpServer.bind(InternetAddress.ANY_IP_V4, 8081);
-print('listening on http://${requestServer.address.host}:${requestServer.port}');
+	await db_gateway.connect();
+	var requestServer = await HttpServer.bind(InternetAddress.ANY_IP_V4, 8081);
+	print('listening on http://${requestServer.address.host}:${requestServer.port}');
 	await for (HttpRequest request in requestServer) {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
 		if (request.uri.path == '/') {
-		    request.response.redirect(Uri.parse('index.html'));
+			request.response.redirect(Uri.parse('index.html'));
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
 			print('Server has gotten a websocket request');
 			list.add(socket);
 			socket.listen(handleMsg);
-		} else if (request.uri.path == '/login'){
-			switch (request.method) {
-				case 'POST':
-					handleLogin(request);
-				break;
-				case 'OPTIONS':
-					handleOptions(request);
-				break;
-				default:
-					request.response.redirect(Uri.parse('login.html'));
+		} else if (request.uri.path == '/login') {
+			if (request.method == 'POST') {
+				handleLogin(request);
+			} else {
+				request.response.redirect(Uri.parse('login3.html'));
+			}
+		} else if (request.uri.path == '/register') {
+			if (request.method == 'POST') {
+				handleRegister(request);
+			} else {
+				request.response.redirect(Uri.parse('registration.html'));
 			}
 		} else if (request.uri.path == '/viewdb') {
 			handleView(request);
@@ -60,6 +60,18 @@ Future handleLogin(HttpRequest req) async {
 		res.write('Fail');
 		res.close();
 	}
+}
+
+Future handleRegister(HttpRequest req) async {
+  HttpResponse res = req.response;
+  print('${req.method}: ${req.uri.path}');
+  addCorsHeaders(res);
+  var queryString = await req.transform(UTF8.decoder).join();
+  Map queryData = QueryString.parse(queryString);
+  await createUser(queryData);
+  res.write('Success');
+  res.close();
+
 }
 
 void addCorsHeaders(HttpResponse res) {
@@ -115,10 +127,16 @@ void handleMsg(String m) async {
 Future verifyUser(Map formData) async{
 	var uInput;
 	var pInput;
+  	var uData;
 	uInput = formData['username'];
 	pInput = formData['password'];
-	var uData = await users.where((user) => user.username == uInput).first();
-	print(uData.password);
+  try{
+	    uData = await users.where((user) => user.username == uInput).first();
+    }
+    catch(e){
+      print("Username not found");
+      return false;
+    }
 	if(check_password(pInput, uData.password)){
 		print("Passwords matched");
 		return true;
@@ -129,10 +147,11 @@ Future verifyUser(Map formData) async{
 	}
 }
 
-void createUser(Map formData){
-	new User.create(formData['username'],
+Future createUser(Map formData) async{
+	var models = [new User.create(formData['username'],
 									formData['email'],
-										hash_password(formData['password']));
+										hash_password(formData['password']))];
+  await users.saveAll(models);
 }
 
 void handleView(HttpRequest req) async {

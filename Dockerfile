@@ -1,4 +1,4 @@
-FROM google/dart
+FROM ubuntu:14.04
 
 WORKDIR /app
 
@@ -9,19 +9,18 @@ ENV DB_USER=postgres
 ENV DB_NAME=skydev
 
 #Install needed dependencies
-RUN echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get -t sid install -y libc6 libc6-dev libc6-dbg
-RUN apt-get install -y postgresql libpq-dev python-psycopg2
 
-RUN apt-get install -y python-dev python-pip python-setuptools
+RUN sudo apt-get update && sudo apt-get install -y python-dev python-pip
 RUN pip install ansible
+ADD . /app
+RUN ansible-playbook -i "localhost," -c local /app/scripts/installer.yaml
 
 
 ADD pubspec.* /app/
 RUN pub get
-ADD . /app
 RUN pub get --offline
+RUN pub build
+RUN pub install
 
 EXPOSE 8081
 
