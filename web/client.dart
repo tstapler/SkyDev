@@ -15,6 +15,7 @@ ButtonElement b1;
 WebSocket ws;
 CodeMirror editor;
 var file;
+bool shouldSave = true;
 
 void main() {
 	b1 = querySelector('#button1');
@@ -31,7 +32,9 @@ void main() {
 		String m = event.data;
 		if(m.startsWith("Contents:")){
 			m = m.replaceFirst("Contents:", "", 0);
+			shouldSave = false;
 			outputMsg(m, true);
+			shouldSave = true;
 		}
 	});
 
@@ -42,13 +45,6 @@ void main() {
 	render(component, querySelector('#button1'));
 
 	setCodeMirror();
-	editor.onChange.listen((e){
-		print("Log:" + e.toString());
-	});
-	// while(ws.readyState != WebSocket.OPEN){
-	// 	outputMsg("waiting", false);
-	// }
-	// ws.send("Synchronize");
 }
 
 void setCodeMirror(){
@@ -193,9 +189,10 @@ String getCurrentWord(CodeMirror editor) {
 }
 
 void save(Event e){
-	String contents = (querySelector('#textContainer')).text;
-	contents = contents.substring(1, contents.length);
-	ws.send("Save:" + contents);
+	String contents = editor.getDoc().getValue();
+	if(shouldSave){
+		ws.send("Save:" + contents);
+	}
 }
 
 outputMsg(String msg, bool clearConsole) {

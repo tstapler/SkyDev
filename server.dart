@@ -94,9 +94,8 @@ void handleMsg(String m) async {
 		if (!f.existsSync()) {
 		  socket.add("Error: Could not find file");
 		} else {
-			f.readAsString().then((String contents) {
-				socket.add(contents);
-			});
+			String contents = f.readAsStringSync();
+			socket.add(contents);
 		}
 	} else if (m.startsWith("Save:")) { // writing
 		m = m.replaceFirst("Save:", "", 0);
