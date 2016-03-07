@@ -3,6 +3,9 @@
 
 import 'dart:html';
 import 'dart:async';
+import 'package:react/react_client.dart' as reactClient;
+import 'package:react/react.dart';
+import 'package:skydev/skydev_navbar.dart';
 
 OutputElement login;
 ButtonElement submitButton;
@@ -12,6 +15,9 @@ InputElement uName;
 InputElement pWord;
 
 void main() {
+		reactClient.setClientConfiguration();
+		render(navbar({}), querySelector('#navbar'));
+
     submitButton = querySelector('#Button');
     login = querySelector('#Login-info');
     uName = querySelector('#username');

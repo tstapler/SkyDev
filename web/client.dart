@@ -10,6 +10,7 @@ import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:codemirror/codemirror.dart';
 import 'package:codemirror/hints.dart';
+import 'package:skydev/skydev_navbar.dart';
 
 ButtonElement b1;
 ButtonElement b2;
@@ -42,6 +43,7 @@ void main() {
 	b2.hidden = true;
 
 	reactClient.setClientConfiguration();
+	render(navbar({}), querySelector('#navbar'));
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
 	component = div({}, "Open");
@@ -234,8 +236,3 @@ outputMsg(String msg, bool clearConsole) {
 	// output.text = text;
 }
 
-class ChatWindow extends ChatWindow {
-	render({},[
-
-			]);
-}
