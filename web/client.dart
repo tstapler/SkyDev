@@ -55,10 +55,11 @@ void main() {
 void setCodeMirror(){
 	Map options = {
 		'theme': 'zenburn',
+		'height': '100%',
 		'continueComments': {'continueLineComment': false},
 		'autoCloseTags': true,
 		'mode': 'javascript',
-			'extraKeys': {
+		'extraKeys': {
 			'Ctrl-Space': 'autocomplete',
 			'Cmd-/': 'toggleComment',
 			'Ctrl-/': 'toggleComment'
@@ -66,16 +67,16 @@ void setCodeMirror(){
 	};
 
 	editor = new CodeMirror.fromElement(
-		querySelector('#textContainer'), 
-		options: options
-	);
+			querySelector('#textContainer'), 
+			options: options
+			);
 
 	Hints.registerHintsHelper('dart', dartCompletion);
 	Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
 
 	editor.getDoc().setValue(
-		"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
-	);
+			"public class SkyDev{\n\tpublic static void main(String[] args){\n\n\t}\n}"
+			);
 
 	editor.setLineNumbers(false);
 	editor.setIndentWithTabs(true);
@@ -108,13 +109,13 @@ void setCodeMirror(){
 
 	// Show line numbers.
 	InputElement lineNumbers = querySelector('#lineNumbers');
-		lineNumbers.onChange.listen((e) {
+	lineNumbers.onChange.listen((e) {
 		editor.setLineNumbers(lineNumbers.checked);
 	});
 
 	// Indent with tabs.
 	InputElement tabIndent = querySelector('#tabIndent');
-		tabIndent.onChange.listen((e) {
+	tabIndent.onChange.listen((e) {
 		editor.setIndentWithTabs(tabIndent.checked);
 	});
 
@@ -143,10 +144,10 @@ HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
 		.toList();
 
 	HintResults results = new HintResults.fromHints(
-		list,
-		new Position(cur.line, cur.ch - word.length),
-		new Position(cur.line, cur.ch)
-	);
+			list,
+			new Position(cur.line, cur.ch - word.length),
+			new Position(cur.line, cur.ch)
+			);
 	results.registerOnShown(() => print('hints shown'));
 	results.registerOnSelect((completion, element) {
 		print(['hints select: ${completion}']);
@@ -166,15 +167,15 @@ Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options
 	List<String> list = new List.from(numbers.where((s) => s.startsWith(word)));
 
 	return new Future.delayed(new Duration(milliseconds: 200), () {
-	return new HintResults.fromStrings(
-		list,
-		new Position(cur.line, cur.ch - word.length),
-		new Position(cur.line, cur.ch));
+		return new HintResults.fromStrings(
+			list,
+			new Position(cur.line, cur.ch - word.length),
+			new Position(cur.line, cur.ch));
 	});
 }
 
 final List numbers = [
-	'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
+'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
 ];
 
 final RegExp ids = new RegExp(r'[a-zA-Z_0-9]');
@@ -187,7 +188,7 @@ String getCurrentWord(CodeMirror editor) {
 	for (int i = cur.ch - 1; i >= 0; i--) {
 		String c = line[i];
 		if (ids.hasMatch(c)) {
-		  	buf.write(c);
+			buf.write(c);
 		} else {
 			break;
 		}
@@ -231,4 +232,10 @@ outputMsg(String msg, bool clearConsole) {
 	// 	}
 	// }
 	// output.text = text;
+}
+
+class ChatWindow extends ChatWindow {
+	render({},[
+
+			]);
 }

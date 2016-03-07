@@ -8,43 +8,61 @@
 -->
 
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="packages/react/react.js"></script>
-    <script type="application/dart" src="client.dart"></script>
-    <script src="packages/browser/dart.js"></script>
-    <script src="packages/codemirror/codemirror.js"></script>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="packages/react/react.js"></script>
+  <script type="application/dart" src="client.dart"></script>
+  <script src="packages/browser/dart.js"></script>
+  <script src="packages/codemirror/codemirror.js"></script>
 
-<title>SkyDev</title>
+  <title>SkyDev</title>
 
-<!-- Include bootstrap css and javascript -->
-    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap-theme.css">
-    <script src="packages/bootstrap/js/bootstrap.js"></script>
+  <!-- Include bootjack css -->
+  <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="packages/codemirror/codemirror.css" rel="stylesheet">
-    <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
+  <link href="packages/codemirror/codemirror.css" rel="stylesheet">
+  <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <h2>
-      <div id="content"></div>
-    </h2>
-        
-    <div id="controls">
+
+  <!-- nav bar -->
+  <nav class="navbar navbar-default">
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="navbar-header">
+          <div id="content" class="navbar-brand" href="/"></div>
+        </li>
+        <li></li>
+        <li></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="panel panel-default editor">
+    <div id="controls" class="panel-heading" role="toolbar">
       <select id="theme"></select>
       <select id="mode"></select>
-      <input type="checkbox" id="lineNumbers">Line numbers
-      <input type="checkbox" id="tabIndent">Indent with tabs
+      <label for="lineNumbers">Line numbers</label>
+      <input type="checkbox" id="lineNumbers">
+      <label for="tabIndent">Indent with tabs</label>
+      <input type="checkbox" id="tabIndent">
       <input type="text" name="filename" id="file">
-      <button id="button1" type="button"></button>
-      <button id="button2" type="button"></button>
+      <button id="button1" class="btn btn-default" type="button"></button>
+      <button id="button2" class="btn btn-default" type="button"></button>
     </div>
-    <div>
-        <div id="textContainer"></div>
+    <div class="panel-body editor">
+      <div id="textContainer"></div>
     </div>
+  </div>
+
 </body>
 
 </html>

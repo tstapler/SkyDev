@@ -30,6 +30,7 @@ dependencies:
   args: any
   dbcrypt: any
   yaml: any
+  bootjack: any
   query_string:
     git: https://github.com/kaisellgren/QueryString.git
 
