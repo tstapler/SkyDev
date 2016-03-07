@@ -6,6 +6,7 @@ import 'dart:async';
 
 OutputElement login;
 ButtonElement submitButton;
+ButtonElement registerButton;
 Map data;
 InputElement uName;
 InputElement pWord;
@@ -15,12 +16,19 @@ void main() {
     login = querySelector('#Login-info');
     uName = querySelector('#username');
     pWord = querySelector('#password');
+    registerButton = querySelector('#register');
     uName.onKeyUp.listen(addToData);
     pWord.onKeyUp.listen(addToData);
 
     submitButton.onClick.listen(makeRequest);
-
+    registerButton.onClick.listen(toRegister);
     addToData(null);
+}
+
+Future toRegister(Event e) async{
+  var url = 'http://127.0.0.1:8081/register';
+  window.location.replace(url);
+
 }
 
 void addToData(Event e){
