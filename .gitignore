@@ -9,12 +9,12 @@ build/
 web/packages
 tool/packages
 files/
+pubspec.lock
 
  # Ansible artifacts
 *.retry
 
 **/packages/
-
 web/packages
 tool/packages
 

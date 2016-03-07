@@ -10,47 +10,44 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="packages/react/react.js"></script>
-  <script type="application/dart" src="client.dart.js"></script>
-  <script src="packages/browser/dart.js"></script>
-  <script src="packages/codemirror/codemirror.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="packages/react/react.js"></script>
 
-  <title>SkyDev</title>
+    <title>SkyDev</title>
 
-  <!-- Include bootjack css -->
-  <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
+    <!-- Include bootstrap css and javascript -->
+    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="packages/bootstrap/css/bootstrap-theme.css">
+    <script src="packages/bootstrap/js/bootstrap.js"></script>
 
-  <link href="packages/codemirror/codemirror.css" rel="stylesheet">
-  <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
-
-  <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="packages/codemirror/codemirror.css" rel="stylesheet">
+    <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- nav bar -->
-  <div id="navbar">
-  </div>
-
-  <div class="panel panel-default editor">
-    <div id="controls" class="panel-heading" role="toolbar">
-      <select id="theme"></select>
-      <select id="mode"></select>
-      <label for="lineNumbers">Line numbers</label>
-      <input type="checkbox" id="lineNumbers">
-      <label for="tabIndent">Indent with tabs</label>
-      <input type="checkbox" id="tabIndent">
-      <input type="text" name="filename" id="file">
-      <button id="button1" class="btn btn-default" type="button"></button>
-      <button id="button2" class="btn btn-default" type="button"></button>
+    <!-- nav bar -->
+    <div id="navbar">
     </div>
-    <div class="panel-body editor">
-      <div id="textContainer"></div>
-    </div>
-  </div>
 
+    <div class="panel panel-default editor">
+        <div id="controls" class="panel-heading" role="toolbar">
+            <select id="theme"></select>
+            <select id="mode"></select>
+            <input type="checkbox" id="lineNumbers">Line numbers
+            <input type="checkbox" id="tabIndent">Indent with tabs
+            <button id="button1" type="button"></button>
+        </div>
+        <div class="panel-body editor">
+            <div id="textContainer"></div>
+        </div>
+        <p id="footer"></p>
 </body>
+
+<script type="application/dart" src="client.dart.js"></script>
+<script src="packages/browser/dart.js"></script>
+<script src="packages/codemirror/codemirror.js"></script>
 
 </html>
