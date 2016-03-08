@@ -1,5 +1,5 @@
 // Copyright (c) 2012, the Dart project authors.
-// Please see the AUTHORS file for details. 
+// Please see the AUTHORS file for details.
 // All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -64,9 +64,9 @@ void setCodeMirror(){
 	};
 
 	editor = new CodeMirror.fromElement(
-			querySelector('#textContainer'), 
+			querySelector('#textContainer'),
 			options: options
-			);
+	);
 
 	Hints.registerHintsHelper('dart', dartCompletion);
 	Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
@@ -124,7 +124,7 @@ void setCodeMirror(){
 void updateFooter(CodeMirror editor) {
 	Position pos = editor.getCursor();
 	int off = editor.getDoc().indexFromPos(pos);
-	String str = 'line ${pos.line} • column ${pos.ch} • offset ${off}' 
+	String str = 'line ${pos.line} • column ${pos.ch} • offset ${off}'
 		+ (editor.getDoc().isClean() ? '' : ' • (modified)');
 	querySelector('#footer').text = str;
 }
@@ -199,9 +199,10 @@ void save(Event e){
 }
 
 outputMsg(String msg, bool clearConsole) {
+	Position p = editor.getDoc().getCursor();
 	if(clearConsole){
 		editor.getDoc().setValue("");
 	}
 	editor.getDoc().setValue("$msg");
+	editor.getDoc().setCursor(p);
 }
-
