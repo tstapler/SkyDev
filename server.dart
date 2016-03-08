@@ -114,9 +114,13 @@ void handleMsg(String m) async {
 		File f = (new File("files/doc"));
 		f.writeAsStringSync(m);
 		for (int i = 0; i < list.length; i++){
-			f.readAsString().then((String contents) {
-				list[i].add("Contents:" + contents);
-			});
+			if(list[i].readyState != WebSocket.OPEN){
+				list.removeAt(i);
+			} else{
+				f.readAsString().then((String contents) {
+					list[i].add("Contents:" + contents);
+				});
+			}
 		}
 	} else if (m.startsWith("Log:")) { // writing
 		m = m.replaceFirst("Log:", "", 0);
