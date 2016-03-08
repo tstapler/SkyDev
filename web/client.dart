@@ -10,6 +10,7 @@ import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:codemirror/codemirror.dart';
 import 'package:codemirror/hints.dart';
+import 'package:codemirror/panel.dart';
 import 'package:skydev/skydev_navbar.dart';
 
 ButtonElement b1;
@@ -37,6 +38,7 @@ void main() {
 			outputMsg(m, true);
 			shouldSave = true;
 		}
+
 	});
 
 	reactClient.setClientConfiguration();
@@ -47,6 +49,7 @@ void main() {
 	render(component, querySelector('#button1'));
 
 	setCodeMirror();
+	Panel.addPanel(editor, querySelector('#textContainer'));
 }
 
 void setCodeMirror(){
@@ -132,7 +135,7 @@ void updateFooter(CodeMirror editor) {
 HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
 	Position cur = editor.getCursor();
 	String word = getCurrentWord(editor).toLowerCase();
-	List<HintResult> list = numbers
+	List<HintResult> list = vocab
 		.where((s) => s.startsWith(word))
 		.map((s) => new HintResult(s))
 		.toList();
@@ -158,7 +161,7 @@ HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
 Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options]) {
 	Position cur = editor.getCursor();
 	String word = getCurrentWord(editor).toLowerCase();
-	List<String> list = new List.from(numbers.where((s) => s.startsWith(word)));
+	List<String> list = new List.from(vocab.where((s) => s.startsWith(word)));
 
 	return new Future.delayed(new Duration(milliseconds: 200), () {
 		return new HintResults.fromStrings(
@@ -168,7 +171,7 @@ Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options
 	});
 }
 
-final List numbers = [
+List vocab = [
 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
 ];
 
@@ -205,4 +208,5 @@ outputMsg(String msg, bool clearConsole) {
 	}
 	editor.getDoc().setValue("$msg");
 	editor.getDoc().setCursor(p);
+	vocab = msg.split(" ");
 }

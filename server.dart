@@ -101,13 +101,13 @@ void handleMsg(String m) async {
 	print('Message received: $m');
 
 	// Reading
-	if (m.startsWith("Synchronize:")) { // reading
+	if (m.startsWith("Synchronize")) { // reading
 		File f = new File("files/doc");
 		if (!f.existsSync()) {
-		  socket.add("Error: Could not find file");
+		  socket.add("Contents:Error: Could not find file");
 		} else {
 			String contents = f.readAsStringSync();
-			socket.add(contents);
+			socket.add("Contents:" + contents);
 		}
 	} else if (m.startsWith("Save:")) { // writing
 		m = m.replaceFirst("Save:", "", 0);
