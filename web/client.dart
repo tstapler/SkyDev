@@ -24,7 +24,7 @@ void main() {
 	b1.onClick.listen(save);
 	b1.hidden = false;
 
-	ws = new WebSocket('ws://bigbluehouse.asuscomm.com:8081/ws');
+	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
 		ws.send("Synchronize");
