@@ -28,7 +28,7 @@ main() async {
 			if (request.method == 'POST') {
 				handleLogin(request);
 			} else {
-				request.response.redirect(Uri.parse('login3.html'));
+				request.response.redirect(Uri.parse('login.html'));
 			}
 		} else if (request.uri.path == '/register') {
 			if (request.method == 'POST') {
