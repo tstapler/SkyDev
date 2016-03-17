@@ -98,25 +98,29 @@ void defaultHandler(HttpRequest req) {
 }
 
 void handleMsg(String m) async {
+	(new File("files/doc")).createSync(recursive: true);
 	print('Message received: $m');
 
-	// Reading
-	if (m.startsWith("Synchronize:")) { // reading
+	if (m.startsWith("Synchronize")) { // reading
 		File f = new File("files/doc");
 		if (!f.existsSync()) {
-		  socket.add("Error: Could not find file");
+		  socket.add("Contents:Error: Could not find file");
 		} else {
 			String contents = f.readAsStringSync();
-			socket.add(contents);
+			socket.add("Contents:" + contents);
 		}
 	} else if (m.startsWith("Save:")) { // writing
 		m = m.replaceFirst("Save:", "", 0);
 		File f = (new File("files/doc"));
 		f.writeAsStringSync(m);
 		for (int i = 0; i < list.length; i++){
-			f.readAsString().then((String contents) {
-				list[i].add("Contents:" + contents);
-			});
+			if(list[i].readyState != WebSocket.OPEN){
+				list.removeAt(i);
+			} else{
+				f.readAsString().then((String contents) {
+					list[i].add("Contents:" + contents);
+				});
+			}
 		}
 	} else if (m.startsWith("Log:")) { // writing
 		m = m.replaceFirst("Log:", "", 0);
