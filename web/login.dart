@@ -34,7 +34,6 @@ void main() {
 Future toRegister(Event e) async{
   var url = 'http://127.0.0.1:8081/register';
   window.location.replace(url);
-
 }
 
 void addToData(Event e){
@@ -59,7 +58,7 @@ Future processRequest(HttpRequest resp) async{
     String string = resp.responseText;
     print(string);
     if (string.compareTo('Success') == 0){
-      window.location.replace(path);
+			window.location.replace(path);
     }
     else{
 			login.children.clear();

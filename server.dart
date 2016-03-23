@@ -6,6 +6,7 @@ import 'package:skydev/database.dart';
 import 'package:trestle/gateway.dart';
 import 'package:query_string/query_string.dart';
 
+Cookie sessionCookie;
 WebSocket socket;
 List<WebSocket> list = [];
 
@@ -52,7 +53,10 @@ Future handleLogin(HttpRequest req) async {
 	addCorsHeaders(res);
 	var jsonString = await req.transform(UTF8.decoder).join();
 	Map jsonData = QueryString.parse(jsonString);
+
+
 	if(await verifyUser(jsonData)){
+		res.headers.set('Set-Cookie', sessionCookie.toString());
 		res.write('Success');
 		res.close();
 	}
@@ -73,6 +77,18 @@ Future handleRegister(HttpRequest req) async {
   res.close();
 
 }
+void cookieMaker(var name, var value){
+	sessionCookie = new Cookie(name, value);
+	var expiress = new DateTime.now();
+	expiress = expiress.add(new Duration(hours: 1));
+	sessionCookie.expires = expiress;
+}
+
+Future handleCookies(HttpRequest req) async {
+
+}
+
+
 
 void addCorsHeaders(HttpResponse res) {
 	res.headers.add('Access-Control-Allow-Origin', '*');
@@ -142,6 +158,7 @@ Future verifyUser(Map formData) async{
       return false;
     }
 	if(check_password(pInput, uData.password)){
+		cookieMaker("SessionID", uInput);
 		print("Passwords matched");
 		return true;
 	}
