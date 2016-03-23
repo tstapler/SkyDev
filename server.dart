@@ -18,7 +18,10 @@ main() async {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
 		if (request.uri.path == '/') {
-			request.response.redirect(Uri.parse('index.html'));
+			if(await handleCookies(request)){
+				request.response.redirect(Uri.parse('index.html'));
+			}
+
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
@@ -85,7 +88,26 @@ void cookieMaker(var name, var value){
 }
 
 Future handleCookies(HttpRequest req) async {
-
+	Cookie chkCookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+	print("${chkCookie.value}");
+	if (chkCookie == null){
+		req.response.redirect(Uri.parse('login.html'));
+		return false;
+	}
+	var databaseCookie = "cstapler";
+	try{
+	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();
+    }
+    catch(e){
+      print("Username not found");
+			req.response.redirect(Uri.parse('login.html'));
+			return false;
+    }
+	if (chkCookie.value != databaseCookie){
+		req.response.redirect(Uri.parse('login.html'));
+		return false;
+	}
+	return true;
 }
 
 
