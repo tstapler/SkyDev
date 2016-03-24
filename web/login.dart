@@ -62,14 +62,17 @@ Future processRequest(HttpRequest resp) async{
       window.location.replace(path);
     }
     else{
+			login.children.clear();
       login.children.add(new HeadingElement.h3()..text = 'Login Attempt failed');
     }
   }
   else{
+		login.children.clear();
     login.children.add(new HeadingElement.h3()..text = 'Request failed, status=${resp.status}');
   }
 }
 
 void errorHandle(Object e){
+	login.children.clear();
   login.children.add(new HeadingElement.h3()..text = 'Http Request failed.');
 }

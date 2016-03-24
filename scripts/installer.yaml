@@ -57,11 +57,11 @@
         src="https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip"
         dest=/opt/dartium
         copy=no
-        creates=/opt/dartium/dartium-lucid64-full-stable-1.14.2.0
+        creates=/opt/dartium/dartium-lucid64-full-stable-1.15.0.0
 
     - name: "Link Dartium's Executable to /usr/bin"
       file:
-        src=/opt/dartium/dartium-lucid64-full-stable-1.14.2.0/chrome
+        src=/opt/dartium/dartium-lucid64-full-stable-1.15.0.0/chrome
         dest=/usr/bin/dartium state=link
         mode="u+xr,g+xr,o+xr"
 
