@@ -55,7 +55,6 @@ create_parser() {
 
 main(List<String> args) async {
   await db_gateway.connect();
-
   //Create command argument parser
   var parser = create_parser();
   var results = parser.parse(args);

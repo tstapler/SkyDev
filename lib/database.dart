@@ -8,6 +8,7 @@ class User extends Model {
   @field String username;
   @field String email;
   @field String password;
+  @field String sessionid;
 
   User();
   User.create(String this.username, String this.email, String this.password);
@@ -22,6 +23,7 @@ class CreateUsersTable extends Migration {
       schema.string('username').unique().nullable(false);
       schema.string('email').unique().nullable(false);
       schema.string('password', 60);
+      schema.string('sessionid');
       schema.timestamps();
     });
   }
@@ -31,12 +33,13 @@ class CreateUsersTable extends Migration {
   }
 }
 
- Future create_db(Gateway gateway){
+ Future create_db(Gateway gateway) {
      return gateway.create('users', (Schema schema){
           schema.id();
           schema.string('username').unique().nullable(false);
           schema.string('email').unique().nullable(false);
           schema.string('password', 60);
+          schema.string('sessionid');
           schema.timestamps();
         });
 }

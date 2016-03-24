@@ -21,7 +21,9 @@ main() async {
 			if(await handleCookies(request)){
 				request.response.redirect(Uri.parse('index.html'));
 			}
-
+			else{
+				request.response.redirect(Uri.parse('login.html'));
+			}
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
@@ -32,7 +34,12 @@ main() async {
 			if (request.method == 'POST') {
 				handleLogin(request);
 			} else {
-				request.response.redirect(Uri.parse('login.html'));
+				if(await handleCookies(request)){
+					request.response.redirect(Uri.parse('index.html'));
+				}
+				else{
+					request.response.redirect(Uri.parse('login.html'));
+				}
 			}
 		} else if (request.uri.path == '/register') {
 			if (request.method == 'POST') {
@@ -83,29 +90,38 @@ Future handleRegister(HttpRequest req) async {
 void cookieMaker(var name, var value){
 	sessionCookie = new Cookie(name, value);
 	var expiress = new DateTime.now();
-	expiress = expiress.add(new Duration(hours: 1));
+	expiress = expiress.add(new Duration(minutes: 30));
 	sessionCookie.expires = expiress;
 }
 
 Future handleCookies(HttpRequest req) async {
-	Cookie chkCookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
-	print("${chkCookie.value}");
-	if (chkCookie == null){
-		req.response.redirect(Uri.parse('login.html'));
+	Cookie chkCookie;
+	try{
+		chkCookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+	}
+	catch(e){
+		print("Cookie not found or multiple cookies attached");
 		return false;
 	}
-	var databaseCookie = "cstapler";
+	if (chkCookie == null){
+		return false;
+	}
+	print("${chkCookie.name}");
+	var databaseCookie;
 	try{
 	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();
     }
     catch(e){
-      print("Username not found");
-			req.response.redirect(Uri.parse('login.html'));
+      print("Correct SessionID not found in database");
 			return false;
     }
-	if (chkCookie.value != databaseCookie){
-		req.response.redirect(Uri.parse('login.html'));
+	print("${databaseCookie.sessionid}");
+	if (chkCookie.value != databaseCookie.sessionid){
 		return false;
+	}
+	print("${req.uri.toString()}");
+	if (req.uri.toString() == 'login/' || req.uri.toString() == 'login.html'){
+		return true;
 	}
 	return true;
 }
@@ -181,6 +197,8 @@ Future verifyUser(Map formData) async{
     }
 	if(check_password(pInput, uData.password)){
 		cookieMaker("SessionID", uInput);
+		uData.sessionid = uInput;
+		users.saveAll([uData]);
 		print("Passwords matched");
 		return true;
 	}
