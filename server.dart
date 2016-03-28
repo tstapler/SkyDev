@@ -6,6 +6,7 @@ import 'package:skydev/database.dart';
 import 'package:trestle/gateway.dart';
 import 'package:query_string/query_string.dart';
 
+Cookie sessionCookie;
 WebSocket socket;
 List<WebSocket> list = [];
 
@@ -17,7 +18,12 @@ main() async {
 		final String _buildPath = Platform.script.resolve('build/web/').toFilePath();
 		final VirtualDirectory _clientDir = new VirtualDirectory(_buildPath);
 		if (request.uri.path == '/') {
-			request.response.redirect(Uri.parse('index.html'));
+			if(await handleCookies(request)){
+				request.response.redirect(Uri.parse('index.html'));
+			}
+			else{
+				request.response.redirect(Uri.parse('login.html'));
+			}
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
@@ -28,9 +34,19 @@ main() async {
 			if (request.method == 'POST') {
 				handleLogin(request);
 			} else {
-				request.response.redirect(Uri.parse('login.html'));
+				if(await handleCookies(request)){
+					request.response.redirect(Uri.parse('index.html'));
+				}
+				else{
+					request.response.redirect(Uri.parse('login.html'));
+				}
 			}
-		} else if (request.uri.path == '/register') {
+		}	else if (request.uri.path == '/logout'){
+			handleLogout(request);
+			request.response.headers.clear();
+			request.response.redirect(Uri.parse('login.html'));
+
+		}	else if (request.uri.path == '/register') {
 			if (request.method == 'POST') {
 				handleRegister(request);
 			} else {
@@ -45,6 +61,29 @@ main() async {
 	}
 	await db_gateway.disconnect();
 }
+Future handleLogout(HttpRequest req) async {
+	Cookie cookie;
+	try{
+		cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+	}
+	catch(e){
+		print("Cookie not found or multiple cookies attached");
+		print("Precedes to logout");
+	}
+	var databaseCookie;
+	try{
+	    databaseCookie = await users.where((user) => user.username == cookie.value).first();
+    }
+  catch(e){
+    print("Correct SessionID not found in database");
+
+  }
+	databaseCookie.sessionid = '';
+	var models = [databaseCookie];
+	await users.saveAll(models);
+	print(databaseCookie.sessionid);
+
+}
 
 Future handleLogin(HttpRequest req) async {
 	HttpResponse res = req.response;
@@ -52,7 +91,10 @@ Future handleLogin(HttpRequest req) async {
 	addCorsHeaders(res);
 	var jsonString = await req.transform(UTF8.decoder).join();
 	Map jsonData = QueryString.parse(jsonString);
+
+
 	if(await verifyUser(jsonData)){
+		res.headers.set('Set-Cookie', sessionCookie);
 		res.write('Success');
 		res.close();
 	}
@@ -73,6 +115,51 @@ Future handleRegister(HttpRequest req) async {
   res.close();
 
 }
+void cookieMaker(var name, var value){
+	sessionCookie = new Cookie(name, value);
+	var expiress = new DateTime.now();
+	expiress = expiress.add(new Duration(minutes: 10));
+	sessionCookie.expires = expiress;
+}
+
+Future handleCookies(HttpRequest req) async {
+	Cookie chkCookie;
+	try{
+		chkCookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+	}
+	catch(e){
+		print("Cookie not found or multiple cookies attached");
+		return false;
+	}
+	if (chkCookie == null){
+		return false;
+	}
+	print("${chkCookie.name}");
+	var databaseCookie;
+	try{
+	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();
+    }
+    catch(e){
+      print("Correct SessionID not found in database");
+			return false;
+    }
+		var expiress = new DateTime.now();
+		expiress = expiress.add(new Duration(minutes: 10));
+		chkCookie.expires = expiress;
+		req.response.headers.set('Set-Cookie', chkCookie);
+	print("${databaseCookie.sessionid}");
+	if (chkCookie.value != databaseCookie.sessionid){
+		return false;
+	}
+
+	print("${req.uri.toString()}");
+	if (req.uri.toString() == 'login/' || req.uri.toString() == 'login.html'){
+		return true;
+	}
+	return true;
+}
+
+
 
 void addCorsHeaders(HttpResponse res) {
 	res.headers.add('Access-Control-Allow-Origin', '*');
@@ -142,6 +229,9 @@ Future verifyUser(Map formData) async{
       return false;
     }
 	if(check_password(pInput, uData.password)){
+		cookieMaker("SessionID", uInput);
+		uData.sessionid = uInput;
+		users.saveAll([uData]);
 		print("Passwords matched");
 		return true;
 	}
