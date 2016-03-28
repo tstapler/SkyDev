@@ -94,7 +94,7 @@ Future handleLogin(HttpRequest req) async {
 
 
 	if(await verifyUser(jsonData)){
-		res.headers.set('Set-Cookie', sessionCookie.toString());
+		res.headers.set('Set-Cookie', sessionCookie);
 		res.write('Success');
 		res.close();
 	}
@@ -118,7 +118,7 @@ Future handleRegister(HttpRequest req) async {
 void cookieMaker(var name, var value){
 	sessionCookie = new Cookie(name, value);
 	var expiress = new DateTime.now();
-	expiress = expiress.add(new Duration(minutes: 30));
+	expiress = expiress.add(new Duration(minutes: 10));
 	sessionCookie.expires = expiress;
 }
 
@@ -143,10 +143,15 @@ Future handleCookies(HttpRequest req) async {
       print("Correct SessionID not found in database");
 			return false;
     }
+		var expiress = new DateTime.now();
+		expiress = expiress.add(new Duration(minutes: 10));
+		chkCookie.expires = expiress;
+		req.response.headers.set('Set-Cookie', chkCookie);
 	print("${databaseCookie.sessionid}");
 	if (chkCookie.value != databaseCookie.sessionid){
 		return false;
 	}
+
 	print("${req.uri.toString()}");
 	if (req.uri.toString() == 'login/' || req.uri.toString() == 'login.html'){
 		return true;
