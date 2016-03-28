@@ -41,7 +41,12 @@ main() async {
 					request.response.redirect(Uri.parse('login.html'));
 				}
 			}
-		} else if (request.uri.path == '/register') {
+		}	else if (request.uri.path == '/logout'){
+			handleLogout(request);
+			request.response.headers.clear();
+			request.response.redirect(Uri.parse('login.html'));
+
+		}	else if (request.uri.path == '/register') {
 			if (request.method == 'POST') {
 				handleRegister(request);
 			} else {
@@ -55,6 +60,29 @@ main() async {
 		}
 	}
 	await db_gateway.disconnect();
+}
+Future handleLogout(HttpRequest req) async {
+	Cookie cookie;
+	try{
+		cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+	}
+	catch(e){
+		print("Cookie not found or multiple cookies attached");
+		print("Precedes to logout");
+	}
+	var databaseCookie;
+	try{
+	    databaseCookie = await users.where((user) => user.username == cookie.value).first();
+    }
+  catch(e){
+    print("Correct SessionID not found in database");
+
+  }
+	databaseCookie.sessionid = '';
+	var models = [databaseCookie];
+	await users.saveAll(models);
+	print(databaseCookie.sessionid);
+
 }
 
 Future handleLogin(HttpRequest req) async {

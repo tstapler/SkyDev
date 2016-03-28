@@ -9,6 +9,8 @@ class SkydevNav extends Component {
 							a({'href': '/','id': 'content','className': 'navbar-brand'}, "SkyDev")])]),
 					ul({'className': 'nav navbar-nav navbar-right'},[
 						li({},[
-							a({'href': '/login'}, "Login")])])
+							a({'href': '/login'}, "Login")]),
+							li({},[
+							a({'href': '/logout'}, "Logout")])])
 					])]);
 }
