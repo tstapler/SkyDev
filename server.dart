@@ -68,7 +68,7 @@ Future handleLogout(HttpRequest req) async {
 	}
 	catch(e){
 		print("Cookie not found or multiple cookies attached");
-		print("Precedes to logout");
+		return;
 	}
 	var databaseCookie;
 	try{
@@ -76,12 +76,12 @@ Future handleLogout(HttpRequest req) async {
     }
   catch(e){
     print("Correct SessionID not found in database");
-
+		return;
   }
 	databaseCookie.sessionid = '';
 	var models = [databaseCookie];
 	await users.saveAll(models);
-	print(databaseCookie.sessionid);
+	//print(databaseCookie.sessionid);
 
 }
 
