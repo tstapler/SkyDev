@@ -56,7 +56,7 @@ Future makeRequest(Event e) async{
 
 Future processRequest(HttpRequest res) async{
   if (res.responseText.compareTo('Success') == 0){
-      var url = 'http://127.0.0.1:8081/index.html';
+      var url = 'http://127.0.0.1:8081/login';
       window.location.replace(url);
   }
   else{
