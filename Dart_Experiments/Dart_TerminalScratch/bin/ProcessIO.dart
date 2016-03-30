@@ -1,4 +1,5 @@
 import 'dart:io';
+//import 'package:args/args.dart';
 
 
 Map<String, Function> cmds;
@@ -134,6 +135,40 @@ void helpCommand(String cmd, List<String> args) {
     //writeOutput(sb.toString());
 }
 
-main() {
-    runls();
+void runarbitrarycommands(List<String> listInput){
+  print(listInput.toString());
+  if(listInput == null || listInput.length == 0)
+    print("Null or no string input");
+
+  else if(listInput.length == 1){
+    Process.run(listInput[0], []).then((ProcessResult result) {
+      print(result.stdout);
+    });
+  }
+
+  else{
+    //List<String> listInput = input.split(" ");
+    /*String arguments = "";
+    for(int i = 1; i<listInput.length; i++){
+      if(i == listInput.length-1){
+        arguments += listInput[i].toString();
+      }
+      else{
+        arguments += listInput[i].toString() + ", ";
+      }
+      //test print(listInput[i]);
+    }*/
+    //listInput.sublist(1, listInput.length-1)
+    Process.run(listInput[0], listInput.sublist(1, listInput.length)).then((ProcessResult result) {
+      print(result.stdout);
+      //print(result.stderr); test
+    });
+  }
+}
+
+void main(List<String> arguments) {
+    stdout.writeln('Type Command:');
+    String input = stdin.readLineSync();
+    List<String> inputArguments = input.split(" ");
+    runarbitrarycommands(inputArguments);
 }

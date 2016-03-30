@@ -584,8 +584,7 @@ class Terminal {
 
   void whoCommand(String cmd, List<String> args) {
     writeOutput('${sanitizer.convert(document.title)}'
-                ' - By:  Eric Bidelman &lt;ericbidelman@chromium.org&gt;,'
-                ' Adam Singer &lt;financeCoding@gmail.com&gt;');
+                ' - By:  Josua Gonzales-Neal');
   }
 
   void writeOutput(String h) {
