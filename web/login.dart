@@ -25,8 +25,8 @@ void main() {
     registerButton = querySelector('#register');
     uName.onKeyUp.listen(addToData);
     pWord.onKeyUp.listen(addToData);
-
-    submitButton.onClick.listen(makeRequest);
+		submitButton.onClick.listen(makeRequestClick);
+    submitButton.onKeyPress.listen(makeRequestEnter);
     registerButton.onClick.listen(toRegister);
     addToData(null);
 }
@@ -41,16 +41,28 @@ void addToData(Event e){
   String passWord = pWord.value;
   data = {'username' : userName, 'password' : passWord};
 }
+Future makeRequestClick(Event e) async{
+  	var path = 'http://127.0.0.1:8081/login';
+  	try {
+    	processRequest(await HttpRequest.postFormData(path, data));
+  	}
+  	catch(e){
+    	print('Couldn\'t open $path');
+    	errorHandle(e);
+  	}
+}
 
-Future makeRequest(Event e) async{
-  var path = 'http://127.0.0.1:8081/login';
-  try {
-    processRequest(await HttpRequest.postFormData(path, data));
-  }
-  catch(e){
-    print('Couldn\'t open $path');
-    errorHandle(e);
-  }
+Future makeRequestEnter(KeyEvent e) async{
+	if(e.keyCode == 13 ){
+  	var path = 'http://127.0.0.1:8081/login';
+  	try {
+    	processRequest(await HttpRequest.postFormData(path, data));
+  	}
+  	catch(e){
+    	print('Couldn\'t open $path');
+    	errorHandle(e);
+  	}
+	}
 }
 Future processRequest(HttpRequest resp) async{
   if(resp.status == 200){
