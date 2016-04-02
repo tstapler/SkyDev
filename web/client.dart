@@ -19,6 +19,10 @@ CodeMirror editor;
 var file;
 bool shouldSave = true;
 
+List<String> vocab = [
+'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
+];
+
 void main() {
 	b1 = querySelector('#button1');
 	b1.onClick.listen(save);
@@ -45,8 +49,6 @@ void main() {
 	render(navbar({}), querySelector('#navbar'));
 	var component = div({}, "SkyDev");
 	render(component, querySelector('#content'));
-	component = div({}, "Save");
-	render(component, querySelector('#button1'));
 
 	setCodeMirror();
 	Panel.addPanel(editor, querySelector('#textContainer'));
@@ -170,10 +172,6 @@ Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options
 			new Position(cur.line, cur.ch));
 	});
 }
-
-List vocab = [
-'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
-];
 
 final RegExp ids = new RegExp(r'[a-zA-Z_0-9]');
 
