@@ -208,5 +208,4 @@ outputMsg(String msg, bool clearConsole) {
 	}
 	editor.getDoc().setValue("$msg");
 	editor.getDoc().setCursor(p);
-	vocab = msg.split(" ");
 }
