@@ -24,6 +24,13 @@ main() async {
 			else{
 				request.response.redirect(Uri.parse('login.html'));
 			}
+		} else if (request.uri.path == '/profile'){
+			if(await handleCookies(request)){
+				request.response.redirect(Uri.parse('user_management.html'));
+			}
+			else{
+				request.response.redirect(Uri.parse('login.html'));
+			}
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
