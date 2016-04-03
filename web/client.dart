@@ -18,6 +18,9 @@ import 'package:bootjack/bootjack.dart';
 
 ButtonElement b1;
 WebSocket ws, chat;
+ButtonElement consoleSubmitButton;
+InputElement consoleInput;
+WebSocket ws;
 CodeMirror editor;
 var file;
 bool shouldSave = true;
@@ -29,6 +32,12 @@ void main() {
 	b1.onClick.listen(save);
 	b1.hidden = false;
 	chat = setupChat();
+	consoleInput = querySelector('#cmdLine');
+	consoleSubmitButton = querySelector('#ConsoleSubmitButton');
+	consoleSubmitButton.onClick.listen((submitConsole) => consoleInput.value = consoleInput.value);
+	consoleSubmitButton.hidden = false;
+
+
 	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
@@ -216,6 +225,14 @@ void save(Event e){
 	}
 }
 
+void submitConsole(Event e){
+	e.preventDefault(); // Don't do the default submit.
+	String cmdArgs = consoleInput.value();
+	ws.send("Submit:" + cmdArgs);
+	
+
+}
+
 outputMsg(String msg, bool clearConsole) {
 	Position p = editor.getDoc().getCursor();
 	if(clearConsole){
@@ -229,4 +246,5 @@ outputMsg(String msg, bool clearConsole) {
 		vocab.add(words[i]);
 	}
 	
+	vocab = msg.split(" ");
 }

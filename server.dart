@@ -290,6 +290,14 @@ void handleMsg(String m) async {
 		m = m.replaceFirst("Log:", "", 0);
 		print("$m");
 	}
+	else if(m.startsWith("Submit:")){
+		m = m.replaceFirst("Submit:", "", 0);
+		List<String> cmdArgs = m.split(' ');
+		if(cmdArgs.length == 1)
+			runarbitrarycommands(cmdArgs[0]);
+		else
+			runarbitrarycommands(cmdArgs[0],cmdArgs.sublist(1,cmdArgs.length));
+	}
 }
 
 void handleChat(String m) async {
@@ -350,4 +358,34 @@ void returnOnlineUsers(HttpRequest req) async {
 	res.write(JSON.encode(online.map((user) => {"username": user.username, "online": user.sessionid != null && user.sessionid != ""}).toList()));
 	res.close();
 }
+
+void runarbitrarycommands(String cmd, [List<String> listInput]){
+	if(cmd == null)
+		print("Null or no string input from terminal");
+
+		else if(listInput == null){
+			try{
+			Process.run(cmd, []).then((ProcessResult result) {
+				//websocket send the resuls back to the client side to display the correct
+				// content
+				//ws.send("ConsoleResults:"+results);
+					String results = result.stdout;
+					print("$results");
+			});}
+			catch(e){
+				print(e);
+			}
+		}
+
+		else{
+			Process.run(cmd, listInput).then((ProcessResult result) {
+				String results = result.stdout;
+				print("$results");
+				//websocket send the resuls back to the client side to display the correct
+				// content
+				//ws.send("ConsoleResults:"+results);
+			});
+		}
+}
+
 void printError(error) => print(error);
