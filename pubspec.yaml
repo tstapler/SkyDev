@@ -32,3 +32,5 @@ dependencies:
     git: https://github.com/kaisellgren/QueryString.git
 
 transformers:
+- $dart2js:
+    verbose: true
