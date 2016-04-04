@@ -5,7 +5,9 @@ final message_list = registerComponent(() => new SkydevMessageList());
 
 class SkydevMessageList extends Component {
 	render() {
-		return props["messages"].map((message) => li({'className': 'list-group-item'}, message.sender + ": " + message.content + " " + message.timestamp))
+		return				ul({'className': 'list-group'},
+				props["messages"].map((message) => li({'className': 'list-group-item'}, message['sender'] + ': ' + message['content'] + " at " + message['timestamp']))
+				);
 	}
 }
 
@@ -25,20 +27,20 @@ class SkydevChatWindow extends Component {
 						button({'className': 'btn btn-default', 'onClick': toggleVisible}, props['recipient']), 
 						div({'className': 'dropdown-menu'}, [ 
 							div({"className": "panel panel-default"}, [
-								p({'className': 'panel-heading'}, 'Chat with ' + props['recipient']), 
-								ul({'className': 'list-group', 'aria-labelledby':'chat_with-' + props['recipient']}, [
-									li({'className': 'list-group-item'}, "This is some chat"),
-									li({'className': 'list-group-item'}, "Some more chat!"), 
-									]), 
+								p({'className': 'panel-heading'}, 'Chat with ' + props['recipient']),
+								div({'className': 'panel-body'}, [
+									message_list({'messages': props['messages']}, []), 
+
 									div({'className': 'input-group'}, [
-								input({'className':'form-control', 'type':'text'},[]),
-								span({'className': 'input-group-btn'}, [
-									button({'className': 'btn btn-default'}, "Send")
-									]),
+										input({'className':'form-control', 'type':'text'},[]),
+										span({'className': 'input-group-btn'}, [
+											button({'className': 'btn btn-default'}, "Send")
+											]),
+										])
+									])
 								])
 							])
-						])
-					]));
+						]));
 		}
 }
 
@@ -55,7 +57,7 @@ class SkydevChatBar extends Component {
 	ul({
 		'className': 'nav nav-tabs nav-justified'
 	}, [
-	props['chats'].map((recipient) => chat_window({'recipient': recipient, 'current_user': props['current_user']}, [])).toList()
+	props['chats'].map((chat) => chat_window({'recipient': chat["recipient"], 'current_user': props['current_user'], 'messages': chat["messages"]})).toList()
 	])
 	])
 	]);
