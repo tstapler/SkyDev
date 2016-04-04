@@ -12,37 +12,23 @@ authors:
   - Tyler Stapler <tstapler@iastate.edu>
 
 environment:
-  sdk: ">=1.8.3 <2.0.0"
+  sdk: ">=1.13.0 <2.0.0"
 
 dependencies:
   react: ^0.8.8
-  http_server: any
-  dart_to_js_script_rewriter: any
-  bootstrap: "^3.3.4"
-  polymer: ^1.0.0-rc.1
+  http_server: ^0.9.5
+  dart_to_js_script_rewriter: 1.0.1
+  bootstrap: ^3.3.4
   browser: ^0.10.0
-  polymer_elements:
-  web_components: any
   reflectable: any
-  codemirror: any
-  postgresql: any
-  trestle: any
+  codemirror: "0.4.0+5.8.0"
+  postgresql: ^0.3.3
+  trestle: ^0.7.0 
   args: any
-  dbcrypt: any
-  yaml: any
-  bootjack: any
+  dbcrypt: ^0.2.1
+  yaml: ^2.1.8
+  bootjack: ^0.6.5
   query_string:
     git: https://github.com/kaisellgren/QueryString.git
 
-dev_dependencies:
-  coverage: ^0.7.2
-  dart_dev: ^1.0.0
-  dart_style: <0.3.0
-  dartdoc: ^0.4.0
-  test: ^0.12.0
 transformers:
-- $dart2js:
-    verbose: true
-- bootstrap:
-    url: //maxcdn.bootstrapcdn.com/bootstrap/{{version}}
-    version: 3.3.4
