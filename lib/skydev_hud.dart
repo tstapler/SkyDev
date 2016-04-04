@@ -7,7 +7,7 @@ final hud = registerComponent(() => new SkydevHUD());
 class SkydevHUD extends Component {
 	@override
 		getInitialState() => {
-			'current_user': "",
+			'current_user': "tstapler",
 				'friends': {
 					"tyler": {"username": "tstapler", "online": true},
 					"sambhav": {"username": "ssrirama", "online": false}

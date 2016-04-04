@@ -1,5 +1,6 @@
 import 'package:react/react.dart';
 import 'dart:html';
+import 'dart:core';
 
 final message_list = registerComponent(() => new SkydevMessageList());
 
@@ -15,11 +16,23 @@ class SkydevMessageList extends Component {
 final chat_window = registerComponent(() => new SkydevChatWindow());
 
 class SkydevChatWindow extends Component {
+	@override
+	getInitialState() => {
+	 "messages": props["messages"]
+	};
 
 	toggleVisible(err) {
-		var dropdown_div = querySelector("#"+'chat_with'+props['recipient']);
+		var dropdown_div = querySelector('#chat_with'+props['recipient']);
 		dropdown_div.classes.toggle('open');
 	}
+
+	addMessage(err) {
+		var input = querySelector('#chat_with' + props['recipient'] + "send");
+		state['messages'].add({'sender': props['current_user'], 'content': input.value, 'timestamp': new DateTime.now().toString()});
+		setState({'messages': state['messages']});
+		print(state['messages'].toString());
+	}
+
 	@override
 		render() {
 			return li({},  
@@ -29,12 +42,11 @@ class SkydevChatWindow extends Component {
 							div({"className": "panel panel-default"}, [
 								p({'className': 'panel-heading'}, 'Chat with ' + props['recipient']),
 								div({'className': 'panel-body'}, [
-									message_list({'messages': props['messages']}, []), 
-
+									message_list({'messages': state['messages']}, []), 
 									div({'className': 'input-group'}, [
-										input({'className':'form-control', 'type':'text'},[]),
+										input({'className':'form-control', 'type':'text', 'id': 'chat_with' + props['recipient'] + "send"},[]),
 										span({'className': 'input-group-btn'}, [
-											button({'className': 'btn btn-default'}, "Send")
+											button({'className': 'btn btn-default', 'onClick': addMessage}, "Send")
 											]),
 										])
 									])

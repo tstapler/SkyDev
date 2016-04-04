@@ -6,29 +6,30 @@ class SkydevUser extends Component {
 	render()  {
 		if(props["online"]){
 			return	li({"className": "list-group-item"},
-					[
-					props["username"],"  ",  span({'className': "glyphicon glyphicon-heart"}, [])
-					]);
+
+					p({"className":"text-center"}, props["username"],"  ",  span({'className': "glyphicon glyphicon-heart"}, []))
+					);
 
 		}	
-		else{
+		else {
 			return li({"className": "list-group-item"},
-					[
-					props["username"],"  ",  span({'className': "glyphicon glyphicon-heart-empty"}, [])
-						]);
-					}
+
+					p({"className":"text-center"}, props["username"],"  ",  span({'className': "glyphicon glyphicon-heart-empty"}, []))
+					);
+
 		}
 	}
+}
 
-	final user_list = registerComponent(() => new SkydevUserList());
+final user_list = registerComponent(() => new SkydevUserList());
 
-	class SkydevUserList extends Component {
-		get friends => props["users"];
+class SkydevUserList extends Component {
+	get friends => props["users"];
 
-		render() => ul(
-				{"className": "list-group"},
-				props['users'].keys.map((user_name) => user({
-					'username': props["users"][user_name]["username"],
-				"online": props["users"][user_name]["online"]
-				}, [])));
-	}
+	render() => ul(
+			{"className": "list-group"},
+			props['users'].keys.map((user_name) => user({
+				'username': props["users"][user_name]["username"],
+			"online": props["users"][user_name]["online"]
+			}, [])));
+}
