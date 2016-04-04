@@ -25,6 +25,18 @@ main() async {
 			else{
 				request.response.redirect(Uri.parse('login.html'));
 			}
+		} else if (request.uri.path == '/profile'){
+			if(request.method == 'POST'){
+				handleProfilePage(request);
+			}
+			else{
+				if(await handleCookies(request)){
+					request.response.redirect(Uri.parse('user_management.html'));
+				}
+				else{
+					request.response.redirect(Uri.parse('login.html'));
+				}
+			}
 		} else if (request.uri.path == '/ws') {
 			// Upgrade an HttpRequest to a WebSocket connection.
 			socket = await WebSocketTransformer.upgrade(request);
@@ -68,6 +80,52 @@ main() async {
 		}
 	}
 	await db_gateway.disconnect();
+}
+Future handleProfilePage(HttpRequest req) async {
+	HttpResponse res = req.response;
+	addCorsHeaders(res);
+	if(req.method == 'POST'){
+		Cookie cookie;
+		try{
+			cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+		}
+		catch(e){
+			print("Cookie not found or multiple cookies attached");
+			res.write('Fail');
+			res.close();
+			return;
+		}
+		var jsonString = await req.transform(UTF8.decoder).join();
+		Map userData = QueryString.parse(jsonString);
+		var model;
+		try{
+		    model = await users.where((user) => user.username == cookie.value).first();
+		  }
+	  catch(e){
+	    print("Correct User not found in database");
+			res.write('Fail');
+			res.close();
+			return;
+		}
+		if(check_password(userData['password'], model.password)){
+			if(userData['newUsername'] != '' && userData['newUsername'] != null && model.username != userData['newUsername']){
+				model.username = userData['newUsername'];
+			}
+			if(userData['newEmail'] != '' && userData['newEmail'] != null && model.email != userData['newEmail']){
+				model.email = userData['newEmail'];
+			}
+			if(userData['newPassword'] != '' && userData['newPassword'] != null && userData['password'] != userData['newPassword']){
+				model.password = hash_password(userData['newPassword']);
+			}
+		  await users.saveAll([model]);
+			res.write('Success');
+			res.close();
+		}
+		else{
+			res.write('Fail');
+			res.close();
+		}
+	}
 }
 Future handleLogout(HttpRequest req) async {
 	HttpResponse res = req.response;
@@ -153,7 +211,7 @@ Future handleCookies(HttpRequest req) async {
 	if (chkCookie == null){
 		return false;
 	}
-	print("${chkCookie.name}");
+	print("${chkCookie.value}");
 	var databaseCookie;
 	try{
 	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();

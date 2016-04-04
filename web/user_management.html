@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="scaffolded-by" content="https://github.com/google/stagehand">
+  <title>User Management</title>
+  <script async src="packages/react/react.js"></script>
+  <script src="user_management.dart.js" type="application/dart"></script>
+  <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
+  <script src="packages/browser/dart.js"></script>
+</head>
+
+<body>
+  <div id="navbar"></div>
+
+  <div class="container">
+    <div class="col-xs-6 col-xs-offset-3">
+    	<div class="panel panel-default">
+
+    	  <div class="panel-heading">
+    	    <h1 class="text-center"> SkyDev User Management </h1>
+    	  </div>
+
+    	  <div class="panel-body">
+    	    <h2 id="error" class="text-center">Change any settings:</h2>
+
+    	    <div class="form-default">
+    	      <div class="form-group">
+    	        <label class="sr-only" for="email">Change Email?</label>
+    	        <input id="newEmail" class="form-control" name="email" type="text" placeholder=" Enter New Email ">
+    	      </div>
+    	      <div class="form-group">
+    	        <label class="sr-only" for="username">Change Username?</label>
+    	        <input id="newUsername" class="form-control" name="username" type="text" placeholder=" Enter New Username ">
+    	      </div>
+    	      <div class="form-group">
+    	        <input id="newPassword" class="form-control" name="newPassword" type="password" placeholder="Enter New Password ">
+    	      </div>
+    	      <div class="form-group">
+    	        <input id="vPassword" class="form-control" name="vPassword" type="password" placeholder="Enter New Password again">
+    	      </div>
+            <div class="form-group">
+              <p class ="text-info">Old password is needed for any changes: </p>
+              <label class="sr-only" for="password">Change Password?</label>
+              <input id="oldPassword" class="form-control" name="oldPassword" type="password" placeholder="Enter Old Password ">
+            </div>
+    	      <br>
+    	      <button id="Button" class="btn btn-default center-block" type="Button"> Submit and Save Changes </button>
+    	    </div>
+    	  </div>
+    	</div>
+    </div>
+  </div>
+
+  <body>
+</html>

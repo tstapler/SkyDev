@@ -19,6 +19,9 @@ class SkydevNav extends Component {
         ul({
           'className': 'nav navbar-nav navbar-right'
         }, [
+          li({},[
+            a({'href': '/profile'}, "Profile")
+          ]),
           li({}, [
             a({'href': '/login'}, "Login")
           ]),
