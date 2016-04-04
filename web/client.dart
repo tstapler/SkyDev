@@ -242,11 +242,11 @@ outputMsg(String msg, bool clearConsole) {
 	}
 	editor.getDoc().setValue("$msg");
 	editor.getDoc().setCursor(p);
-	
+
 	List<String> words = msg.split(" ");
 	for(int i = 0; i < words.length; i++){
 		vocab.add(words[i]);
 	}
-	
-	vocab = msg.split(" ");
+
+
 }
