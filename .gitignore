@@ -38,3 +38,15 @@ doc/api/
 *.iml
 *.ipr
 *.iws
+
+# Vim Files
+_vim*
+
+# Rope Project files
+.rope*
+
+# Sass Files 
+.sass*
+
+# Env
+.env
