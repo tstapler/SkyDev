@@ -1,12 +1,13 @@
 import 'package:react/react.dart';
 import 'dart:html';
 import 'dart:core';
+import 'dart:convert';
 
 final message_list = registerComponent(() => new SkydevMessageList());
 
 class SkydevMessageList extends Component {
 	render() {
-		return				ul({'className': 'list-group'},
+		return				ul({'className': 'list-group message-list'},
 				props["messages"].map((message) => li({'className': 'list-group-item'}, message['sender'] + ': ' + message['content'] + " at " + message['timestamp']))
 				);
 	}
@@ -28,9 +29,10 @@ class SkydevChatWindow extends Component {
 
 	addMessage(err) {
 		var input = querySelector('#chat_with' + props['recipient'] + "send");
-		state['messages'].add({'sender': props['current_user'], 'content': input.value, 'timestamp': new DateTime.now().toString()});
+		var message = {'sender': props['current_user'], 'recipient': props['recipient'],  'content': input.value, 'timestamp': new DateTime.now().toString()};
+		state['messages'].add(message);
+		props['chat_socket'].send(JSON.encode(message));
 		setState({'messages': state['messages']});
-		print(state['messages'].toString());
 	}
 
 	@override
@@ -69,7 +71,7 @@ class SkydevChatBar extends Component {
 	ul({
 		'className': 'nav nav-tabs nav-justified'
 	}, [
-	props['chats'].map((chat) => chat_window({'recipient': chat["recipient"], 'current_user': props['current_user'], 'messages': chat["messages"]})).toList()
+	new List.from(props['chats'].keys.map((recipient) => chat_window({'recipient': recipient, 'current_user': props['current_user'], 'messages':  props["chats"][recipient] , 'chat_socket': props['chat_socket']})))
 	])
 	])
 	]);

@@ -51,8 +51,6 @@ main() async {
 			}
 		}	else if (request.uri.path == '/logout'){
 			handleLogout(request);
-			request.response.headers.clear();
-			request.response.redirect(Uri.parse('login.html'));
 
 		}	else if (request.uri.path == '/register') {
 			if (request.method == 'POST') {
@@ -62,6 +60,8 @@ main() async {
 			}
 		} else if (request.uri.path == '/viewdb') {
 			handleView(request);
+		} else if (request.uri.path == '/online') {
+			returnOnlineUsers(request);
 		} else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
@@ -70,27 +70,38 @@ main() async {
 	await db_gateway.disconnect();
 }
 Future handleLogout(HttpRequest req) async {
-	Cookie cookie;
+	HttpResponse res = req.response;
+
+	Cookie cookie, session;
 	try{
+		print(req.cookies);
 		cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
+		session = req.cookies.singleWhere( (element) => element.name  == "session");
+		print(session);
+		print(cookie);
 	}
 	catch(e){
 		print("Cookie not found or multiple cookies attached");
 		return;
 	}
-	var databaseCookie;
+	var user;
 	try{
-	    databaseCookie = await users.where((user) => user.username == cookie.value).first();
+			print("Cookie Value:" + cookie.value + "|");
+	    user = await users.where((user) => user.username == cookie.value).first();
+			print(user);
     }
   catch(e){
     print("Correct SessionID not found in database");
 		return;
   }
-	databaseCookie.sessionid = '';
-	var models = [databaseCookie];
-	await users.saveAll(models);
-	//print(databaseCookie.sessionid);
 
+	cookie.value = "";
+	session.value = "";
+	user.sessionid = "";
+	res.headers.set('Set-Cookie', cookie);
+	res.headers.set('Set-Cookie', session);
+	await users.save(user);
+	res.redirect(Uri.parse('login.html'));
 }
 
 Future handleLogin(HttpRequest req) async {
@@ -225,6 +236,13 @@ void handleMsg(String m) async {
 
 void handleChat(String m) async {
 	print('Message received: $m');
+		for (int i = 0; i < chat_list.length; i++){
+			if(chat_list[i].readyState != WebSocket.OPEN){
+				chat_list.removeAt(i);
+			} else{
+				chat_list[i].add(m);
+			}
+		}
 }
 
 Future verifyUser(Map formData) async{
@@ -263,8 +281,15 @@ Future createUser(Map formData) async{
 void handleView(HttpRequest req) async {
 	HttpResponse res = req.response;
 	var user_list = await users.all().toList();
-	res.write(user_list);
+	res.write(JSON.encode(user_list));
 	res.close();
 }
 
+void returnOnlineUsers(HttpRequest req) async {
+	HttpResponse res = req.response;
+	var online = await users.all().toList();
+  addCorsHeaders(res);
+	res.write(JSON.encode(online.map((user) => {"username": user.username, "online": user.sessionid != null && user.sessionid != ""}).toList()));
+	res.close();
+}
 void printError(error) => print(error);

@@ -6,6 +6,7 @@
 
 import 'dart:html';
 import 'dart:async';
+import 'dart:convert';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:codemirror/codemirror.dart';
@@ -49,7 +50,7 @@ void main() {
 
 	reactClient.setClientConfiguration();
 	render(navbar({}, []), querySelector('#navbar'));
-	render(hud({}, []), querySelector('#hud'));
+	render(hud({'chat_socket': chat}, []), querySelector('#hud'));
 	var component = div({}, "Save");
 	render(component, querySelector('#button1'));
 
@@ -59,7 +60,7 @@ void main() {
 WebSocket setupChat() {
  var websocket = new WebSocket('ws://localhost:8081/chat');
 	websocket.onOpen.listen((event){
-		websocket.send("Hello World");
+		websocket.send("Chat Client Connected");
 	});
 
 	return websocket;

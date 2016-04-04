@@ -28,8 +28,8 @@ class SkydevUserList extends Component {
 
 	render() => ul(
 			{"className": "list-group"},
-			props['users'].keys.map((user_name) => user({
-				'username': props["users"][user_name]["username"],
-			"online": props["users"][user_name]["online"]
+			props['users'].map((friend) => user({
+				'username': friend["username"],
+			"online": friend["online"]
 			}, [])));
 }

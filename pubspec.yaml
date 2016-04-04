@@ -30,6 +30,7 @@ dependencies:
   bootjack: ^0.6.5
   query_string:
     git: https://github.com/kaisellgren/QueryString.git
+  cookie: 0.0.4
 
 transformers:
 - $dart2js:
