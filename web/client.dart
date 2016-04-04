@@ -11,9 +11,8 @@ import 'package:react/react.dart';
 import 'package:codemirror/codemirror.dart';
 import 'package:codemirror/hints.dart';
 import 'package:codemirror/panel.dart';
+import 'package:skydev/skydev_hud.dart';
 import 'package:skydev/skydev_navbar.dart';
-import 'package:skydev/skydev_bottom_nav.dart';
-import 'package:skydev/skydev_sidebar.dart';
 import 'package:bootjack/bootjack.dart';
 
 ButtonElement b1;
@@ -24,6 +23,7 @@ bool shouldSave = true;
 
 void main() {
 	Bootjack.useDefault();
+	Dropdown.use();
 	b1 = querySelector('#button1');
 	b1.onClick.listen(save);
 	b1.hidden = false;
@@ -46,9 +46,8 @@ void main() {
 	});
 
 	reactClient.setClientConfiguration();
-	render(navbar({}), querySelector('#navbar'));
-	render(bottom_navbar({}), querySelector('#bottom_navbar'));
-	render(sidebar({}), querySelector('#sidebar'));
+	render(navbar({}, []), querySelector('#navbar'));
+	render(hud({}, []), querySelector('#hud'));
 	var component = div({}, "Save");
 	render(component, querySelector('#button1'));
 

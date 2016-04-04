@@ -47,3 +47,11 @@ select {
 
 #container {
  box-sizing: border-box;}
+
+ .glyphicon-heart-empty {
+	color: black;
+ }
+
+ .glyphicon-heart {
+	color: neon-green;
+}
