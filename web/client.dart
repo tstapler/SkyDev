@@ -52,6 +52,10 @@ void main() {
 			outputMsg(m, true);
 			shouldSave = true;
 		}
+		else if (m.startsWith("ConsoleResults:")){
+			m = m.replaceFirst("ConsoleResults:", "",0);
+			outputMsg(m, false);
+		}
 
 	});
 
@@ -227,10 +231,9 @@ void save(Event e){
 
 void submitConsole(Event e){
 	e.preventDefault(); // Don't do the default submit.
-	String cmdArgs = consoleInput.value();
+	String cmdArgs = consoleInput.value;
 	ws.send("Submit:" + cmdArgs);
-	
-
+	print(cmdArgs);
 }
 
 outputMsg(String msg, bool clearConsole) {

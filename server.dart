@@ -290,13 +290,14 @@ void handleMsg(String m) async {
 		m = m.replaceFirst("Log:", "", 0);
 		print("$m");
 	}
-	else if(m.startsWith("Submit:")){
+	else if (m.startsWith("Submit:")){
 		m = m.replaceFirst("Submit:", "", 0);
 		List<String> cmdArgs = m.split(' ');
-		if(cmdArgs.length == 1)
-			runarbitrarycommands(cmdArgs[0]);
-		else
+		if (cmdArgs.length == 1){
+			runarbitrarycommands(cmdArgs[0]);}
+		else{
 			runarbitrarycommands(cmdArgs[0],cmdArgs.sublist(1,cmdArgs.length));
+		}
 	}
 }
 
@@ -371,6 +372,7 @@ void runarbitrarycommands(String cmd, [List<String> listInput]){
 				//ws.send("ConsoleResults:"+results);
 					String results = result.stdout;
 					print("$results");
+					socket.add("ConsoleResults:"+results);
 			});}
 			catch(e){
 				print(e);
