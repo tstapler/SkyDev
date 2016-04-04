@@ -20,7 +20,6 @@ ButtonElement b1;
 WebSocket ws, chat;
 ButtonElement consoleSubmitButton;
 InputElement consoleInput;
-WebSocket ws;
 CodeMirror editor;
 var file;
 bool shouldSave = true;
