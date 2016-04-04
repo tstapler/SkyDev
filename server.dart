@@ -7,8 +7,9 @@ import 'package:trestle/gateway.dart';
 import 'package:query_string/query_string.dart';
 
 Cookie sessionCookie;
-WebSocket socket;
+WebSocket socket, chat_socket;
 List<WebSocket> list = [];
+List<WebSocket> chat_list = [];
 
 main() async {
 	await db_gateway.connect();
@@ -30,6 +31,13 @@ main() async {
 			print('Server has gotten a websocket request');
 			list.add(socket);
 			socket.listen(handleMsg);
+			//Handler for the chat system
+			} else if (request.uri.path == '/chat') {
+			// Upgrade an HttpRequest to a WebSocket connection.
+			chat_socket = await WebSocketTransformer.upgrade(request);
+			print('Server has gotten a websocket request');
+			chat_list.add(chat_socket);
+			chat_socket.listen(handleChat);
 		} else if (request.uri.path == '/login') {
 			if (request.method == 'POST') {
 				handleLogin(request);
@@ -213,6 +221,10 @@ void handleMsg(String m) async {
 		m = m.replaceFirst("Log:", "", 0);
 		print("$m");
 	}
+}
+
+void handleChat(String m) async {
+	print('Message received: $m');
 }
 
 Future verifyUser(Map formData) async{

@@ -10,40 +10,50 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="packages/react/react.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="packages/react/react.js"></script>
 
-    <title>SkyDev</title>
+  <title>SkyDev</title>
 
-    <!-- Include bootstrap css and javascript -->
-    <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
-    <link href="packages/codemirror/codemirror.css" rel="stylesheet">
-    <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+  <!-- Include bootstrap css and javascript -->
+  <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
+  <link href="packages/codemirror/codemirror.css" rel="stylesheet">
+  <link href="packages/codemirror/addon/hint/show-hint.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
 
-    <!-- nav bar -->
-    <div id="navbar">
-    </div>
-
-    <div class="panel panel-default editor">
-        <div id="controls" class="panel-heading" role="toolbar">
-            <select id="theme"></select>
-            <select id="mode"></select>
-            <input type="checkbox" id="lineNumbers">Line numbers
-            <input type="checkbox" id="tabIndent">Indent with tabs
-            <button id="button1" type="button"></button>
-        </div>
-        <div class="panel-body">
-            <div class="editor" id="textContainer"></div>
-        </div>
-        <p id="footer"></p>
+	<div class="container-fluid">
+  	<!-- nav bar -->
+  	<div id="navbar">
+  	</div>
+  	
+  	<div class="row">
+  	  <div class="column col-xs-10">
+  	    <div class="panel panel-default editor">
+  	      <div id="controls" class="panel-heading" role="toolbar">
+  	        <select id="theme"></select>
+  	        <select id="mode"></select>
+  	        <input type="checkbox" id="lineNumbers">Line numbers
+  	        <input type="checkbox" id="tabIndent">Indent with tabs
+  	        <button id="button1" type="button"></button>
+  	      </div>
+  	      <div class="panel-body">
+  	        <div class="editor" id="textContainer"></div>
+  	      </div>
+  	      <p id="footer"></p>
+  	    </div>
+  	  </div>
+  	  <div id="sidebar"></div>
+  	</div>
+  	  <div id="bottom_navbar"></div>
+  </div>
 </body>
 
-<script type="application/dart" src="client.dart.js"></script>
+<!-- <script type="application/dart" src="client.dart.js"></script> -->
+<script type="application/dart" src="client.dart"></script>
 <script src="packages/browser/dart.js"></script>
 <script src="packages/codemirror/codemirror.js"></script>
 

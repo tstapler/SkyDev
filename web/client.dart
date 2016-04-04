@@ -12,18 +12,22 @@ import 'package:codemirror/codemirror.dart';
 import 'package:codemirror/hints.dart';
 import 'package:codemirror/panel.dart';
 import 'package:skydev/skydev_navbar.dart';
+import 'package:skydev/skydev_bottom_nav.dart';
+import 'package:skydev/skydev_sidebar.dart';
+import 'package:bootjack/bootjack.dart';
 
 ButtonElement b1;
-WebSocket ws;
+WebSocket ws, chat;
 CodeMirror editor;
 var file;
 bool shouldSave = true;
 
 void main() {
+	Bootjack.useDefault();
 	b1 = querySelector('#button1');
 	b1.onClick.listen(save);
 	b1.hidden = false;
-
+	chat = setupChat();
 	ws = new WebSocket('ws://localhost:8081/ws');
 
 	ws.onOpen.listen((event){
@@ -43,13 +47,23 @@ void main() {
 
 	reactClient.setClientConfiguration();
 	render(navbar({}), querySelector('#navbar'));
-	var component = div({}, "SkyDev");
-	render(component, querySelector('#content'));
-	component = div({}, "Save");
+	render(bottom_navbar({}), querySelector('#bottom_navbar'));
+	render(sidebar({}), querySelector('#sidebar'));
+	var component = div({}, "Save");
 	render(component, querySelector('#button1'));
 
 	setCodeMirror();
 	Panel.addPanel(editor, querySelector('#textContainer'));
+}
+
+WebSocket setupChat() {
+ var websocket = new WebSocket('ws://localhost:8081/chat');
+	websocket.onOpen.listen((event){
+		websocket.send("Hello World");
+	});
+
+	return websocket;
+
 }
 
 void setCodeMirror(){
