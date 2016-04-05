@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http_server/http_server.dart';
 import 'package:skydev/database.dart';
-import 'package:trestle/gateway.dart';
+//import 'package:trestle/gateway.dart';
 import 'package:query_string/query_string.dart';
 
 Cookie sessionCookie;
-WebSocket socket, chat_socket;
+WebSocket socket, chat_socket, console_socket;
 List<WebSocket> list = [];
 List<WebSocket> chat_list = [];
+List<WebSocket> console_list = [];
 
 main() async {
 	await db_gateway.connect();
@@ -50,7 +51,13 @@ main() async {
 			print('Server has gotten a websocket request');
 			chat_list.add(chat_socket);
 			chat_socket.listen(handleChat);
-		} else if (request.uri.path == '/login') {
+		  }else if (request.uri.path == '/console') {
+		  // Upgrade an HttpRequest to a WebSocket connection.
+		  console_socket = await WebSocketTransformer.upgrade(request);
+		  print('Server has gotten a websocket console request');
+		  console_list.add(console_socket);
+		  console_socket.listen(handleConsole);
+	  }else if (request.uri.path == '/login') {
 			if (request.method == 'POST') {
 				handleLogin(request);
 			} else {
@@ -290,7 +297,7 @@ void handleMsg(String m) async {
 		m = m.replaceFirst("Log:", "", 0);
 		print("$m");
 	}
-	else if (m.startsWith("Submit:")){
+	/*else if (m.startsWith("Submit:")){
 		m = m.replaceFirst("Submit:", "", 0);
 		List<String> cmdArgs = m.split(' ');
 		if (cmdArgs.length == 1){
@@ -298,7 +305,7 @@ void handleMsg(String m) async {
 		else{
 			runarbitrarycommands(cmdArgs[0],cmdArgs.sublist(1,cmdArgs.length));
 		}
-	}
+	}*/
 }
 
 void handleChat(String m) async {
@@ -309,6 +316,55 @@ void handleChat(String m) async {
 			} else{
 				chat_list[i].add(m);
 			}
+		}
+}
+
+void runarbitrarycommands(String cmd, [List<String> listInput]){
+	if(cmd == null)
+		print("Null or no string input from terminal");
+
+		else if(listInput == null){
+			print(cmd);
+			//try{
+			Process.run(cmd, []).then((ProcessResult result) {
+				//websocket send the resuls back to the client side to display the correct
+				// content
+					String results = result.stdout;
+					String error = result.stderr;
+					print("$results");
+					//console_socket.add("ConsoleResults:"+results);
+					console_socket.add(JSON.encode(result.stdout));
+					if(error != null){
+						console_socket.add("ConsoleErrorResults:"+error);
+					}
+			});//}
+			/*catch(e){
+				print(e);
+			}*/
+		}
+
+		else{
+			Process.run(cmd, listInput).then((ProcessResult result) {
+				String results = result.stdout;
+				String error = result.stderr;
+				print("$results");
+				console_socket.add("ConsoleResults:"+results);
+				//websocket send the resuls back to the client side to display the correct
+				// content
+				if(error != null){
+					console_socket.add("ConsoleErrorResults:"+error);
+				}
+			});
+		}
+}
+
+void handleConsole(String m) async {
+		List<String> cmdArgs = JSON.decode(m);
+		if (cmdArgs.length == 1){
+			runarbitrarycommands(cmdArgs[0]);
+		}
+		else {
+			runarbitrarycommands(cmdArgs[0],cmdArgs.sublist(1,cmdArgs.length));
 		}
 }
 
@@ -358,36 +414,6 @@ void returnOnlineUsers(HttpRequest req) async {
   addCorsHeaders(res);
 	res.write(JSON.encode(online.map((user) => {"username": user.username, "online": user.sessionid != null && user.sessionid != ""}).toList()));
 	res.close();
-}
-
-void runarbitrarycommands(String cmd, [List<String> listInput]){
-	if(cmd == null)
-		print("Null or no string input from terminal");
-
-		else if(listInput == null){
-			try{
-			Process.run(cmd, []).then((ProcessResult result) {
-				//websocket send the resuls back to the client side to display the correct
-				// content
-				//ws.send("ConsoleResults:"+results);
-					String results = result.stdout;
-					print("$results");
-					socket.add("ConsoleResults:"+results);
-			});}
-			catch(e){
-				print(e);
-			}
-		}
-
-		else{
-			Process.run(cmd, listInput).then((ProcessResult result) {
-				String results = result.stdout;
-				print("$results");
-				//websocket send the resuls back to the client side to display the correct
-				// content
-				//ws.send("ConsoleResults:"+results);
-			});
-		}
 }
 
 void printError(error) => print(error);
