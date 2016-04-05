@@ -198,7 +198,8 @@ Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options
 	});
 }
 
-List vocab = [
+List vocab = [];
+List baseVocab = [
 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
 ];
 
@@ -244,9 +245,7 @@ outputMsg(String msg, bool clearConsole) {
 	editor.getDoc().setCursor(p);
 
 	List<String> words = msg.split(" ");
-	for(int i = 0; i < words.length; i++){
-		vocab.add(words[i]);
-	}
-
-
+	vocab.clear();
+	vocab = baseVocab;
+	vocab.addAll(words);
 }
