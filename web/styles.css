@@ -60,3 +60,70 @@ select {
 	overflow-y: scroll;
 	max-height: 30vh;
 }
+
+#container output {
+  clear: both;
+  width: 100%;
+  background-color: black;
+  color: white;
+  overflow-y: auto;
+  height: 200px;
+  overflow: hidden;
+}
+#container output h3 {
+  margin: 0;
+}
+
+#container output pre {
+  margin: 0;
+}
+
+.input-line {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  clear: both;
+  background-color: black;
+  color: white;
+  height: auto;
+}
+
+.input-line > div:nth-child(2) {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+}
+
+.prompt {
+  white-space: nowrap;
+  color: green;
+  margin-right: 7px;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
+  display: box;
+  box-pack: center;
+  box-orient: vertical;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.cmdline {
+  outline: none;
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+  font: inherit;
+  border: none;
+  color: inherit;
+}

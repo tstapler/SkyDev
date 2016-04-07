@@ -41,38 +41,39 @@
   	      <div class="panel-body">
   	        <div class="editor" id="textContainer"></div>
   	      </div>
-  	      <p id="footer"></p>
+  	       <p id="footer"></p>
   	    </div>
   	  </div>
 			<div id="hud"></div>
   	</div>
   </div>
-    <!-- nav bar -->
+
     <div id="navbar">
     </div>
 
     <div class="panel panel-default editor">
-        <div id="controls" class="panel-heading" role="toolbar">
+        <!-- <div id="controls" class="panel-heading" role="toolbar">
             <select id="theme"></select>
             <select id="mode"></select>
             <input type="checkbox" id="lineNumbers">Line numbers
             <input type="checkbox" id="tabIndent">Indent with tabs
             <button id="button1" type="button"></button>
-        </div>
-        <div class="panel-body">
+        </div> -->
+        <!-- <div class="panel-body">
             <div class="editor" id="textContainer"></div>
-        </div>
+        </div> -->
     <div class="panel panel-default editor">
       <div id="consoleControls">
         <h4>Console</h4>
         <!-- <select id="theme"></select> -->
-        <button id="ConsoleSubmitButton" type="button" style="float: right; float: top">Submit</button>
+        <!--<button id="ConsoleSubmitButton" type="button" style="float: right; float: top">Submit</button> -->
       </div>
       <div id="container">
-  		  <!-- <output id="output"></output> -->
+  		  <output id="output"></output>
   		  <div id="input-line" class="input-line">
-  		      <div><textarea id="cmdline" type="text" style="width:100%; height:150px; background: black;font-weight:bold; color: green"/></textarea></div>
-  		  </div>
+  		      <!--<div><textarea id="cmdline" type="text" style="width:100%; height:150px; background: black;font-weight:bold; color: green"/></textarea></div> -->
+          <div class="prompt">SkyDev&gt;</div><div><input id="cmdline" class="cmdline" autofocus /></div>
+        </div>
   		</div>
     </div>
         <p id="footer"></p>

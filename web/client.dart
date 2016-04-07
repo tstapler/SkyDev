@@ -5,6 +5,7 @@
 // found in the LICENSE file.
 
 import 'dart:html';
+//import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:react/react_client.dart' as reactClient;
@@ -18,8 +19,8 @@ import 'package:bootjack/bootjack.dart';
 
 ButtonElement b1;
 WebSocket ws, chat;
-ButtonElement consoleSubmitButton;
-InputElement consoleInput;
+//ButtonElement consoleSubmitButton;
+//InputElement consoleInput;
 CodeMirror editor;
 var file;
 bool shouldSave = true;
@@ -31,13 +32,15 @@ void main() {
 	b1.onClick.listen(save);
 	b1.hidden = false;
 	chat = setupChat();
-	consoleInput = querySelector('#cmdLine');
-	consoleSubmitButton = querySelector('#ConsoleSubmitButton');
+	/*consoleInput = document.querySelector('#cmdLine');
+	consoleSubmitButton = document.querySelector('#ConsoleSubmitButton');
 	consoleSubmitButton.onClick.listen((submitConsole) => consoleInput.value = consoleInput.value);
-	consoleSubmitButton.hidden = false;
+	consoleSubmitButton.hidden = false;*/
 
 
 	ws = new WebSocket('ws://localhost:8081/ws');
+
+
 
 	ws.onOpen.listen((event){
 		ws.send("Synchronize");
@@ -57,6 +60,8 @@ void main() {
 		}
 
 	});
+
+	new TerminalFilesystem().run();
 
 	setCodeMirror();
 
@@ -229,12 +234,12 @@ void save(Event e){
 	}
 }
 
-void submitConsole(Event e){
-	e.preventDefault(); // Don't do the default submit.
-	String cmdArgs = consoleInput.value;
+/*void submitConsole(Event e){
+	//e.preventDefault(); // Don't do the default submit.
+	String cmdArgs = consoleInput.toString();
 	ws.send("Submit:" + cmdArgs);
 	print(cmdArgs);
-}
+}*/
 
 outputMsg(String msg, bool clearConsole) {
 	Position p = editor.getDoc().getCursor();
@@ -248,4 +253,159 @@ outputMsg(String msg, bool clearConsole) {
 	vocab.clear();
 	vocab = baseVocab;
 	vocab.addAll(words);
+}
+
+class Terminal{
+  String cmdLineContainer;
+  String outputContainer;
+  String cmdLineInput;
+  OutputElement output;
+  InputElement input;
+  DivElement cmdLine;
+  List<String> history = [];
+  int historyPosition = 0;
+  Map<String, Function> cmds;
+  HtmlEscape sanitizer = new HtmlEscape();
+	WebSocket console_ws;
+
+  Terminal(this.cmdLineContainer, this.outputContainer, this.cmdLineInput) {
+    cmdLine = document.querySelector(cmdLineContainer);
+    output = document.querySelector(outputContainer);
+    input = document.querySelector(cmdLineInput);
+
+    // Always force text cursor to end of input line.
+    window.onClick.listen((event) => cmdLine.focus());
+
+    // Trick: Always force text cursor to end of input line.
+    cmdLine.onClick.listen((event) => input.value = input.value);
+
+    // Handle up/down key presses for shell history and enter for new command.
+    cmdLine.onKeyDown.listen(historyHandler);
+    cmdLine.onKeyDown.listen(processNewCommand);
+
+		//Initializing websocket
+		console_ws = new WebSocket('ws://localhost:8081/console');
+
+		console_ws.onMessage.listen((event){
+			String m = event.data;
+ 			if (m.startsWith("ConsoleResults:")){
+				m = m.replaceFirst("ConsoleResults:", "",0);
+				//outputMsg(m, false);
+				List<String> list_results = m.split(' ');
+				for(int i = 0; i<list_results.length; i++){
+					writeOutput(list_results[i]);
+
+				}
+			}
+			else if (m.startsWith("ConsoleErrorResults:")){
+				m = m.replaceFirst("ConsoleErrorResults:", "",0);
+				//outputMsg(m, false);
+				writeOutput(m);
+			}
+
+			else {
+				writeOutput(JSON.decode(m));
+			}
+
+		});
+
+  }
+
+  void historyHandler(KeyboardEvent event) {
+		print("History hit");
+    var histtemp = "";
+    int upArrowKey = 38;
+    int downArrowKey = 40;
+
+    /* keyCode == up-arrow || keyCode == down-arrow */
+    if (event.keyCode == upArrowKey || event.keyCode == downArrowKey) {
+      event.preventDefault();
+
+      // Up or down
+      if (historyPosition < history.length) {
+        history[historyPosition] = input.value;
+      } else {
+        histtemp = input.value;
+      }
+    }
+
+    if (event.keyCode == upArrowKey) { // Up-arrow keyCode
+      historyPosition--;
+      if (historyPosition < 0) {
+        historyPosition = 0;
+      }
+    } else if (event.keyCode == downArrowKey) { // Down-arrow keyCode
+      historyPosition++;
+      if (historyPosition >= history.length) {
+        historyPosition = history.length - 1;
+      }
+    }
+
+    /* keyCode == up-arrow || keyCode == down-arrow */
+    if (event.keyCode == upArrowKey || event.keyCode == downArrowKey) {
+      // Up or down
+      input.value = history[historyPosition] != null ? history[historyPosition]  : histtemp;
+    }
+  }
+
+  void processNewCommand(KeyboardEvent event) {
+		print("ProcessNewCommand hit");
+    int enterKey = 13;
+    int tabKey = 9;
+
+    if (event.keyCode == tabKey) {
+      event.preventDefault();
+    } else if (event.keyCode == enterKey) {
+
+      if (!input.value.isEmpty) {
+        history.add(input.value);
+        historyPosition = history.length;
+      }
+
+      // Move the line to output and remove id's.
+      DivElement line = input.parent.parent.clone(true);
+      line.attributes.remove('id');
+      line.classes.add('line');
+      InputElement cmdInput = line.querySelector(cmdLineInput);
+      cmdInput.attributes.remove('id');
+      cmdInput.autofocus = false;
+      cmdInput.readOnly = true;
+      output.children.add(line);
+      String cmdline = input.value;
+      input.value = ""; // clear input
+
+      // Parse out command, args, and trim off whitespace.
+      List<String> args;
+      if (!cmdline.isEmpty) {
+        cmdline.trim();
+        args = sanitizer.convert(cmdline).split(' ');
+      }
+      runarbitrarycommands(args);
+      window.scrollTo(0, window.innerHeight);
+    }
+  }
+
+  void runarbitrarycommands(List<String> cmdArgs){
+		print("Command function called");
+    if(cmdArgs == null)
+      print("Null or no string input from terminal");
+		else {
+				console_ws.send(JSON.encode(cmdArgs));
+				print(cmdArgs);
+				//writeOutput(cmdArgs);
+    }
+  }
+
+  void writeOutput(String h) {
+    output.insertAdjacentHtml('beforeEnd', h);
+  }
+
+}
+
+class TerminalFilesystem {
+  Terminal term;
+
+  void run() {
+    term = new Terminal('#input-line', '#output', '#cmdline');
+  }
 }
