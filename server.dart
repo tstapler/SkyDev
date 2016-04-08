@@ -141,11 +141,10 @@ Future handleLogout(HttpRequest req) async {
 	try{
 		print(req.cookies);
 		cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
-		session = req.cookies.singleWhere( (element) => element.name  == "session");
-		print(session);
 		print(cookie);
 	}
 	catch(e){
+		print(e);
 		print("Cookie not found or multiple cookies attached");
 		res.redirect(Uri.parse('login.html'));
 		return;
@@ -157,16 +156,15 @@ Future handleLogout(HttpRequest req) async {
 			print(user);
     }
   catch(e){
+		print(e);
     print("Correct SessionID not found in database");
 		res.redirect(Uri.parse('login.html'));
 		return;
   }
 
 	cookie.value = "";
-	session.value = "";
 	user.sessionid = "";
 	res.headers.set('Set-Cookie', cookie);
-	res.headers.set('Set-Cookie', session);
 	await users.save(user);
 	res.redirect(Uri.parse('login.html'));
 }
