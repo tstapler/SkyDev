@@ -147,6 +147,7 @@ Future handleLogout(HttpRequest req) async {
 	}
 	catch(e){
 		print("Cookie not found or multiple cookies attached");
+		res.redirect(Uri.parse('login.html'));
 		return;
 	}
 	var user;
@@ -157,6 +158,7 @@ Future handleLogout(HttpRequest req) async {
     }
   catch(e){
     print("Correct SessionID not found in database");
+		res.redirect(Uri.parse('login.html'));
 		return;
   }
 
