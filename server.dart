@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http_server/http_server.dart';
 import 'package:skydev/database.dart';
-//import 'package:trestle/gateway.dart';
+import 'package:skydev/api.dart';
 import 'package:query_string/query_string.dart';
 
 Cookie sessionCookie;
@@ -79,8 +79,12 @@ main() async {
 			}
 		} else if (request.uri.path == '/viewdb') {
 			handleView(request);
-		} else if (request.uri.path == '/online') {
+		} else if (request.uri.path == '/api/online') {
 			returnOnlineUsers(request);
+		} else if (request.uri.path == '/api/username') {
+			addCorsHeaders(request.response);
+			print(request.response);
+			getUsernameFromSession(request);
 		} else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
