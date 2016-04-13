@@ -9,6 +9,8 @@ import 'package:skydev/serverHandleLogin.dart';
 import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
+import 'package:skydev/api.dart';
+import 'package:query_string/query_string.dart';
 
 WebSocket socket, chat_socket, console_socket;
 List<WebSocket> list = [];
@@ -82,8 +84,12 @@ main() async {
 			}
 		} else if (request.uri.path == '/viewdb') {
 			handleView(request);
-		} else if (request.uri.path == '/online') {
+		} else if (request.uri.path == '/api/online') {
 			returnOnlineUsers(request);
+		} else if (request.uri.path == '/api/username') {
+			addCorsHeaders(request.response);
+			print(request.response);
+			getUsernameFromSession(request);
 		} else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
@@ -206,14 +212,6 @@ void addCorsHeaders(HttpResponse res) {
 	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
 	res.headers.add('Access-Control-Allow-Headers',
 	'Origin, X-Requested-With, Content-Type, Accept');
-}
-
-void returnOnlineUsers(HttpRequest req) async {
-	HttpResponse res = req.response;
-	var online = await users.all().toList();
-  addCorsHeaders(res);
-	res.write(JSON.encode(online.map((user) => {"username": user.username, "online": user.sessionid != null && user.sessionid != ""}).toList()));
-	res.close();
 }
 
 void printError(error) => print(error);

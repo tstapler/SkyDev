@@ -29,7 +29,7 @@ class SkydevHUD extends Component {
 				};
 			
 		getOnlineUsers() {
-			var online_users = "http://" + Uri.base.host + ":8081" + '/online';
+			var online_users = "http://" + Uri.base.host + ":8081" + '/api/online';
 			HttpRequest.getString(online_users).then((String raw) {
 				var friends = JSON.decode(raw);
 				state["friends"] = friends;
@@ -42,6 +42,7 @@ class SkydevHUD extends Component {
 			getOnlineUsers();
 		}
 		componentDidMount(rootNode) {
+			print( cookie.get("SessionID"));
 			getOnlineUsers();
 			props["chat_socket"].onMessage.listen((event){
 				String m = event.data;
@@ -62,8 +63,6 @@ class SkydevHUD extends Component {
 		}
 
 		setName() {
-			var namebox = querySelector("#userselect");
-			state["current_user"] = namebox.value;
 			setState({"current_user": state["current_user"]});
 			print(state["current_user"]);
 		
@@ -75,8 +74,6 @@ class SkydevHUD extends Component {
 						'chat_socket': state['chat_socket'],
 						'friends': state['friends'],
 					}, []),
-					input({"type": "text", "id": "userselect"}), 
-					button({"onClick": (SyntheticMouseEvent e) => setName() }), 
 					chatbar({
 						'current_user': state['current_user'],
 					'chat_socket': state['chat_socket'],
