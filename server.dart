@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'dart:convert';
-import 'dart:async';
+//import 'dart:async';
 import 'package:http_server/http_server.dart';
 import 'package:skydev/database.dart';
 //import 'package:trestle/gateway.dart';
-import 'package:query_string/query_string.dart';
+import 'package:skydev/serverHandleProfilePage.dart';
+import 'package:skydev/serverHandleLogin.dart';
+import 'package:skydev/serverHandleRegistration.dart';
+import 'package:skydev/serverHandleLogout.dart';
+import 'package:skydev/serverHandleCookies.dart';
 
-Cookie sessionCookie;
 WebSocket socket, chat_socket, console_socket;
 List<WebSocket> list = [];
 List<WebSocket> chat_list = [];
@@ -88,185 +91,7 @@ main() async {
 	}
 	await db_gateway.disconnect();
 }
-Future handleProfilePage(HttpRequest req) async {
-	HttpResponse res = req.response;
-	addCorsHeaders(res);
-	if(req.method == 'POST'){
-		Cookie cookie;
-		try{
-			cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
-		}
-		catch(e){
-			print("Cookie not found or multiple cookies attached");
-			res.write('Fail');
-			res.close();
-			return;
-		}
-		var jsonString = await req.transform(UTF8.decoder).join();
-		Map userData = QueryString.parse(jsonString);
-		var model;
-		try{
-		    model = await users.where((user) => user.username == cookie.value).first();
-		  }
-	  catch(e){
-	    print("Correct User not found in database");
-			res.write('Fail');
-			res.close();
-			return;
-		}
-		if(check_password(userData['password'], model.password)){
-			if(userData['newUsername'] != '' && userData['newUsername'] != null && model.username != userData['newUsername']){
-				model.username = userData['newUsername'];
-			}
-			if(userData['newEmail'] != '' && userData['newEmail'] != null && model.email != userData['newEmail']){
-				model.email = userData['newEmail'];
-			}
-			if(userData['newPassword'] != '' && userData['newPassword'] != null && userData['password'] != userData['newPassword']){
-				model.password = hash_password(userData['newPassword']);
-			}
-		  await users.saveAll([model]);
-			res.write('Success');
-			res.close();
-		}
-		else{
-			res.write('Fail');
-			res.close();
-		}
-	}
-}
-Future handleLogout(HttpRequest req) async {
-	HttpResponse res = req.response;
 
-	Cookie cookie, session;
-	try{
-		print(req.cookies);
-		cookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
-		print(cookie);
-	}
-	catch(e){
-		print(e);
-		print("Cookie not found or multiple cookies attached");
-		res.redirect(Uri.parse('login.html'));
-		return;
-	}
-	var user;
-	try{
-			print("Cookie Value:" + cookie.value + "|");
-	    user = await users.where((user) => user.username == cookie.value).first();
-			print(user);
-    }
-  catch(e){
-		print(e);
-    print("Correct SessionID not found in database");
-		res.redirect(Uri.parse('login.html'));
-		return;
-  }
-
-	cookie.value = "";
-	user.sessionid = "";
-	res.headers.set('Set-Cookie', cookie);
-	await users.save(user);
-	res.redirect(Uri.parse('login.html'));
-}
-
-Future handleLogin(HttpRequest req) async {
-	HttpResponse res = req.response;
-	print('${req.method}: ${req.uri.path}');
-	addCorsHeaders(res);
-	var jsonString = await req.transform(UTF8.decoder).join();
-	Map jsonData = QueryString.parse(jsonString);
-
-
-	if(await verifyUser(jsonData)){
-		res.headers.set('Set-Cookie', sessionCookie);
-		res.write('Success');
-		res.close();
-	}
-	else{
-		res.write('Fail');
-		res.close();
-	}
-}
-
-Future handleRegister(HttpRequest req) async {
-  HttpResponse res = req.response;
-  print('${req.method}: ${req.uri.path}');
-  addCorsHeaders(res);
-  var queryString = await req.transform(UTF8.decoder).join();
-  Map queryData = QueryString.parse(queryString);
-  await createUser(queryData);
-  res.write('Success');
-  res.close();
-
-}
-void cookieMaker(var name, var value){
-	sessionCookie = new Cookie(name, value);
-	var expiress = new DateTime.now();
-	expiress = expiress.add(new Duration(minutes: 10));
-	sessionCookie.expires = expiress;
-}
-
-Future handleCookies(HttpRequest req) async {
-	Cookie chkCookie;
-	try{
-		chkCookie = req.cookies.singleWhere( (element) => element.name  == "SessionID");
-	}
-	catch(e){
-		print("Cookie not found or multiple cookies attached");
-		return false;
-	}
-	if (chkCookie == null){
-		return false;
-	}
-	print("${chkCookie.value}");
-	var databaseCookie;
-	try{
-	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();
-    }
-    catch(e){
-      print("Correct SessionID not found in database");
-			return false;
-    }
-		var expiress = new DateTime.now();
-		expiress = expiress.add(new Duration(minutes: 10));
-		chkCookie.expires = expiress;
-		req.response.headers.set('Set-Cookie', chkCookie);
-	print("${databaseCookie.sessionid}");
-	if (chkCookie.value != databaseCookie.sessionid){
-		return false;
-	}
-
-	print("${req.uri.toString()}");
-	if (req.uri.toString() == 'login/' || req.uri.toString() == 'login.html'){
-		return true;
-	}
-	return true;
-}
-
-
-
-void addCorsHeaders(HttpResponse res) {
-	res.headers.add('Access-Control-Allow-Origin', '*');
-	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.headers.add('Access-Control-Allow-Headers',
-	'Origin, X-Requested-With, Content-Type, Accept');
-}
-
-void handleOptions(HttpRequest req) {
-	HttpResponse res = req.response;
-	addCorsHeaders(res);
-	print('${req.method}: ${req.uri.path}');
-	res.statusCode = HttpStatus.NO_CONTENT;
-	res.close();
-}
-
-void defaultHandler(HttpRequest req) {
-	HttpResponse res = req.response;
-	addCorsHeaders(res);
-	res.statusCode = HttpStatus.NOT_FOUND;
-	res.write('Not found: ${req.method}, ${req.uri.path}');
-	res.close();
-}
 
 void handleMsg(String m) async {
 	(new File("files/doc")).createSync(recursive: true);
@@ -368,44 +193,19 @@ void handleConsole(String m) async {
 		}
 }
 
-Future verifyUser(Map formData) async{
-	var uInput;
-	var pInput;
-  	var uData;
-	uInput = formData['username'];
-	pInput = formData['password'];
-  try{
-	    uData = await users.where((user) => user.username == uInput).first();
-    }
-    catch(e){
-      print("Username not found");
-      return false;
-    }
-	if(check_password(pInput, uData.password)){
-		cookieMaker("SessionID", uInput);
-		uData.sessionid = uInput;
-		users.saveAll([uData]);
-		print("Passwords matched");
-		return true;
-	}
-	else{
-		print("Incorrect Password");
-		return false;
-	}
-}
-
-Future createUser(Map formData) async{
-	var models = [new User.create(formData['username'],
-									formData['email'],
-										hash_password(formData['password']))];
-  await users.saveAll(models);
-}
 
 void handleView(HttpRequest req) async {
 	HttpResponse res = req.response;
 	var user_list = await users.all().toList();
 	res.write(JSON.encode(user_list));
 	res.close();
+}
+
+void addCorsHeaders(HttpResponse res) {
+	res.headers.add('Access-Control-Allow-Origin', '*');
+	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
+	res.headers.add('Access-Control-Allow-Headers',
+	'Origin, X-Requested-With, Content-Type, Accept');
 }
 
 void returnOnlineUsers(HttpRequest req) async {
