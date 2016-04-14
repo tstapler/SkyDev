@@ -9,9 +9,4 @@ vm:
 
 install-dependencies:
 	sudo pip install ansible
-	ansible-playbook -K -i "localhost," -c local scripts/installer.yaml
-
-clean:
-	rm -r build/*
-	rm -r packages
-	# rm ~/.pub-cache
+	ansible-playbook -K -i "localhost," -c local scripts/installer.yaml	
