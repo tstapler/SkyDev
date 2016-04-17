@@ -15,16 +15,23 @@ class SkydevMessageList extends Component {
 
 
 final chat_window = registerComponent(() => new SkydevChatWindow());
+var count = 0;
 
 class SkydevChatWindow extends Component {
 	@override
 	getInitialState() => {
-	 "messages": props["messages"]
+	 "messages": props["messages"], 
+	 "new_messages": "",
 	};
 
 	toggleVisible(err) {
 		var dropdown_div = querySelector('#chat_with'+props['recipient']);
 		dropdown_div.classes.toggle('open');
+		setState({"new_messages": ""});
+	}
+
+	remove(err) {
+		props["removeWindow"](props['recipient']);
 	}
 
 	addMessage(err) {
@@ -32,6 +39,19 @@ class SkydevChatWindow extends Component {
 		var message = {'sender': props['current_user'], 'recipient': props['recipient'],  'content': input.value, 'timestamp': new DateTime.now().toString()};
 		state['messages'].add(message);
 		props['chat_socket'].send(JSON.encode(message));
+
+		print("Something");
+		if(props['recipient'] == props['current_user']){
+			var new_messages = 1;
+			if(state["new_messages"] != "" && state["new_messages"] != null)
+			{
+				print("Value of state new_messages");
+			new_messages = state["new_messages"] + 1;
+			}
+			setState({"new_messages": new_messages});
+			print(state["new_messages"]);
+
+		}
 		setState({'messages': state['messages']});
 	}
 
@@ -39,10 +59,10 @@ class SkydevChatWindow extends Component {
 		render() {
 			return li({},  
 					div({'className': "dropup", 'id': 'chat_with' + props['recipient']}, [
-						button({'className': 'btn btn-default', 'onClick': toggleVisible}, props['recipient']), 
+					button({'className': 'btn', 'onClick': toggleVisible}, [props['recipient'], " ",  span({"className": "badge alert-info"}, state["new_messages"])]), 
 						div({'className': 'dropdown-menu'}, [ 
 							div({"className": "panel panel-default"}, [
-								p({'className': 'panel-heading'}, 'Chat with ' + props['recipient']),
+								p({'className': 'panel-heading'}, ['Chat with ' + props['recipient'] + "   ", button({'className': 'btn btn-default', 'onClick': remove}, span({'className': 'glyphicon glyphicon-remove'}))]),
 								div({'className': 'panel-body'}, [
 									message_list({'messages': state['messages']}, []), 
 									div({'className': 'input-group'}, [
@@ -71,7 +91,7 @@ class SkydevChatBar extends Component {
 	ul({
 		'className': 'nav nav-tabs nav-justified'
 	}, [
-	new List.from(props['chats'].keys.map((recipient) => chat_window({'recipient': recipient, 'current_user': props['current_user'], 'messages':  props["chats"][recipient] , 'chat_socket': props['chat_socket']})))
+	new List.from(props['chats'].keys.map((recipient) => chat_window({'recipient': recipient, 'current_user': props['current_user'], 'messages':  props["chats"][recipient] , 'chat_socket': props['chat_socket'], 'removeWindow': props['removeWindow']})))
 	])
 	])
 	]);

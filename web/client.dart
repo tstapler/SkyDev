@@ -16,6 +16,7 @@ import 'package:codemirror/panel.dart';
 import 'package:skydev/skydev_hud.dart';
 import 'package:skydev/skydev_navbar.dart';
 import 'package:bootjack/bootjack.dart';
+import 'package:cookies/cookies.dart';
 
 ButtonElement b1;
 WebSocket ws, chat;
@@ -66,6 +67,7 @@ void main() {
 	setCodeMirror();
 
 	reactClient.setClientConfiguration();
+	
 	render(navbar({}, []), querySelector('#navbar'));
 	render(hud({'chat_socket': chat}, []), querySelector('#hud'));
 	var component = div({}, "Save");
