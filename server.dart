@@ -9,6 +9,7 @@ import 'package:skydev/serverHandleLogin.dart';
 import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
+import 'package:skydev/serverFileBrowser.dart';
 import 'package:skydev/api.dart';
 
 WebSocket socket, chat_socket, console_socket;
@@ -84,12 +85,14 @@ main() async {
 		} else if (request.uri.path == '/viewdb') {
 			handleView(request);
 		} else if (request.uri.path == '/api/online') {
-			returnOnlineUsers(request);
+			getOnlineUsers(request);
 		} else if (request.uri.path == '/api/username') {
 			getUsernameFromSession(request);
 		} else if (request.uri.path == '/api/email') {
       getEmailFromSession(request);
-    } else {
+		} else if (request.uri.path == '/api/files') {
+			getFilesDirectory(request);
+		} else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
 		}

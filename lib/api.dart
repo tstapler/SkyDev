@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
+import 'package:path/path.dart' show dirname;
 import 'package:skydev/database.dart';
 import 'package:skydev/utils.dart';
 
@@ -21,7 +24,7 @@ getUsernameFromSession(HttpRequest req) async {
   res.close();
 }
 
-returnOnlineUsers(HttpRequest req) async {
+getOnlineUsers(HttpRequest req) async {
   HttpResponse res = req.response;
 	addCorsHeaders(res);
   var online = await users.all().toList();
@@ -48,4 +51,12 @@ getEmailFromSession(HttpRequest req) async {
     res.write(JSON.encode(null));
   }
   res.close();
+
+getFilesDirectory (HttpResponse req) async {
+	HttpResponse res = req.response;
+	addCorsHeaders(res);
+	var files = await dirContents("/home/tstapler/Programming/Dart/G39_SkyDev/files/");
+	print(files.toString());
+	res.write(files.toString());
+	res.close();
 }

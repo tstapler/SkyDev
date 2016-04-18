@@ -39,6 +39,9 @@ doc/api/
 *.ipr
 *.iws
 
+# Testing Files
+web/test.*
+
 # Vim Files
 _vim*
 
