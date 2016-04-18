@@ -43,9 +43,12 @@ void addToData(Event e){
   verifyPass = vpWord.value;
   data = {'newUsername' : newUserName, 'newPassword': newPassWord, 'password' : passWord, 'newEmail' : newEmail};
 }
+Future requestUsernameandEmail(Event e) async {
+	var pathUsername = 'http://127.0.0.1:8081/api/Username';
+
+}
 
 Future makeRequest(Event e) async{
-  //if (verifyPass.compareTo(data['password']) == 0 || data['password'].toString().isEmpty || data['newPassword'].toString().isEmpty || true){
     var path = 'http://127.0.0.1:8081/profile';
     try {
       processRequest(await HttpRequest.postFormData(path, data));
@@ -55,10 +58,6 @@ Future makeRequest(Event e) async{
       error.children.clear();
       error.children.add(new HeadingElement.h3()..text = 'Update of info attempt failed');
     }
-//  }else{
-  //  error.children.clear();
-  //  error.children.add(new HeadingElement.h3()..text = 'Passwords do not match');
-//  }
 }
 
 Future processRequest(HttpRequest res) async{
