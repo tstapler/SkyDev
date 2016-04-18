@@ -14,86 +14,8 @@ class SkydevHUD extends Component {
   getInitialState() => {
         'current_user': "tstapler",
         'friends': [],
-        'chats': {
-          "cstapler": [
-            {
-              "sender": "tstapler",
-              'content': "Hey Man what's Up?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "tstapler",
-              'content': "How have you been?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "cstapler",
-              'content': "I've been Great Thanks",
-              'timestamp': 'Now'
-            }
-          ],
-          "ssrirama": [
-            {
-              "sender": "tstapler",
-              'content': "Hey Man what's Up?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "tstapler",
-              'content': "How have you been?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "ssrirama",
-              'content': "I've been Great Thanks",
-              'timestamp': 'Now'
-            }
-          ],
-          "jgn": [
-            {
-              "sender": "tstapler",
-              'content': "Hey Man what's Up?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "tstapler",
-              'content': "How have you been?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "jgn",
-              'content': "I've been Great Thanks",
-              'timestamp': 'Now'
-            }
-          ],
-          "tstapler": [
-            {
-              "sender": "tstapler",
-              'content': "Hey Man what's Up?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "tstapler",
-              'content': "How have you been?",
-              'timestamp': 'Now'
-            },
-            {
-              "sender": "jgn",
-              'content': "I've been Great Thanks",
-              'timestamp': 'Now'
-            }
-          ]
-        },
         'chat_socket': props["chat_socket"]
       };
-
-	removeWindow(recipient)
-	{
-		print(state["chats"]);
-		var new_chat = state["chats"];
-		new_chat.remove(recipient);
-		setState({"chats": new_chat});
-	}
 
 	getCurrentUser() async {
     await HttpRequest.getString(current_user).then((String raw) {
@@ -113,7 +35,6 @@ class SkydevHUD extends Component {
   getOnlineUsers() async {
     await HttpRequest.getString(online_users).then((String raw) {
       var friends = JSON.decode(raw);
-      print(friends);
       state["friends"] = friends;
       setState({"friends": state["friends"]});
     });
@@ -124,24 +45,6 @@ class SkydevHUD extends Component {
 		var duration = new Duration(seconds: 2);
 		getCurrentUser();
 		new Timer.periodic(duration, (Timer t) => getOnlineUsers());
-    props["chat_socket"].onMessage.listen((event) {
-      String m = event.data;
-      if (m.startsWith("Chat")) {
-        print(m);
-      } else {
-        print(JSON.decode(m));
-        var message = JSON.decode(m);
-        if (state["chats"].containsKey(message["sender"])) {
-          state["chats"][message["sender"]].add({
-            "sender": message["sender"],
-            "recipient": message["recipient"],
-            "content": message["content"],
-            "timestamp": message["timestamp"]
-          });
-        }
-        setState({"chats": state["chats"]});
-      }
-    });
   }
 
   render() => div({}, [
@@ -154,7 +57,6 @@ class SkydevHUD extends Component {
           'current_user': state['current_user'],
           'chat_socket': state['chat_socket'],
           'chats': state['chats'], 
-					'removeWindow': removeWindow
         }, [])
       ]);
 }

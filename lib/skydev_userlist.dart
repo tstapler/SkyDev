@@ -1,18 +1,24 @@
 import 'package:react/react.dart';
+import 'dart:html';
 
 final user = registerComponent(() => new SkydevUser());
 
 class SkydevUser extends Component {
+	createChatWindow () {
+		var e = new CustomEvent('addWindow', detail: props["username"]);
+		window.dispatchEvent(e);
+	}
+	
 	render()  {
 		if(props["online"]){
-			return	li({"className": "list-group-item"},
+			return	li({"className": "list-group-item", "onClick": (SyntheticMouseEvent e) => createChatWindow()},
 
-					p({"className":"text-center"}, props["username"],"  ",  span({'className': "glyphicon glyphicon-heart"}, []))
+					p({"className":"text-center"},  props["username"],"  ",  span({'className': "glyphicon glyphicon-heart"}, []))
 					);
 
 		}	
 		else {
-			return li({"className": "list-group-item"},
+			return li({"className": "list-group-item", "onClick": (SyntheticMouseEvent e) => createChatWindow()},
 
 					p({"className":"text-center"}, props["username"],"  ",  span({'className': "glyphicon glyphicon-heart-empty"}, []))
 					);
