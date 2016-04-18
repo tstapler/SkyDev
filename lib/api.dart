@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:skydev/database.dart';
+import 'package:skydev/utils.dart';
 
 getUsernameFromSession(HttpRequest req) async {
   HttpResponse res = req.response;
+	addCorsHeaders(res);
   Cookie cookie;
   User user;
   try {
@@ -19,6 +21,7 @@ getUsernameFromSession(HttpRequest req) async {
 
 returnOnlineUsers(HttpRequest req) async {
   HttpResponse res = req.response;
+	addCorsHeaders(res);
   var online = await users.all().toList();
   res.write(JSON.encode(online
       .map((user) => {
