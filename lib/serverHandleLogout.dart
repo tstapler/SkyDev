@@ -20,7 +20,7 @@ Future handleLogout(HttpRequest req) async {
 	var user;
 	try{
 			print("Cookie Value:" + cookie.value + "|");
-	    user = await users.where((user) => user.username == cookie.value).first();
+	    user = await users.where((user) => user.sessionid == cookie.value).first();
 			print(user);
     }
   catch(e){
