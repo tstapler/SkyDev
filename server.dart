@@ -10,6 +10,7 @@ import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
 import 'package:skydev/api.dart';
+import 'package:skydev/utils.dart';
 import 'package:query_string/query_string.dart';
 
 WebSocket socket, chat_socket, console_socket;
@@ -87,8 +88,6 @@ main() async {
 		} else if (request.uri.path == '/api/online') {
 			returnOnlineUsers(request);
 		} else if (request.uri.path == '/api/username') {
-			addCorsHeaders(request.response);
-			print(request.response);
 			getUsernameFromSession(request);
 		} else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
@@ -207,11 +206,5 @@ void handleView(HttpRequest req) async {
 	res.close();
 }
 
-void addCorsHeaders(HttpResponse res) {
-	res.headers.add('Access-Control-Allow-Origin', '*');
-	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.headers.add('Access-Control-Allow-Headers',
-	'Origin, X-Requested-With, Content-Type, Accept');
-}
 
 void printError(error) => print(error);
