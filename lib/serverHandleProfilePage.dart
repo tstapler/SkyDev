@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:skydev/database.dart';
 import 'package:query_string/query_string.dart';
+import 'package:skydev/utils.dart';
 
 
 
@@ -52,10 +53,4 @@ Future handleProfilePage(HttpRequest req) async {
 			res.close();
 		}
 	}
-}
-void addCorsHeaders(HttpResponse res) {
-	res.headers.add('Access-Control-Allow-Origin', '*');
-	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.headers.add('Access-Control-Allow-Headers',
-	'Origin, X-Requested-With, Content-Type, Accept');
 }

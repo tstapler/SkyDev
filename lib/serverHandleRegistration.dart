@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:skydev/database.dart';
 import 'package:query_string/query_string.dart';
+import 'package:skydev/utils.dart';
 
 Future handleRegister(HttpRequest req) async {
   HttpResponse res = req.response;
@@ -20,11 +21,4 @@ Future createUser(Map formData) async{
 									formData['email'],
 										hash_password(formData['password']))];
   await users.saveAll(models);
-}
-
-void addCorsHeaders(HttpResponse res) {
-	res.headers.add('Access-Control-Allow-Origin', '*');
-	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.headers.add('Access-Control-Allow-Headers',
-	'Origin, X-Requested-With, Content-Type, Accept');
 }

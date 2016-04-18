@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:skydev/database.dart';
 import 'package:query_string/query_string.dart';
+import 'package:skydev/utils.dart';
 
 Cookie sessionCookie;
 
@@ -56,11 +57,4 @@ void cookieMaker(var name, var value){
 	var expiress = new DateTime.now();
 	expiress = expiress.add(new Duration(minutes: 10));
 	sessionCookie.expires = expiress;
-}
-
-void addCorsHeaders(HttpResponse res) {
-	res.headers.add('Access-Control-Allow-Origin', '*');
-	res.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.headers.add('Access-Control-Allow-Headers',
-	'Origin, X-Requested-With, Content-Type, Accept');
 }
