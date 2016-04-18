@@ -17,7 +17,7 @@ Future handleCookies(HttpRequest req) async {
 	print("${chkCookie.value}");
 	var databaseCookie;
 	try{
-	    databaseCookie = await users.where((user) => user.username == chkCookie.value).first();
+	    databaseCookie = await users.where((user) => user.sessionid == chkCookie.value).first();
     }
     catch(e){
       print("Correct SessionID not found in database");
