@@ -30,3 +30,19 @@ returnOnlineUsers(HttpRequest req) async {
       .toList()));
   res.close();
 }
+
+getEmailFromSession(HttpRequest req) async {
+  HttpResponse res = req.response;
+  Cookie cookie;
+  User user;
+  try {
+    cookie = req.cookies.singleWhere((element) => element.name == "SessionID");
+    user = await users.where((user) => user.sessionid == cookie.value).first();
+    print(user.toString() + "is the current user");
+    res.write(JSON.encode({"email": user.email}));
+  } catch (e) {
+    print(e);
+    res.write(JSON.encode(null));
+  }
+  res.close();
+}

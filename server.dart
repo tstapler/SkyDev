@@ -38,7 +38,7 @@ main() async {
       } else {
 				//Checks if cookie is present before handling request
         if (await handleCookies(request)) {
-          request.response.redirect(Uri.parse('user_management.html'));
+          request.response.redirect(Uri.parse('profilePage.html'));
         } else {
           request.response.redirect(Uri.parse('login.html'));
         }
@@ -91,6 +91,11 @@ main() async {
       	addCorsHeaders(request.response);
       	print(request.response);
       	getUsernameFromSession(request);
+
+    } else if (request.uri.path == '/api/email') {
+      	addCorsHeaders(request.response);
+      	print(request.response);
+      	getEmailFromSession(request);
 
     } else {
       var fileUri =
