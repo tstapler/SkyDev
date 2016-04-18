@@ -10,7 +10,6 @@ import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
 import 'package:skydev/api.dart';
-import 'package:query_string/query_string.dart';
 
 WebSocket socket, chat_socket, console_socket;
 List<WebSocket> list = [];
