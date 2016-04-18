@@ -44,28 +44,18 @@ main() async {
         }
       }
     } else if (request.uri.path == '/ws') {
-			//Checks if cookie is present before handling request
-			if (await handleCookies(request)) {
       	// Upgrade an HttpRequest to a WebSocket connection.
       	socket = await WebSocketTransformer.upgrade(request);
       	print('Server has gotten a websocket request');
       	list.add(socket);
       	socket.listen(handleMsg);
-			} else{
-				request.response.redirect(Uri.parse('login.html'));
-			}
       //Handler for the chat system
     } else if (request.uri.path == '/chat') {
-			//Checks if cookie is present before handling request
-			if (await handleCookies(request)) {
       	// Upgrade an HttpRequest to a WebSocket connection.
       	chat_socket = await WebSocketTransformer.upgrade(request);
       	print('Server has gotten a websocket request');
       	chat_list.add(chat_socket);
       	chat_socket.listen(handleChat);
-			} else {
-				request.response.redirect(Uri.parse('login.html'));
-			}
     } else if (request.uri.path == '/console') {
       // Upgrade an HttpRequest to a WebSocket connection.
       console_socket = await WebSocketTransformer.upgrade(request);
@@ -92,27 +82,15 @@ main() async {
         request.response.redirect(Uri.parse('registration.html'));
       }
     } else if (request.uri.path == '/viewdb') {
-      handleView(request);
+        handleView(request);
 
     } else if (request.uri.path == '/api/online') {
-			//Checks if cookie is present before handling request
-			if (await handleCookies(request)) {
       	returnOnlineUsers(request);
-			}
-			else {
-				request.response.redirect(Uri.parse('login.html'));
-			}
 
     } else if (request.uri.path == '/api/username') {
-			//Checks if cookie is present before handling request
-			if (await handleCookies(request)) {
       	addCorsHeaders(request.response);
       	print(request.response);
       	getUsernameFromSession(request);
-			}
-			else {
-				request.response.redirect(Uri.parse('login.html'));
-			}
 
     } else {
       var fileUri =
