@@ -6,10 +6,9 @@ import 'package:path/path.dart' show dirname;
 import 'package:skydev/database.dart';
 import 'package:skydev/utils.dart';
 
-
 getUsernameFromSession(HttpRequest req) async {
   HttpResponse res = req.response;
-	addCorsHeaders(res);
+  addCorsHeaders(res);
   Cookie cookie;
   User user;
   try {
@@ -26,7 +25,7 @@ getUsernameFromSession(HttpRequest req) async {
 
 getOnlineUsers(HttpRequest req) async {
   HttpResponse res = req.response;
-	addCorsHeaders(res);
+  addCorsHeaders(res);
   var online = await users.all().toList();
   res.write(JSON.encode(online
       .map((user) => {
@@ -53,18 +52,18 @@ getEmailFromSession(HttpRequest req) async {
   res.close();
 }
 
-getFilesDirectory (HttpResponse req) async {
-	HttpResponse res = req.response;
-	addCorsHeaders(res);
-	var files = await dirContents("/home/tstapler/Programming/Dart/G39_SkyDev/files/");
-	print(files);
-	res.write(JSON.encode(files));
-	res.close();
+getFilesDirectory(HttpResponse req) async {
+  HttpResponse res = req.response;
+  addCorsHeaders(res);
+  var files =
+      await dirContents("/home/tstapler/Programming/Dart/G39_SkyDev/files/");
+  res.write(JSON.encode(files));
+  res.close();
 }
 
-void getAllUsers(HttpRequest req) async {
-	  HttpResponse res = req.response;
-		  var user_list = await users.all().toList();
-			  res.write(JSON.encode(user_list));
-				  res.close();
+getAllUsers(HttpRequest req) async {
+  HttpResponse res = req.response;
+  var user_list = await users.all().toList();
+  res.write(JSON.encode(user_list));
+  res.close();
 }
