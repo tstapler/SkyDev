@@ -17,7 +17,7 @@ class SkydevMessageList extends Component {
 final chat_window = registerComponent(() => new SkydevChatWindow());
 
 class SkydevChatWindow extends Component {
-	@override
+
 	getInitialState() => {
 	 "visible": props["visible"],
 	 "messages": props["messages"], 

@@ -15,6 +15,7 @@ import 'package:codemirror/hints.dart';
 import 'package:codemirror/panel.dart';
 import 'package:skydev/skydev_hud.dart';
 import 'package:skydev/skydev_navbar.dart';
+import 'package:skydev/skydev_filebrowser.dart';
 import 'package:bootjack/bootjack.dart';
 import 'package:cookies/cookies.dart';
 
@@ -70,6 +71,7 @@ void main() {
 	
 	render(navbar({}, []), querySelector('#navbar'));
 	render(hud({'chat_socket': chat}, []), querySelector('#hud'));
+	render(filebrowser({}, []), querySelector('#filebrowser'));
 	var component = div({}, "Save");
 	render(component, querySelector('#button1'));
 

@@ -9,7 +9,6 @@ import 'package:skydev/serverHandleLogin.dart';
 import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
-import 'package:skydev/serverFileBrowser.dart';
 import 'package:skydev/api.dart';
 
 WebSocket socket, chat_socket, console_socket;

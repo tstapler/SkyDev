@@ -1,6 +1,7 @@
 import 'package:react/react.dart';
 import 'package:skydev/skydev_sidebar.dart';
 import 'package:skydev/skydev_chatbar.dart';
+import 'package:skydev/skydev_filebrowser.dart';
 import 'dart:html';
 import 'dart:async';
 import 'dart:convert';
@@ -55,10 +56,10 @@ class SkydevHUD extends Component {
           'current_user': state['current_user'],
           'chat_socket': state['chat_socket'],
           'friends': state['friends'],
-        }, []),
+        }),
         chatbar({
           'current_user': state['current_user'],
           'chat_socket': state['chat_socket'],
-        }, [])
+        }),
       ]);
 }

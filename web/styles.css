@@ -27,7 +27,6 @@ textarea.form-control {
   height: 100%;
 }
 
-
 h2 {
   margin-bottom: 0;
 }
@@ -46,19 +45,20 @@ select {
 }
 
 #container {
- box-sizing: border-box;}
+  box-sizing: border-box;
+}
 
- .glyphicon-heart-empty {
-	color: black;
- }
+.glyphicon-heart-empty {
+  color: black;
+}
 
- .glyphicon-heart {
-	color: neon-green;
+.glyphicon-heart {
+  color: neon-green;
 }
 
 .message-list {
-	overflow-y: scroll;
-	max-height: 30vh;
+  overflow-y: scroll;
+  max-height: 30vh;
 }
 
 #container output {
@@ -70,6 +70,7 @@ select {
   height: 200px;
   overflow: hidden;
 }
+
 #container output h3 {
   margin: 0;
 }
@@ -127,3 +128,35 @@ select {
   border: none;
   color: inherit;
 }
+
+
+/* Css for the Filebrowser */
+
+.just-padding {
+  padding: 15px;
+}
+
+.list-group.list-group-root {
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+  border-radius: 0;
+  border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+  border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+  padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+  padding-left: 45px;

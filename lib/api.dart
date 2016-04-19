@@ -56,7 +56,7 @@ getFilesDirectory (HttpResponse req) async {
 	HttpResponse res = req.response;
 	addCorsHeaders(res);
 	var files = await dirContents("/home/tstapler/Programming/Dart/G39_SkyDev/files/");
-	print(files.toString());
-	res.write(files.toString());
+	print(files);
+	res.write(JSON.encode(files));
 	res.close();
 }
