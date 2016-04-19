@@ -66,9 +66,8 @@ select {
   width: 100%;
   background-color: black;
   color: white;
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 200px;
-  overflow: hidden;
 }
 
 #container output h3 {
