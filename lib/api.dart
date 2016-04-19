@@ -51,6 +51,7 @@ getEmailFromSession(HttpRequest req) async {
     res.write(JSON.encode(null));
   }
   res.close();
+}
 
 getFilesDirectory (HttpResponse req) async {
 	HttpResponse res = req.response;
