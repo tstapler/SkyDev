@@ -47,7 +47,7 @@ main() async {
 			socket = await WebSocketTransformer.upgrade(request);
 			print('Server has gotten a websocket request');
 			list.add(socket);
-			socket.listen(handleMsg);
+			socket.listen(handleEditor);
 			//Handler for the chat system
 			} else if (request.uri.path == '/chat') {
 			// Upgrade an HttpRequest to a WebSocket connection.
@@ -82,7 +82,7 @@ main() async {
 				request.response.redirect(Uri.parse('registration.html'));
 			}
 		} else if (request.uri.path == '/viewdb') {
-			handleView(request);
+			getAllUsers(request);
 		} else if (request.uri.path == '/api/online') {
 			getOnlineUsers(request);
 		} else if (request.uri.path == '/api/username') {
@@ -98,7 +98,7 @@ main() async {
 	}
 	await db_gateway.disconnect();
 }
-void handleMsg(String m) async {
+void handleEditor(String m) async {
   (new File("files/doc")).createSync(recursive: true);
   print('Message received: $m');
 
@@ -152,6 +152,8 @@ void handleChat(String m) async {
   }
 }
 
+/* Console Methods */
+
 void runarbitrarycommands(String cmd, [List<String> listInput]) {
   if (cmd == null)
     print("Null or no string input from terminal");
@@ -197,11 +199,5 @@ void handleConsole(String m) async {
   }
 }
 
-void handleView(HttpRequest req) async {
-  HttpResponse res = req.response;
-  var user_list = await users.all().toList();
-  res.write(JSON.encode(user_list));
-  res.close();
-}
 
 void printError(error) => print(error);

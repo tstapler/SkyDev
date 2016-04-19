@@ -61,3 +61,10 @@ getFilesDirectory (HttpResponse req) async {
 	res.write(JSON.encode(files));
 	res.close();
 }
+
+void getAllUsers(HttpRequest req) async {
+	  HttpResponse res = req.response;
+		  var user_list = await users.all().toList();
+			  res.write(JSON.encode(user_list));
+				  res.close();
+}
