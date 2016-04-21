@@ -14,10 +14,12 @@ InputElement vpWord;
 OutputElement error;
 OutputElement requestUsername;
 OutputElement requestEmail;
+ImageElement profilePicture;
 Map data;
 String verifyPass;
 String userNameFromRequest;
 String emailFromRequest;
+String pictureLocationFromRequest;
 
 void main() {
 	reactClient.setClientConfiguration();
@@ -25,6 +27,7 @@ void main() {
 
 	requestUsername = querySelector('#requestUsername');
 	requestEmail = querySelector('#requestEmail');
+	profilePicture = querySelector('#profilePic');
   uName = querySelector('#newUsername');
   oldpWord = querySelector('#oldPassword');
   pWord = querySelector('#newPassword');
@@ -35,6 +38,7 @@ void main() {
 
 	window.onLoad.listen(requestUsernameEvent);
 	window.onLoad.listen(requestEmailEvent);
+	window.onLoad.listen(requestProfilePicture);
 
   uName.onKeyUp.listen(addToData);
   oldpWord.onKeyUp.listen(addToData);
@@ -51,6 +55,15 @@ void addToData(Event e){
   String newPassWord = pWord.value;
   verifyPass = vpWord.value;
   data = {'newUsername' : newUserName, 'newPassword': newPassWord, 'password' : passWord, 'newEmail' : newEmail};
+}
+Future requestProfilePicture(Event e) async {
+	var pathPicture = 'http://127.0.0.1:8081/api/profilePic';
+	await HttpRequest.getString(pathPicture).then((string) => pictureLocationFromRequest = string);
+	Map pictureData = JSON.decode(pictureLocationFromRequest);
+	profilePicture.src = pictureData['pictureName'];
+	profilePicture.width = 250;
+	profilePicture.height = 250;
+	profilePicture.className = "img-rounded";
 }
 Future requestEmailEvent(Event e) async {
 	var pathEmail = 'http://127.0.0.1:8081/api/email';

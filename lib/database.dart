@@ -9,9 +9,10 @@ class User extends Model {
   @field String email;
   @field String password;
   @field String sessionid;
+  @field String profilepicturename;
 
   User();
-  User.create(String this.username, String this.email, String this.password);
+  User.create(String this.username, String this.email, String this.password, String this.profilepicturename);
 
   String toString() => username + "(" + email + ")";
 }
@@ -24,6 +25,7 @@ class CreateUsersTable extends Migration {
       schema.string('email').unique().nullable(false);
       schema.string('password', 60);
       schema.string('sessionid');
+      schema.string('profilepicturename');
       schema.timestamps();
     });
   }
@@ -40,6 +42,7 @@ class CreateUsersTable extends Migration {
           schema.string('email').unique().nullable(false);
           schema.string('password', 60);
           schema.string('sessionid');
+          schema.string('profilepicturename');
           schema.timestamps();
         });
 }

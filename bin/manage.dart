@@ -17,7 +17,8 @@ seed_db(String file_name) async
         print("Adding: ${user['username']}");
         to_add.add(new User.create(user['username'],
                                    user['email'],
-                                   hash_password(user['password'])));
+                                   hash_password(user['password']),
+                                   user['profilepic']));
       }
       await users.saveAll(to_add);
 }

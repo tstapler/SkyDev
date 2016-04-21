@@ -3,16 +3,19 @@ users:
   - email: "tstapler@iastate.edu"
     username: "tstapler"
     password: "pass"
+    profilepic: "profileImages/tstapler.jpg"
 
   - email: "cstapler@iastate.edu"
     username: "cstapler"
     password: "pass"
- 
+    profilepic: "profileImages/cstapler.jpg"
+
   - email: "jgn@iastate.edu"
     username: "jgn"
     password: "pass"
+    profilepic: "profileImages/jgn.jpg"
 
   - email: "ssrirama@iastate.edu"
     username: "ssrirama"
     password: "pass"
-
+    profilepic: "profileImages/ssrirama.jpg"

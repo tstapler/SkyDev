@@ -89,6 +89,8 @@ main() async {
 			getUsernameFromSession(request);
 		} else if (request.uri.path == '/api/email') {
       getEmailFromSession(request);
+		} else if (request.uri.path == '/api/profilePic'){
+			getProfilePictureFromSession(request);
     } else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
