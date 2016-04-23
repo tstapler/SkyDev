@@ -27,32 +27,38 @@
 
     	  <div class="panel-body">
     	    <h2 id="error" class="text-center"></h2>
+          <label class="control-label">Current Profile Picture:</label>
           <img id ="profilePic"src="#" alt="Profile Picture not found">
           <div class="row">
-            <div class="col-md-6"><p clas =>Current Username: </p></div>
+            <div class="control-label col-md-6"><label class="control-label">Current Username: </label></div>
             <div class="col-md-6"><p id="requestUsername"> username not found </p></div>
           </div>
           <div class="row">
-            <div class=col-md-6><p>Current Email: </p></div>
+            <div class="col-md-6"><label class="control-label">Current Email: </label></div>
             <div class="col-md-6"><p id="requestEmail"> Email not found </p></div>
           </div>
     	    <div class="form-default">
+            <div class="form-group">
+              <label class="control-label">Change Profile Picture?</label>
+              <input id="pictureUpload" type="file" class="file" data-show-preview="false">
+            </div>
     	      <div class="form-group">
-    	        <label class="sr-only" for="email">Change Email?</label>
+    	        <label class="control-label" for="email">Change Email?</label>
     	        <input id="newEmail" class="form-control" name="email" type="text" placeholder=" Enter New Email ">
     	      </div>
     	      <div class="form-group">
-    	        <label class="sr-only" for="username">Change Username?</label>
+    	        <label class="control-label" for="username">Change Username?</label>
     	        <input id="newUsername" class="form-control" name="username" type="text" placeholder=" Enter New Username ">
     	      </div>
     	      <div class="form-group">
+              <label class="control-label" for="username">Change Password?</label>
     	        <input id="newPassword" class="form-control" name="newPassword" type="password" placeholder="Enter New Password ">
     	      </div>
     	      <div class="form-group">
     	        <input id="vPassword" class="form-control" name="vPassword" type="password" placeholder="Enter New Password again">
     	      </div>
             <div class="form-group">
-              <p class ="text-info">Old password is needed for any changes: </p>
+              <p class ="text-info">Old Password is needed for any changes: </p>
               <label class="sr-only" for="password">Change Password?</label>
               <input id="oldPassword" class="form-control" name="oldPassword" type="password" placeholder="Enter Old Password ">
             </div>

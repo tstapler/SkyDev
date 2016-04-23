@@ -15,6 +15,7 @@ OutputElement error;
 OutputElement requestUsername;
 OutputElement requestEmail;
 ImageElement profilePicture;
+InputElement fileUploadSelect;
 Map data;
 String verifyPass;
 String userNameFromRequest;
@@ -28,6 +29,7 @@ void main() {
 	requestUsername = querySelector('#requestUsername');
 	requestEmail = querySelector('#requestEmail');
 	profilePicture = querySelector('#profilePic');
+	fileUploadSelect = querySelector('#pictureUpload');
   uName = querySelector('#newUsername');
   oldpWord = querySelector('#oldPassword');
   pWord = querySelector('#newPassword');
@@ -40,6 +42,18 @@ void main() {
 	window.onLoad.listen(requestEmailEvent);
 	window.onLoad.listen(requestProfilePicture);
 
+	fileUploadSelect.onChange.listen((e) {
+    final files = fileUploadSelect.files;
+    if (files.length == 1) {
+      final file = files[0];
+      final reader = new FileReader();
+      reader.onLoad.listen((e) {
+        uploadPictureData(reader.result);
+      });
+      reader.readAsText(file);
+    }
+  });
+
   uName.onKeyUp.listen(addToData);
   oldpWord.onKeyUp.listen(addToData);
   pWord.onKeyUp.listen(addToData);
@@ -47,6 +61,18 @@ void main() {
   eMail.onKeyUp.listen(addToData);
   submitButton.onClick.listen(makeRequest);
 	addToData(null);
+}
+Future uploadPictureData(dynamic data) async{
+	final req = new HttpRequest();
+	req.onReadyStateChange.listen((e) {
+		if(req.readyState == HttpRequest.DONE &&
+				(req.status == 200 || req.status == 0)) {
+					window.alert("upload complete");
+		}
+	});
+	print("request should be sent now");
+	req.open("POST", "http://127.0.0.1:8081/uploadPic");
+  await req.send(data);
 }
 void addToData(Event e){
   String newUserName = uName.value;
