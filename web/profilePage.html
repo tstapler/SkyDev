@@ -18,20 +18,24 @@
   <div id="navbar"></div>
 
   <div class="container">
-    <div class="col-xs-6 col-xs-offset-3">
-    	<div class="panel panel-default">
+    <div class="col-md-6 col-md-offset-3">
+    	<div class=" panel panel-default">
 
     	  <div class="panel-heading">
-    	    <h1 class="text-center"> SkyDev User Management </h1>
+    	    <h1 class="text-center"> SkyDev Profile </h1>
     	  </div>
 
     	  <div class="panel-body">
-    	    <h2 id="error" class="text-center">Change any settings:</h2>
+    	    <h2 id="error" class="text-center"></h2>
           <img id ="profilePic"src="#" alt="Profile Picture not found">
-          <h3>Current Username: </h3>
-          <h3 id="requestUsername"> username not found </h3>
-          <h3>Current Email: </h3>
-          <h3 id="requestEmail"> Email not found </h3>
+          <div class="row">
+            <div class="col-md-6"><p clas =>Current Username: </p></div>
+            <div class="col-md-6"><p id="requestUsername"> username not found </p></div>
+          </div>
+          <div class="row">
+            <div class=col-md-6><p>Current Email: </p></div>
+            <div class="col-md-6"><p id="requestEmail"> Email not found </p></div>
+          </div>
     	    <div class="form-default">
     	      <div class="form-group">
     	        <label class="sr-only" for="email">Change Email?</label>
