@@ -20,7 +20,7 @@ import 'package:bootjack/bootjack.dart';
 ButtonElement b1;
 WebSocket editor_ws, chat_ws;
 CodeMirror editor;
-String currentFile = "hello";
+String currentFile = "doc";
 var file;
 bool shouldSave = true;
 
@@ -33,11 +33,11 @@ void main() {
   chat_ws = setupChatSocket();
   editor_ws = setupEditorSocket();
 
-	window.on["changeFile"].listen((event) {
-		print("Changing file to " + event.detail);
-		currentFile = event.detail;
+  window.on["changeFile"].listen((event) {
+    print("Changing file to " + event.detail);
+    currentFile = event.detail;
     editor_ws.send(JSON.encode({"command": "init", "filename": currentFile}));
-	});
+  });
 
   new TerminalFilesystem().run();
 
@@ -72,15 +72,18 @@ WebSocket setupEditorSocket() {
 
   websocket.onMessage.listen((event) {
     var request = JSON.decode(event.data);
-    request["filename"] = currentFile;
-    if (request["command"] == "init") {
-      shouldSave = false;
-      outputMsg(request["content"], true);
-      shouldSave = true;
-    } else if (request["command"] == "change") {
-      outputMsg(request["content"], false);
-    } else if (request["command"] == "error") {
-      print(request["content"]);
+    if (request["filename"] != currentFile) {
+      print("Not for me!");
+    } else {
+      if (request["command"] == "init") {
+        shouldSave = false;
+        outputMsg(request["content"], true);
+        shouldSave = true;
+      } else if (request["command"] == "change") {
+        outputMsg(request["content"], false);
+      } else if (request["command"] == "error") {
+        print(request["content"]);
+      }
     }
   });
 
