@@ -72,6 +72,7 @@ WebSocket setupEditorSocket() {
 
   websocket.onMessage.listen((event) {
     var request = JSON.decode(event.data);
+		print(request["request_number"]);
     if (request["filename"] != currentFile) {
       print("Not for me!");
     } else {
@@ -80,7 +81,9 @@ WebSocket setupEditorSocket() {
         outputMsg(request["content"], true);
         shouldSave = true;
       } else if (request["command"] == "change") {
+        shouldSave = false;
         outputMsg(request["content"], false);
+        shouldSave = true;
       } else if (request["command"] == "error") {
         print(request["content"]);
       }
