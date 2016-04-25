@@ -128,6 +128,11 @@ select {
   color: inherit;
 }
 
+#myCanvas {
+    height: 350px;
+    width: 100%;
+    border: 1px solid grey;
+}
 
 /* Css for the Filebrowser */
 
