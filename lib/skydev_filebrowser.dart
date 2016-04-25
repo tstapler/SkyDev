@@ -27,9 +27,16 @@ file_or_folder(name, item, level) {
 }
 
 class File extends Component {
+	changeFile(err) {
+		print("New file is: " + props['path']);
+		var e = new CustomEvent('changeFile', detail: props['path']);
+		window.dispatchEvent(e);
+	}
+
   render() {
     var level_str = level_to_str(props["level"]);
-    return li({"className": "list-group-item"}, [level_str + props["name"]]);
+    return li({"className": "list-group-item", 
+		"onClick": changeFile}, [level_str + props["name"]]);
   }
 }
 
@@ -71,7 +78,7 @@ class FileBrowser extends Component {
 
   componentDidMount(rootNode) async {
     ;
-		var duration = new Duration(seconds: 5);
+		var duration = new Duration(seconds: 2);
 		await getCurrentUser();
 		new Timer.periodic(duration, (Timer t) => getFiles(props["current_user"]));
   }

@@ -18,7 +18,7 @@ dirContents(String dir) {
       if (item is Directory) {
         tree[basename(item.path)] = dirContents(item.path);
       } else {
-        tree[basename(item.path)] = item.path;
+        tree[basename(item.path)] = relative(item.path, from: Directory.current.path + "/files");
       }
   });
 

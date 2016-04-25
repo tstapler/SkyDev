@@ -20,7 +20,7 @@ import 'package:bootjack/bootjack.dart';
 ButtonElement b1;
 WebSocket editor_ws, chat_ws;
 CodeMirror editor;
-String currentFile = "doc";
+String currentFile = "hello";
 var file;
 bool shouldSave = true;
 
@@ -32,6 +32,12 @@ void main() {
   b1.hidden = false;
   chat_ws = setupChatSocket();
   editor_ws = setupEditorSocket();
+
+	window.on["changeFile"].listen((event) {
+		print("Changing file to " + event.detail);
+		currentFile = event.detail;
+    editor_ws.send(JSON.encode({"command": "init", "filename": currentFile}));
+	});
 
   new TerminalFilesystem().run();
 
