@@ -67,6 +67,7 @@ getProfilePictureFromSession(HttpRequest req) async {
     print(e);
     res.write(JSON.encode(null));
   }
+  res.close();
 }
 getFilesDirectory(HttpRequest req) async {
   HttpResponse res = req.response;

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:skydev/database.dart';
-import 'package:image/image.dart';
 
 handlePPUpload(HttpRequest req) async {
       print(req.toString());
@@ -21,7 +20,7 @@ handlePPUpload(HttpRequest req) async {
       (new File("web/profileImages/${user.username}.txt")).createSync(recursive: true);
       File newFile = new File("web/profileImages/${user.username}.txt");
       newFile.writeAsStringSync(reqString);
-      user.profilepicturename = "profileImages/${user.username}.jpg";
+      user.profilepicturename = "profileImages/${user.username}.txt";
       users.saveAll([user]);
       res.statusCode = HttpStatus.CREATED;
       res.contentLength = 0;

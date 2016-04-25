@@ -86,8 +86,8 @@ Future requestProfilePicture(Event e) async {
 	var pathPicture = 'http://127.0.0.1:8081/api/profilePic';
 	await HttpRequest.getString(pathPicture).then((string) => pictureLocationFromRequest = string);
 	profilePicture.src = pictureLocationFromRequest;
-	profilePicture.width = 500;
-	profilePicture.height = 500;
+	profilePicture.width = 400;
+	profilePicture.height = 400;
 	profilePicture.className = "img-rounded";
 }
 Future requestEmailEvent(Event e) async {
