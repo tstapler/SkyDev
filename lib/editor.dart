@@ -42,6 +42,7 @@ handleEditorSocket(WebSocket websocket, String message) async {
   } else if (request["command"] == "init") {
 		// Initialize a new client
     String contents = f.readAsStringSync();
+		contents.replaceAll(new RegExp(r'\n'), '\\n');
     response["command"] = "init";
     response["content"] = contents;
 		response["filename"] = request["filename"];
@@ -52,6 +53,7 @@ handleEditorSocket(WebSocket websocket, String message) async {
     print("Writing " + request["content"]);
     f.writeAsStringSync(request["content"]);
 		String contents = f.readAsStringSync();
+		contents.replaceAll(new RegExp(r'\n'), '\\n');
     for (int i = 0; i < client_list.length; i++) {
       if (client_list[i].readyState != WebSocket.OPEN) {
         // If the websocket is closed remove it from the current list
