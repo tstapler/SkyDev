@@ -5,7 +5,6 @@
 // found in the LICENSE file.
 
 import 'dart:html';
-//import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:react/react_client.dart' as reactClient;
@@ -17,249 +16,246 @@ import 'package:skydev/skydev_hud.dart';
 import 'package:skydev/skydev_navbar.dart';
 import 'package:skydev/skydev_filebrowser.dart';
 import 'package:bootjack/bootjack.dart';
-import 'package:cookies/cookies.dart';
 
 ButtonElement b1;
-WebSocket ws, chat;
-//ButtonElement consoleSubmitButton;
-//InputElement consoleInput;
+WebSocket editor_ws, chat_ws;
 CodeMirror editor;
+String currentFile = "doc";
 var file;
 bool shouldSave = true;
 
 void main() {
-	Bootjack.useDefault();
-	Dropdown.use();
-	b1 = querySelector('#button1');
-	b1.onClick.listen(save);
-	b1.hidden = false;
-	chat = setupChat();
-	/*consoleInput = document.querySelector('#cmdLine');
-	consoleSubmitButton = document.querySelector('#ConsoleSubmitButton');
-	consoleSubmitButton.onClick.listen((submitConsole) => consoleInput.value = consoleInput.value);
-	consoleSubmitButton.hidden = false;*/
+  Bootjack.useDefault();
+  Dropdown.use();
+  b1 = querySelector('#button1');
+  b1.onClick.listen(saveChange);
+  b1.hidden = false;
+  chat_ws = setupChatSocket();
+  editor_ws = setupEditorSocket();
 
+  new TerminalFilesystem().run();
 
-	ws = new WebSocket('ws://localhost:8081/ws');
+  setCodeMirror();
 
+  reactClient.setClientConfiguration();
 
+  render(navbar({}, []), querySelector('#navbar'));
+  render(hud({'chat_socket': chat_ws}, []), querySelector('#hud'));
+  render(filebrowser({}, []), querySelector('#filebrowser'));
+  var component = div({}, "Save");
+  render(component, querySelector('#button1'));
 
-	ws.onOpen.listen((event){
-		ws.send("Synchronize");
-	});
-
-	ws.onMessage.listen((event){
-		String m = event.data;
-		if(m.startsWith("Contents:")){
-			m = m.replaceFirst("Contents:", "", 0);
-			shouldSave = false;
-			outputMsg(m, true);
-			shouldSave = true;
-		}
-		else if (m.startsWith("ConsoleResults:")){
-			m = m.replaceFirst("ConsoleResults:", "",0);
-			outputMsg(m, false);
-		}
-
-	});
-
-	new TerminalFilesystem().run();
-
-	setCodeMirror();
-
-	reactClient.setClientConfiguration();
-	
-	render(navbar({}, []), querySelector('#navbar'));
-	render(hud({'chat_socket': chat}, []), querySelector('#hud'));
-	render(filebrowser({}, []), querySelector('#filebrowser'));
-	var component = div({}, "Save");
-	render(component, querySelector('#button1'));
-
-	Panel.addPanel(editor, querySelector('#textContainer'));
+  Panel.addPanel(editor, querySelector('#textContainer'));
 }
 
-WebSocket setupChat() {
- var websocket = new WebSocket('ws://localhost:8081/chat');
-	websocket.onOpen.listen((event){
-		websocket.send("Chat Client Connected");
-	});
+WebSocket setupChatSocket() {
+  var websocket = new WebSocket('ws://localhost:8081/chat');
+  websocket.onOpen.listen((event) {
+    websocket.send("Chat Client Connected");
+  });
 
-	return websocket;
-
+  return websocket;
 }
 
-void setCodeMirror(){
-	Map options = {
-		'theme': 'zenburn',
-		'height': '100%',
-		'continueComments': {'continueLineComment': false},
-		'autoCloseTags': true,
-		'mode': 'javascript',
-		'extraKeys': {
-			'Ctrl-Space': 'autocomplete',
-			'Cmd-/': 'toggleComment',
-			'Ctrl-/': 'toggleComment'
-		}
-	};
+WebSocket setupEditorSocket() {
+  var websocket = new WebSocket('ws://localhost:8081/ws');
 
-	editor = new CodeMirror.fromElement(
-			querySelector('#textContainer'),
-			options: options
-	);
+  websocket.onOpen.listen((event) {
+    websocket.send(JSON.encode({"command": "init", "filename": currentFile}));
+  });
 
-	Hints.registerHintsHelper('dart', dartCompletion);
-	Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
+  websocket.onMessage.listen((event) {
+    var request = JSON.decode(event.data);
+    request["filename"] = currentFile;
+    if (request["command"] == "init") {
+      shouldSave = false;
+      outputMsg(request["content"], true);
+      shouldSave = true;
+    } else if (request["command"] == "change") {
+      outputMsg(request["content"], false);
+    } else if (request["command"] == "error") {
+      print(request["content"]);
+    }
+  });
 
-	editor.setLineNumbers(false);
-	editor.setIndentWithTabs(true);
+  return websocket;
+}
 
-	// Theme control.
-	SelectElement themeSelect = querySelector('#theme');
-	for (String theme in CodeMirror.THEMES) {
-		themeSelect.children.add(new OptionElement(value: theme)..text = theme);
-		if (theme == editor.getTheme()) {
-			themeSelect.selectedIndex = themeSelect.length - 1;
-		}
-	}
-	themeSelect.onChange.listen((e) {
-		String themeName = themeSelect.options[themeSelect.selectedIndex].value;
-		editor.setTheme(themeName);
-	});
+void setCodeMirror() {
+  Map options = {
+    'theme': 'zenburn',
+    'height': '100%',
+    'continueComments': {'continueLineComment': false},
+    'autoCloseTags': true,
+    'mode': 'javascript',
+    'extraKeys': {
+      'Ctrl-Space': 'autocomplete',
+      'Cmd-/': 'toggleComment',
+      'Ctrl-/': 'toggleComment'
+    }
+  };
 
-	// Mode control.
-	SelectElement modeSelect = querySelector('#mode');
-	for (String mode in CodeMirror.MODES) {
-		modeSelect.children.add(new OptionElement(value: mode)..text = mode);
-		if (mode == editor.getMode()) {
-			modeSelect.selectedIndex = modeSelect.length - 1;
-		}
-	}
-	modeSelect.onChange.listen((e) {
-		String modeName = modeSelect.options[modeSelect.selectedIndex].value;
-		editor.setMode(modeName);
-	});
+  editor = new CodeMirror.fromElement(querySelector('#textContainer'),
+      options: options);
 
-	// Show line numbers.
-	InputElement lineNumbers = querySelector('#lineNumbers');
-	lineNumbers.onChange.listen((e) {
-		editor.setLineNumbers(lineNumbers.checked);
-	});
+  Hints.registerHintsHelper('dart', dartCompletion);
+  Hints.registerHintsHelperAsync('dart', dartCompletionAsync);
 
-	// Indent with tabs.
-	InputElement tabIndent = querySelector('#tabIndent');
-	tabIndent.onChange.listen((e) {
-		editor.setIndentWithTabs(tabIndent.checked);
-	});
+  editor.setLineNumbers(false);
+  editor.setIndentWithTabs(true);
 
-	// Status line.
-	updateFooter(editor);
-	editor.onCursorActivity.listen((_) => updateFooter(editor));
+  // Theme control.
+  SelectElement themeSelect = querySelector('#theme');
+  for (String theme in CodeMirror.THEMES) {
+    themeSelect.children.add(new OptionElement(value: theme)..text = theme);
+    if (theme == editor.getTheme()) {
+      themeSelect.selectedIndex = themeSelect.length - 1;
+    }
+  }
+  themeSelect.onChange.listen((e) {
+    String themeName = themeSelect.options[themeSelect.selectedIndex].value;
+    editor.setTheme(themeName);
+  });
 
-	editor.refresh();
-	editor.focus();
-	editor.onChange.listen(save);
+  // Mode control.
+  SelectElement modeSelect = querySelector('#mode');
+  for (String mode in CodeMirror.MODES) {
+    modeSelect.children.add(new OptionElement(value: mode)..text = mode);
+    if (mode == editor.getMode()) {
+      modeSelect.selectedIndex = modeSelect.length - 1;
+    }
+  }
+  modeSelect.onChange.listen((e) {
+    String modeName = modeSelect.options[modeSelect.selectedIndex].value;
+    editor.setMode(modeName);
+  });
+
+  // Show line numbers.
+  InputElement lineNumbers = querySelector('#lineNumbers');
+  lineNumbers.onChange.listen((e) {
+    editor.setLineNumbers(lineNumbers.checked);
+  });
+
+  // Indent with tabs.
+  InputElement tabIndent = querySelector('#tabIndent');
+  tabIndent.onChange.listen((e) {
+    editor.setIndentWithTabs(tabIndent.checked);
+  });
+
+  // Status line.
+  updateFooter(editor);
+  editor.onCursorActivity.listen((_) => updateFooter(editor));
+
+  editor.refresh();
+  editor.focus();
+  editor.onChange.listen(saveChange);
 }
 
 void updateFooter(CodeMirror editor) {
-	Position pos = editor.getCursor();
-	int off = editor.getDoc().indexFromPos(pos);
-	String str = 'line ${pos.line} • column ${pos.ch} • offset ${off}'
-		+ (editor.getDoc().isClean() ? '' : ' • (modified)');
-	querySelector('#footer').text = str;
+  Position pos = editor.getCursor();
+  int off = editor.getDoc().indexFromPos(pos);
+  String str = 'line ${pos.line} • column ${pos.ch} • offset ${off}' +
+      (editor.getDoc().isClean() ? '' : ' • (modified)');
+  querySelector('#footer').text = str;
 }
 
 HintResults dartCompletion(CodeMirror editor, [HintsOptions options]) {
-	Position cur = editor.getCursor();
-	String word = getCurrentWord(editor).toLowerCase();
-	List<HintResult> list = vocab
-		.where((s) => s.startsWith(word))
-		.map((s) => new HintResult(s))
-		.toList();
+  Position cur = editor.getCursor();
+  String word = getCurrentWord(editor).toLowerCase();
+  List<HintResult> list = vocab
+      .where((s) => s.startsWith(word))
+      .map((s) => new HintResult(s))
+      .toList();
 
-	HintResults results = new HintResults.fromHints(
-			list,
-			new Position(cur.line, cur.ch - word.length),
-			new Position(cur.line, cur.ch)
-			);
-	results.registerOnShown(() => print('hints shown'));
-	results.registerOnSelect((completion, element) {
-		print(['hints select: ${completion}']);
-	});
-	results.registerOnPick((completion) {
-		print(['hints pick: ${completion}']);
-	});
-	results.registerOnUpdate(() => print('hints update'));
-	results.registerOnClose(() => print('hints close'));
+  HintResults results = new HintResults.fromHints(
+      list,
+      new Position(cur.line, cur.ch - word.length),
+      new Position(cur.line, cur.ch));
+  results.registerOnShown(() => print('hints shown'));
+  results.registerOnSelect((completion, element) {
+    print(['hints select: ${completion}']);
+  });
+  results.registerOnPick((completion) {
+    print(['hints pick: ${completion}']);
+  });
+  results.registerOnUpdate(() => print('hints update'));
+  results.registerOnClose(() => print('hints close'));
 
-	return results;
+  return results;
 }
 
-Future<HintResults> dartCompletionAsync(CodeMirror editor, [HintsOptions options]) {
-	Position cur = editor.getCursor();
-	String word = getCurrentWord(editor).toLowerCase();
-	List<String> list = new List.from(vocab.where((s) => s.startsWith(word)));
+Future<HintResults> dartCompletionAsync(CodeMirror editor,
+    [HintsOptions options]) {
+  Position cur = editor.getCursor();
+  String word = getCurrentWord(editor).toLowerCase();
+  List<String> list = new List.from(vocab.where((s) => s.startsWith(word)));
 
-	return new Future.delayed(new Duration(milliseconds: 200), () {
-		return new HintResults.fromStrings(
-			list,
-			new Position(cur.line, cur.ch - word.length),
-			new Position(cur.line, cur.ch));
-	});
+  return new Future.delayed(new Duration(milliseconds: 200), () {
+    return new HintResults.fromStrings(
+        list,
+        new Position(cur.line, cur.ch - word.length),
+        new Position(cur.line, cur.ch));
+  });
 }
 
 List vocab = [];
 List baseVocab = [
-'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
+  'zero',
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight',
+  'nine'
 ];
 
 final RegExp ids = new RegExp(r'[a-zA-Z_0-9]');
 
 String getCurrentWord(CodeMirror editor) {
-	Position cur = editor.getCursor();
-	String line = editor.getLine(cur.line);
-	StringBuffer buf = new StringBuffer();
+  Position cur = editor.getCursor();
+  String line = editor.getLine(cur.line);
+  StringBuffer buf = new StringBuffer();
 
-	for (int i = cur.ch - 1; i >= 0; i--) {
-		String c = line[i];
-		if (ids.hasMatch(c)) {
-			buf.write(c);
-		} else {
-			break;
-		}
-	}
+  for (int i = cur.ch - 1; i >= 0; i--) {
+    String c = line[i];
+    if (ids.hasMatch(c)) {
+      buf.write(c);
+    } else {
+      break;
+    }
+  }
 
-	return new String.fromCharCodes(buf.toString().codeUnits.reversed);
+  return new String.fromCharCodes(buf.toString().codeUnits.reversed);
 }
 
-void save(Event e){
-	String contents = editor.getDoc().getValue();
-	if(shouldSave){
-		ws.send("Save:" + contents);
-	}
+void saveChange(Event e) {
+  String contents = editor.getDoc().getValue();
+  if (shouldSave) {
+    editor_ws.send(JSON.encode(
+        {"command": "change", "content": contents, "filename": currentFile}));
+  }
 }
-
-/*void submitConsole(Event e){
-	//e.preventDefault(); // Don't do the default submit.
-	String cmdArgs = consoleInput.toString();
-	ws.send("Submit:" + cmdArgs);
-	print(cmdArgs);
-}*/
 
 outputMsg(String msg, bool clearConsole) {
-	Position p = editor.getDoc().getCursor();
-	if(clearConsole){
-		editor.getDoc().setValue("");
-	}
-	editor.getDoc().setValue("$msg");
-	editor.getDoc().setCursor(p);
+  Position p = editor.getDoc().getCursor();
+  if (clearConsole) {
+    editor.getDoc().setValue("");
+  }
+  if (msg != editor.getDoc().getValue()) {
+    editor.getDoc().setValue("$msg");
+    editor.getDoc().setCursor(p);
 
-	List<String> words = msg.split(" ");
-	vocab.clear();
-	vocab = baseVocab;
-	vocab.addAll(words);
+    List<String> words = msg.split(" ");
+    vocab.clear();
+    vocab = baseVocab;
+    vocab.addAll(words);
+  }
 }
 
-class Terminal{
+class Terminal {
   String cmdLineContainer;
   String outputContainer;
   String cmdLineInput;
@@ -270,7 +266,7 @@ class Terminal{
   int historyPosition = 0;
   Map<String, Function> cmds;
   HtmlEscape sanitizer = new HtmlEscape();
-	WebSocket console_ws;
+  WebSocket console_ws;
 
   Terminal(this.cmdLineContainer, this.outputContainer, this.cmdLineInput) {
     cmdLine = document.querySelector(cmdLineContainer);
@@ -287,36 +283,30 @@ class Terminal{
     cmdLine.onKeyDown.listen(historyHandler);
     cmdLine.onKeyDown.listen(processNewCommand);
 
-		//Initializing websocket
-		console_ws = new WebSocket('ws://localhost:8081/console');
+    //Initializing websocket
+    console_ws = new WebSocket('ws://localhost:8081/console');
 
-		console_ws.onMessage.listen((event){
-			String m = event.data;
- 			if (m.startsWith("ConsoleResults:")){
-				m = m.replaceFirst("ConsoleResults:", "",0);
-				//outputMsg(m, false);
-				List<String> list_results = m.split(' ');
-				for(int i = 0; i<list_results.length; i++){
-					writeOutput(list_results[i]);
-
-				}
-			}
-			else if (m.startsWith("ConsoleErrorResults:")){
-				m = m.replaceFirst("ConsoleErrorResults:", "",0);
-				//outputMsg(m, false);
-				writeOutput(m);
-			}
-
-			else {
-				writeOutput(JSON.decode(m));
-			}
-
-		});
-
+    console_ws.onMessage.listen((event) {
+      String m = event.data;
+      if (m.startsWith("ConsoleResults:")) {
+        m = m.replaceFirst("ConsoleResults:", "", 0);
+        //outputMsg(m, false);
+        List<String> list_results = m.split(' ');
+        for (int i = 0; i < list_results.length; i++) {
+          writeOutput(list_results[i]);
+        }
+      } else if (m.startsWith("ConsoleErrorResults:")) {
+        m = m.replaceFirst("ConsoleErrorResults:", "", 0);
+        //outputMsg(m, false);
+        writeOutput(m);
+      } else {
+        writeOutput(JSON.decode(m));
+      }
+    });
   }
 
   void historyHandler(KeyboardEvent event) {
-		print("History hit");
+    print("History hit");
     var histtemp = "";
     int upArrowKey = 38;
     int downArrowKey = 40;
@@ -333,12 +323,14 @@ class Terminal{
       }
     }
 
-    if (event.keyCode == upArrowKey) { // Up-arrow keyCode
+    if (event.keyCode == upArrowKey) {
+      // Up-arrow keyCode
       historyPosition--;
       if (historyPosition < 0) {
         historyPosition = 0;
       }
-    } else if (event.keyCode == downArrowKey) { // Down-arrow keyCode
+    } else if (event.keyCode == downArrowKey) {
+      // Down-arrow keyCode
       historyPosition++;
       if (historyPosition >= history.length) {
         historyPosition = history.length - 1;
@@ -348,19 +340,20 @@ class Terminal{
     /* keyCode == up-arrow || keyCode == down-arrow */
     if (event.keyCode == upArrowKey || event.keyCode == downArrowKey) {
       // Up or down
-      input.value = history[historyPosition] != null ? history[historyPosition]  : histtemp;
+      input.value = history[historyPosition] != null
+          ? history[historyPosition]
+          : histtemp;
     }
   }
 
   void processNewCommand(KeyboardEvent event) {
-		print("ProcessNewCommand hit");
+    print("ProcessNewCommand hit");
     int enterKey = 13;
     int tabKey = 9;
 
     if (event.keyCode == tabKey) {
       event.preventDefault();
     } else if (event.keyCode == enterKey) {
-
       if (!input.value.isEmpty) {
         history.add(input.value);
         historyPosition = history.length;
@@ -389,21 +382,20 @@ class Terminal{
     }
   }
 
-  void runarbitrarycommands(List<String> cmdArgs){
-		print("Command function called");
-    if(cmdArgs == null)
+  void runarbitrarycommands(List<String> cmdArgs) {
+    print("Command function called");
+    if (cmdArgs == null)
       print("Null or no string input from terminal");
-		else {
-				console_ws.send(JSON.encode(cmdArgs));
-				print(cmdArgs);
-				//writeOutput(cmdArgs);
+    else {
+      console_ws.send(JSON.encode(cmdArgs));
+      print(cmdArgs);
+      //writeOutput(cmdArgs);
     }
   }
 
   void writeOutput(String h) {
     output.insertAdjacentHtml('beforeEnd', h);
   }
-
 }
 
 class TerminalFilesystem {
