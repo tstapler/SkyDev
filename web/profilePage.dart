@@ -50,7 +50,7 @@ void main() {
       reader.onLoad.listen((e) {
         uploadPictureData(reader.result);
       });
-      reader.readAsText(file);
+      reader.readAsDataUrl(file);
     }
   });
 
@@ -85,10 +85,9 @@ void addToData(Event e){
 Future requestProfilePicture(Event e) async {
 	var pathPicture = 'http://127.0.0.1:8081/api/profilePic';
 	await HttpRequest.getString(pathPicture).then((string) => pictureLocationFromRequest = string);
-	Map pictureData = JSON.decode(pictureLocationFromRequest);
-	profilePicture.src = pictureData['pictureName'];
-	profilePicture.width = 250;
-	profilePicture.height = 250;
+	profilePicture.src = pictureLocationFromRequest;
+	profilePicture.width = 500;
+	profilePicture.height = 500;
 	profilePicture.className = "img-rounded";
 }
 Future requestEmailEvent(Event e) async {
@@ -96,7 +95,7 @@ Future requestEmailEvent(Event e) async {
 	await HttpRequest.getString(pathEmail).then((string) => emailFromRequest = string);
 	Map emailData = JSON.decode(emailFromRequest);
 	requestEmail.children.clear();
-	requestEmail.children.add(new HeadingElement.h3()..text = emailData['email']);
+	requestEmail.children.add(new ParagraphElement()..text = emailData['email']);
 }
 
 Future requestUsernameEvent(Event e) async {
@@ -104,7 +103,7 @@ Future requestUsernameEvent(Event e) async {
 	await HttpRequest.getString(pathUsername).then((string) => userNameFromRequest = string);
 	Map userNameData = JSON.decode(userNameFromRequest);
 	requestUsername.children.clear();
-	requestUsername.children.add(new HeadingElement.h3()..text = userNameData['username']);
+	requestUsername.children.add(new ParagraphElement()..text = userNameData['username']);
 
 }
 

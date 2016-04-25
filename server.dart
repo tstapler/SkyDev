@@ -3,12 +3,12 @@ import 'dart:convert';
 //import 'dart:async';
 import 'package:http_server/http_server.dart';
 import 'package:skydev/database.dart';
-//import 'package:trestle/gateway.dart';
 import 'package:skydev/serverHandleProfilePage.dart';
 import 'package:skydev/serverHandleLogin.dart';
 import 'package:skydev/serverHandleRegistration.dart';
 import 'package:skydev/serverHandleLogout.dart';
 import 'package:skydev/serverHandleCookies.dart';
+import 'package:skydev/serverHandlePPUpload.dart';
 import 'package:skydev/api.dart';
 
 WebSocket socket, chat_socket, console_socket;
@@ -91,6 +91,8 @@ main() async {
       getEmailFromSession(request);
 		} else if (request.uri.path == '/api/profilePic'){
 			getProfilePictureFromSession(request);
+		} else if (request.uri.path == '/uploadPic'){
+			handlePPUpload(request);
     } else {
 			var fileUri = new Uri.file(_buildPath).resolve(request.uri.path.substring(1));
 			_clientDir.serveFile(new File(fileUri.toFilePath()), request);
