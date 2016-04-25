@@ -66,8 +66,9 @@ Future uploadPictureData(dynamic data) async{
 	final req = new HttpRequest();
 	req.onReadyStateChange.listen((e) {
 		if(req.readyState == HttpRequest.DONE &&
-				(req.status == 200 || req.status == 0)) {
+				(req.status == 201 || req.status == 0)) {
 					window.alert("upload complete");
+					requestProfilePicture(e);
 		}
 	});
 	print("request should be sent now");

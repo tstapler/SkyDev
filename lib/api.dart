@@ -62,6 +62,7 @@ getProfilePictureFromSession(HttpRequest req) async {
     user = await users.where((user) => user.sessionid == cookie.value).first();
     (new File("web/profileImages/${user.username}.txt")).createSync(recursive: true);
     File newFile = new File("web/profileImages/${user.username}.txt");
+    res.statusCode = HttpStatus.CREATED;
     res.write(newFile.readAsStringSync());
   } catch (e) {
     print(e);
