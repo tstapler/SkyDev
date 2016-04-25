@@ -30,7 +30,7 @@ Future handleLogout(HttpRequest req) async {
 		return;
   }
 
-	cookie.value = "";
+	cookie.value = "None";
 	user.sessionid = "";
 	res.headers.set('Set-Cookie', cookie);
 	await users.save(user);
