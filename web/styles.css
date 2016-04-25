@@ -144,6 +144,11 @@ select {
   padding: 0;
   overflow: hidden;
 }
+#newPassword {
+  margin-bottom: 5px;
+}
+
+
 
 .list-group.list-group-root .list-group {
   margin-bottom: 0;
