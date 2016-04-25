@@ -11,6 +11,7 @@
   <script async src="packages/react/react.js"></script>
   <script src="profilePage.dart.js" type="application/dart"></script>
   <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="packages/browser/dart.js"></script>
 </head>
 
@@ -27,40 +28,58 @@
 
     	  <div class="panel-body">
     	    <h2 id="error" class="text-center"></h2>
-          <label class="control-label">Current Profile Picture:</label>
-          <img id ="profilePic"src="#" alt="Profile Picture not found">
           <div class="row">
-            <div class="control-label col-md-6"><label class="control-label">Current Username: </label></div>
-            <div class="col-md-6"><p id="requestUsername"> username not found </p></div>
+            <label class="control-label">Current Profile Picture:</label>
           </div>
           <div class="row">
-            <div class="col-md-6"><label class="control-label">Current Email: </label></div>
-            <div class="col-md-6"><p id="requestEmail"> Email not found </p></div>
+            <div class=" col-sm-offset-3">
+              <img id ="profilePic"src="#" alt="Profile Picture not found">
+            </div>
           </div>
-    	    <div class="form-default">
+          <br>
+          <div class="row">
+            <label class="col-sm-3 control-label">Current Username: </label>
+            <p class="col-sm-9"id="requestUsername"> username not found </p>
+          </div>
+          <div class="row">
+            <label class="col-sm-3 control-label">Current Email: </label>
+            <p class="col-sm-9" id="requestEmail"> Email not found </p>
+          </div>
+          <br>
+          <br>
+    	    <div class="form-horizontal">
             <div class="form-group">
-              <label class="control-label">Change Profile Picture?</label>
-              <input id="pictureUpload" type="file" class="file" data-show-preview="false">
+              <label class="col-sm-3 control-label">Change Picture?</label>
+              <div class="col-sm-9">
+                <input id="pictureUpload" type="file" class="file" data-show-preview="false">
+              </div>
             </div>
     	      <div class="form-group">
-    	        <label class="control-label" for="email">Change Email?</label>
-    	        <input id="newEmail" class="form-control" name="email" type="text" placeholder=" Enter New Email ">
-    	      </div>
+    	        <label class="col-sm-3 control-label" for="email">Change Email?         </label>
+              <div class="col-sm-9">
+    	          <input id="newEmail" class="form-control" name="email" type="text" placeholder=" Enter New Email ">
+              </div>
+            </div>
     	      <div class="form-group">
-    	        <label class="control-label" for="username">Change Username?</label>
-    	        <input id="newUsername" class="form-control" name="username" type="text" placeholder=" Enter New Username ">
-    	      </div>
+    	        <label class="col-sm-3 control-label" for="username">Change Username?</label>
+              <div class="col-sm-9">
+                <input id="newUsername" class="form-control" name="username" type="text" placeholder=" Enter New Username ">
+              </div>
+            </div>
     	      <div class="form-group">
-              <label class="control-label" for="username">Change Password?</label>
-    	        <input id="newPassword" class="form-control" name="newPassword" type="password" placeholder="Enter New Password ">
-    	      </div>
+              <label class="col-sm-3 control-label" for="newPassword">Change Password?</label>
+              <div class="col-sm-9">
+                <input id="newPassword" class="form-control" name="newPassword" type="password" placeholder="Enter New Password ">
+                <input id="vPassword" class="form-control" name="vPassword" type="password" placeholder="Enter New Password again">
+              </div>
+            </div>
+            <div class="form-group">  </div>
     	      <div class="form-group">
-    	        <input id="vPassword" class="form-control" name="vPassword" type="password" placeholder="Enter New Password again">
-    	      </div>
-            <div class="form-group">
-              <p class ="text-info">Old Password is needed for any changes: </p>
-              <label class="sr-only" for="password">Change Password?</label>
-              <input id="oldPassword" class="form-control" name="oldPassword" type="password" placeholder="Enter Old Password ">
+              <p class ="text-info">Old Password is needed for Email/Username/Password changes: </p>
+              <label class="col-sm-3" for="password">Verify Change Here:</label>
+              <div class="col-sm-9">
+                <input id="oldPassword" class="form-control" name="oldPassword" type="password" placeholder="Enter Old Password ">
+              </div>
             </div>
     	      <br>
     	      <button id="Button" class="btn btn-default center-block" type="Button"> Submit and Save Changes </button>
