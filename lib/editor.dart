@@ -51,18 +51,17 @@ handleEditorSocket(WebSocket websocket, String message) async {
     // Notify all clients of a change to a file
     print("Writing " + request["content"]);
     f.writeAsStringSync(request["content"]);
+		String contents = f.readAsStringSync();
     for (int i = 0; i < client_list.length; i++) {
       if (client_list[i].readyState != WebSocket.OPEN) {
         // If the websocket is closed remove it from the current list
         client_list.removeAt(i);
-      } else {
-        f.readAsString().then((String contents) {
+      } else if (client_list[i] != websocket){
           client_list[i].add(JSON.encode({
             "command": "change",
-            "content": request["content"],
-            "filename": request["filename"]
+            "content": contents,
+            "filename": request["filename"],
           }));
-        });
       }
     }
     return;
